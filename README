@@ -1,0 +1,87 @@
+==================================================================
+The biblatex-publist package
+
+A biblatex bibliography style file to produce academic
+publication lists.
+
+Maintained by Jürgen Spitzmüller
+E-mail: juergen (at) spitzmueller (dot) org
+
+Released under the LaTeX Project Public License v1.3 or later
+See http://www.latex-project.org/lppl.txt
+==================================================================
+
+== PURPOSE ==
+
+The biblatex-publist package provides a biblatex bibliography
+style file (*.bbx) for publication lists, i. e. a bibliography
+containing one's own publications. The style file draws on
+biblatex's authoryear style, but provides some extra features
+needed for publication lists, such as the omission of the own
+name from author or editor data.
+
+The package requires at least version 2.0 of the biblatex
+package.
+
+
+== CONTENTS ==
+
+The package consists of the following files:
+
+* publist.bbx (biblatex bibliography style file)
+* publist.cbx (biblatex citation style file)
+* biblatex-publist.pdf (package documentation)
+* biblatex-publist.tex (documentation source)
+* README (this very file)
+
+
+== DOCUMENTATION ==
+
+See the included manual biblatex-publist.pdf for usage
+instructions.
+
+
+== CHANGES ==
+
+* V. 1.0 (201?-??-??):
+	- Add portmanteau *.cbx file to allow loading biblatex-publist
+	  also via the "style=" option (alternatively to "bibstyle=").
+
+* V. 0.9 (2014-03-13):
+	- Fix problem with multi-token names.
+	- Support name prefix in \omitname.
+	- Support for pubstate.
+
+* V. 0.8 (2013-08-16):
+	- Add custom sorting schemes "ddnt", "ydmdnt" and "dnt".
+	- Revise the documentation.
+
+* V. 0.7 (2013-07-25):
+	- Support full dates.
+
+* V. 0.6 (2013-07-21):
+	- Fix numbering with recent biblatex versions.
+
+* V. 0.5 (2013-05-03):
+	- Fix numbering if \printbibliography is used multiple
+	  times without refsection.
+
+* V. 0.4 (2012-10-30):
+	- More robust name parsing (especially for names with
+	  non-ASCII characters encoded with LaTeX macros).
+	- Add \omitname command.
+	- Support "firstinits" option.
+
+* V. 0.3 (2012-10-23):
+	- Bug fix: Add missing "and" if omitted name was last
+	  minus one.
+	- Bug fix: Fix output with "et al." if omitted name is
+	  first and liststop is 1.
+	- Set maxnames default to 4.
+	- Add filter possibility.
+	- Add French localization.
+	- Some corrections to the manual.
+
+* V. 0.2 (2012-10-21): Initial release to CTAN.
+
+

@@ -1,0 +1,629 @@
+% publist.bbx, biblatex style by Juergen Spitzmueller
+% requires biblatex >= 2.0
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+% 
+% This Current Maintainer of this work is Jürgen Spitzmüller.
+%
+% This work consists of the file publist.bbx
+%
+%
+% The purpose of this file is to provide a biblatex bibliography style
+% for (numbered) publication lists where the own name is omitted and
+% co-authors are marked as such.
+%
+% This is work in progress. Please send suggestions and bug reports
+% to <juergen@spitzmueller.org>
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\bpl@version{0.9}
+\def\bpl@rdate{2014/03/13}
+
+\ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
+                           biblatex bibliography style (JSP)]
+
+\@ifpackagelater{biblatex}{2012/07/01}
+  {}
+  {\PackageError{biblatex-publist}
+    {Outdated 'biblatex' package\MessageBreak
+     Upgrade to biblatex v2.0 (2012/07/01) or later.\MessageBreak
+     I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
+     This is a fatal error. I'm aborting now}%
+     \endinput}
+
+\RequireBibliographyStyle{authoryear}
+
+\ExecuteBibliographyOptions{%
+    pagetracker=spread,
+    labelnumber,
+    useprefix=false,
+    dashed=false,
+    sorting=ydnt,
+    defernumbers=true,
+    maxnames=4}
+
+
+%
+% Customization settings
+%
+
+%
+% The omitted name of the publication list author
+\def\bpl@osurname{}
+\def\bpl@ofirstname{}
+\def\bpl@ovonpart{}
+%
+% Manual way to specify omitted name
+\def\omitname{%
+   \@ifnextchar[%
+     {\omitname@i}
+     {\omitname@i[]}%
+}
+\def\omitname@i[#1]{%
+   \@ifnextchar[%
+     {\omitname@ii{#1}}
+     {\omitname@ii{#1}[]}%
+}
+\def\omitname@ii#1[#2]#3{%
+  % Do stuff
+  \def\bpl@osurname{#3}
+  \ifx\@empty#1\else\def\bpl@ofirstname{#1}\fi
+  \ifx\@empty#2\else\def\bpl@ovonpart{#2}\fi
+}
+
+%
+% Formatting of year in margin par (if requested)
+\providecommand*\plmarginyear[1]{%
+  \raggedleft\small\textbf{#1}%
+}
+
+
+%
+% Options
+%
+
+\DeclareBibliographyOption{omitname}{\def\bpl@osurname{#1}}
+
+\DeclareBibliographyOption{omitfirstname}{\def\bpl@ofirstname{#1}}
+
+\DeclareBibliographyOption{omitnameprefix}{\def\bpl@ovonpart{#1}}
+
+\newif\if@marginyear\@marginyearfalse
+\DeclareBibliographyOption{marginyear}[true]{%
+    \ifstrequal{#1}{true}{\@marginyeartrue\reversemarginpar}{\@marginyearfalse}
+}
+
+\newif\if@unboldyear\@unboldyearfalse
+\DeclareBibliographyOption{boldyear}[true]{%
+    \ifstrequal{#1}{false}{\@unboldyeartrue}{\@unboldyearfalse}
+}
+
+
+%
+% Field format definitions
+%
+\DeclareFieldFormat{bibentrysetcount}{\mkbibparens{\mknumalph{#1}}}
+\DeclareFieldFormat{labelnumberwidth}{\mkbibbrackets{#1}}
+\DeclareFieldFormat{shorthandwidth}{\mkbibbrackets{#1}}
+\DeclareFieldFormat{related:parttranslationof}{\mkbibbrackets{#1}}
+
+
+%
+% Deal with numbering (resume numbers in refsections)
+%
+\csnumgdef{bbx@itemtotal}{0}
+\csnumgdef{bbx@currentitem}{0}
+\csnumgdef{bbx@saverefsection}{0}
+\newbool{newsection}
+
+\preto\blx@refsection{\global\setbool{newsection}{true}}
+
+\defbibenvironment{bibliography}
+  {\list
+     {\printtext[labelnumberwidth]{%
+      \printfield{prefixnumber}%
+      \printfield{labelnumber}}}
+     {\setlength{\labelwidth}{\labelnumberwidth}%
+      \setlength{\leftmargin}{\labelwidth}%
+      \setlength{\labelsep}{\biblabelsep}%
+      \addtolength{\leftmargin}{\labelsep}%
+      \setlength{\itemsep}{\bibitemsep}%
+      \setlength{\parsep}{\bibparsep}}%
+      \renewcommand*{\makelabel}[1]{\hss##1}}%
+  {\endlist
+   \ifnumgreater{\c@refsection}{\bbx@saverefsection}%
+    {\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}+\csuse{bbx@currentitem}}}{}%
+   \csnumgdef{bbx@saverefsection}{\c@refsection}%
+  }
+  {\item}
+
+\DeclareFieldFormat{labelnumber}{%
+    \ifbool{newsection}{%
+       % Fix start counter value
+       \csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1+1}%
+       \global\setbool{newsection}{false}%
+    }{}%
+    \mkbibdesc{#1}%
+    \csnumgdef{bbx@currentitem}{#1}%
+}
+
+% Print labelnumber as actual number, plus item total
+\newrobustcmd{\mkbibdesc}[1]{%
+  \number\numexpr\csuse{bbx@itemtotal}+#1\relax}
+
+\newcommand*\decreasebbxnumbering[1]{\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1}}
+
+
+%
+% New environment for (foreign) reviews
+%
+\defbibenvironment{reviews}
+  {\begin{enumerate}%
+   \small\setlength\itemsep{0pt}}
+  {\end{enumerate}}
+  {\item}
+
+
+%
+% Helper function:
+% Removing braces from names (courtesy of egreg at
+% http://tex.stackexchange.com/a/79583/19291)
+% and normalize spaces
+\def\bpl@normalize#1#2{%
+  \begingroup
+  \def\bibnamedelima{ }%
+  \def\bibnamedelimb{ }%
+  \def\IeC##1{##1}%
+  \protected@edef\@tempa{#1}%
+  \gdef\@gtempa{}%
+  \expandafter\bpl@@normalize\@tempa\@nil
+  \endgroup
+  \let#2\@gtempa
+}
+\def\bpl@@normalize#1{%
+  \ifx#1\@nil\else
+    \expandafter\gdef\expandafter\@gtempa\expandafter{\@gtempa#1}%
+    \expandafter\bpl@@normalize
+  \fi
+}
+
+
+%
+% Bibliography filter
+%
+% Inspired by http://tex.stackexchange.com/a/28555/19291
+\DeclareBibliographyCategory{filtered}
+
+\DeclareIndexNameFormat{authorfiltered}{%
+   \bpl@normalize{#1}{\bpl@tsurname}%
+   \bpl@normalize{#3}{\bpl@tfirstname}%
+   \bpl@normalize{#5}{\bpl@tvonpart}%
+   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   \ifboolexpr{
+      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      and
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      and
+      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+    {\addtocategory{filtered}{\thefield{entrykey}}}
+    {}}
+
+\DeclareIndexNameFormat{editorfiltered}{%
+   \edef\bpl@tsurname{#1}%
+   \edef\bpl@tfirstname{#3}%
+   \edef\bpl@tvonpart{#5}%
+   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   \ifboolexpr{
+      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      and
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      and
+      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+    {\addtocategory{filtered}{\thefield{entrykey}}}
+    {}}
+
+\DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
+    
+\AtDataInput{%
+  \indexnames[authorfiltered]{author}%
+  \indexnames[editorfiltered]{editor}%
+}
+
+\defbibfilter{mine}{category=filtered}
+
+
+%
+% Remove omitted name from author and editor lists
+%
+\newtoggle{myselfprec}
+\newtoggle{hadmyself}
+
+\DeclareNameFormat{author}{%
+   \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
+   % Exclude omitted author
+   \bpl@normalize{#1}{\bpl@tsurname}%
+   \bpl@normalize{#3}{\bpl@tfirstname}%
+   \bpl@normalize{#5}{\bpl@tvonpart}%
+   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   \ifboolexpr{
+      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      and
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      and
+      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+          {\toggletrue{myselfprec}\toggletrue{hadmyself}%
+           \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
+                   {\stepcounter{liststop}}{}}
+          {\ifthenelse{\value{listcount}=1}{\togglefalse{hadmyself}}{%
+          \ifboolexpr{
+              test { \iftoggle{myselfprec} }
+              and
+              test { \ifnumless{\value{listcount}}{3} } }
+              {}{%
+                 \ifnumless{\value{listcount}}{\value{liststop}-1}%
+                    {\addcomma\addspace}%
+                    {\iftoggle{hadmyself}{%
+                        \ifnumless{\value{listcount}}{\value{liststop}}%
+                           {\addcomma\addspace}%
+                           {\addspace\bibstring{and}\addspace}}
+                       {\addspace\bibstring{and}\addspace}}%
+                }%
+          }%
+          \iffirstinits
+             {\ifblank{#4}{}{#4\addspace}}%
+             {\ifblank{#3}{}{#3\addspace}}%
+          \ifblank{#5}{}{#5\addspace}%
+          \togglefalse{myselfprec}%
+          #1}%
+          \usebibmacro{name:andothers}%
+   \ifthenelse{\value{listcount}=\value{liststop}\AND\value{author}>1}{\unspace\bibcloseparen}{}%
+}
+
+\DeclareNameFormat{editor}{%
+   \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{editor}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
+   % Exclude omitted author
+   \bpl@normalize{#1}{\bpl@tsurname}%
+   \bpl@normalize{#3}{\bpl@tfirstname}%
+   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   \ifboolexpr{
+      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      and
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      and
+      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+          {\toggletrue{myselfprec}\toggletrue{hadmyself}%
+           \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
+                   {\stepcounter{liststop}}{}}
+          {\ifthenelse{\value{listcount}=1}{\togglefalse{hadmyself}}{%
+            \ifboolexpr{
+              test { \iftoggle{myselfprec} }
+              and
+              test { \ifnumless{\value{listcount}}{3} } }
+              {}{%
+                 \ifnumless{\value{listcount}}{\value{liststop}-1}%
+                     {\addcomma\addspace}%
+                     {\iftoggle{hadmyself}{%
+                         \ifnumless{\value{listcount}}{\value{liststop}}%
+                             {\addcomma\addspace}%
+                             {\addspace\bibstring{and}\addspace}}
+                        {\addspace\bibstring{and}\addspace}}%
+                }%
+          }%
+          \iffirstinits
+             {\ifblank{#4}{}{#4\addspace}}%
+             {\ifblank{#3}{}{#3\addspace}}%
+          \ifblank{#5}{}{#5\addspace}%
+          \togglefalse{myselfprec}%
+          #1}%
+          \usebibmacro{name:andothers}%
+   \ifthenelse{\value{listcount}=\value{liststop}\AND\value{editor}>1}{\unspace\bibcloseparen}{}%
+}
+
+\DeclareNameFormat{bookauthor}{%
+  \ifblank{#5}{}{#5\addspace}%
+  #1%
+  \iffirstinits
+      {\ifblank{#4}{}{\addcomma\space #4}}%
+      {\ifblank{#3}{}{\addcomma\space #3}}%
+  \ifthenelse{\value{listcount}<\value{liststop}}
+    {\addslash}
+    {}%
+  \usebibmacro{name:andothers}}
+
+\renewbibmacro*{name:andothers}{%
+  \ifthenelse{\value{listcount}=\value{liststop}\AND
+              \ifmorenames}
+    {\ifnum\value{liststop}>1 \finalandcomma\fi
+     \andothersdelim\biblcstring{andothers}}
+    {}}
+
+
+%
+% Macros
+%
+
+\renewbibmacro*{author}{%
+  \ifnameundef{author}
+    {}
+    {\usebibmacro{year+labelyear}\addspace%
+     \printnames{author}%
+     \setunit{\addspace}%
+      \iffieldundef{nameaddon}
+      {}
+      {\mkbibbrackets{\bibstring{alias}%
+       \addspace\printfield{nameaddon}}}}}
+
+\renewbibmacro*{editor}{%
+  \ifnameundef{editor}
+    {}
+    {\usebibmacro{year+labelyear}%
+      \addspace%
+      \printnames{editor}%
+     \setunit{\addspace}%
+     \usebibmacro{editorstrg}}}
+
+\renewbibmacro*{editor+others}{%
+  \ifboolexpr{
+    test \ifuseeditor
+    and
+    not test {\ifnameundef{editor}}
+  }
+    {\usebibmacro{year+labelyear}%
+     \addspace%
+     \printnames{editor}%
+     \setunit{\addcomma\space}%
+     \usebibmacro{editor+othersstrg}%
+     \clearname{editor}}
+    {}}
+
+\newbibmacro*{date:makedate}{%
+  \printtext{%
+     \iffieldundef{year}{%
+       \iffieldundef{pubstate}{}{%
+          \printfield{pubstate}%
+        }%
+      }{%
+       \iffieldundef{month}{%
+         \printdateextra}%
+        {\printdate}%
+      }%
+     }%
+}
+
+\newbibmacro*{date:labelyear+extrayear}{%
+   \mkbibbold{\usebibmacro{date:makedate}}%
+}
+
+\AtBeginDocument{%
+\if@unboldyear
+\renewbibmacro*{date:labelyear+extrayear}{%
+   \usebibmacro{date:makedate}%
+}
+\fi
+}
+    
+\newbibmacro*{year+labelyear}{%
+  \iffieldundef{year}{%
+    \iffieldundef{pubstate}{\let\bbx@lasthash\undefined}{%
+     \usebibmacro{date:labelyear+extrayear}%
+     \if@marginyear%
+     \iffieldequals{pubstate}{\bbx@lasthash}{}{%
+      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
+     }%
+     \fi
+      \savefield{pubstate}{\bbx@lasthash}%
+      \clearfield{pubstate}%
+     }
+    }{%
+     \usebibmacro{date:labelyear+extrayear}%
+     \if@marginyear%
+     \iffieldequals{labelyear}{\bbx@lasthash}{}{%
+      \printtext{\marginpar{\small\plmarginyear{\printfield{labelyear}}}}%
+     }%
+     \fi
+     \savefield{labelyear}{\bbx@lasthash}%
+    }}
+
+\newbibmacro*{rauthor/label}{%
+  \ifnameundef{author}
+    {\usebibmacro{label}}
+    {\usebibmacro{rauthor}}
+}
+
+\newbibmacro*{rauthor}{%
+  \ifnameundef{author}
+    {\let\bbx@lasthash\undefined}
+    {\ifthenelse{\iffieldequals{namehash}{\bbx@lasthash}\AND\NOT
+                 \iffirstonpage}
+       {\bibnamedash}
+       {\savefield{namehash}{\bbx@lasthash}%
+        \printnames{author}%
+        \setunit{\addspace}}}%
+    \iffieldundef{nameaddon}
+    {}
+    {\mkbibbrackets{\bibstring[\unspace]{alias}\addspace\printfield{nameaddon}}%
+     \addspace}%
+  \usebibmacro{ryear+labelyear}}
+
+\newbibmacro*{ryear+labelyear}{%
+  \iffieldundef{year}
+    {}
+    {\printtext[parens]{%
+      \printfield{labelyear}%
+      \printfield{extrayear}}}}
+
+%
+% l7n
+%
+\NewBibliographyString{with}
+\NewBibliographyString{parttranslationof}
+\DefineBibliographyStrings{english}{%
+  parttranslationof   = {partial translation of},
+  with                = {with}
+}
+\DefineBibliographyStrings{french}{%
+  parttranslationof   = {traduction partielle de},
+  with                = {avec}
+}
+\DefineBibliographyStrings{german}{%
+  parttranslationof   = {Teil\"ubersetzung von},
+  with                = {mit}
+}
+
+
+%
+% New driver for reviews
+%
+
+\DeclareBibliographyDriver{review}{%
+  \usebibmacro{rauthor/label}%
+  \setunit*{\addcolon\space}%
+  \usebibmacro{title}%
+  \newunit\newblock
+  \usebibmacro{in:}%
+  \usebibmacro{journal+issuetitle}%
+  \newunit\newblock
+  \printfield{note}%
+  \setunit{\addcomma\space}%
+  \printfield{pages}
+  \newunit\newblock
+  \printfield{issn}%
+  \newunit\newblock
+  \printfield{doi}%
+  \setunit{\addspace}
+  \usebibmacro{addendum+pubstate}%
+  \newunit\newblock
+  \usebibmacro{url+urldate}%
+  \newunit\newblock
+  \usebibmacro{pageref}%
+  \newunit\newblock
+  \usebibmacro{related}%
+  \usebibmacro{finentry}}
+
+%
+% Sorting schemes
+%
+
+% Consider the whole date (year-month-day)
+% Sorting date (descending), name, title
+\DeclareSortingScheme{ddnt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort[direction=descending]{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort[direction=descending]{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+% Sorting year (descending), month, day, name, title
+\DeclareSortingScheme{ydmdnt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+% Sorting date (ascending), name, title
+\DeclareSortingScheme{dnt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sortname}
+    \field{author}
+    \field{editor}
+    \field{translator}
+    \field{sorttitle}
+    \field{title}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+\endinput
