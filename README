@@ -43,7 +43,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.0 (201?-??-??):
+* V. 1.0 (forthcoming):
 	- Add portmanteau *.cbx file to allow loading biblatex-publist
 	  also via the "style=" option (alternatively to "bibstyle=").
 
