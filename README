@@ -45,9 +45,9 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.0 (forthcoming):
+* V. 1.0 (2015-01-04):
 	- Add portmanteau *.cbx file to allow loading biblatex-publist
-	  also via the "style=" option (alternatively to "bibstyle=").
+	  also via the "style" option (next to "bibstyle").
 
 * V. 0.9 (2014-03-13):
 	- Fix problem with multi-token names.
