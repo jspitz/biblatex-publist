@@ -25,17 +25,17 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.0}
-\def\bpl@rdate{2015/01/04}
+\def\bpl@version{1.1}
+\def\bpl@rdate{2016/03/09}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
 
-\@ifpackagelater{biblatex}{2012/07/01}
+\@ifpackagelater{biblatex}{2016/03/03}
   {}
   {\PackageError{biblatex-publist}
     {Outdated 'biblatex' package\MessageBreak
-     Upgrade to biblatex v2.0 (2012/07/01) or later.\MessageBreak
+     Upgrade to biblatex v3.3 (2016/03/03) or later.\MessageBreak
      I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
      This is a fatal error. I'm aborting now}%
      \endinput}
@@ -204,9 +204,10 @@
 \DeclareBibliographyCategory{filtered}
 
 \DeclareIndexNameFormat{authorfiltered}{%
-   \bpl@normalize{#1}{\bpl@tsurname}%
-   \bpl@normalize{#3}{\bpl@tfirstname}%
-   \bpl@normalize{#5}{\bpl@tvonpart}%
+   \nameparts{#1}%
+   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
@@ -220,9 +221,10 @@
     {}}
 
 \DeclareIndexNameFormat{editorfiltered}{%
-   \edef\bpl@tsurname{#1}%
-   \edef\bpl@tfirstname{#3}%
-   \edef\bpl@tvonpart{#5}%
+   \nameparts{#1}%
+   \edef\bpl@tsurname{\namepartfamily}%
+   \edef\bpl@tfirstname{\namepartgiven}%
+   \edef\bpl@tvonpart{\namepartprefix}%
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
@@ -252,11 +254,12 @@
 \newtoggle{hadmyself}
 
 \DeclareNameFormat{author}{%
+   \nameparts{#1}%
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
-   \bpl@normalize{#1}{\bpl@tsurname}%
-   \bpl@normalize{#3}{\bpl@tfirstname}%
-   \bpl@normalize{#5}{\bpl@tvonpart}%
+   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
@@ -284,21 +287,22 @@
                        {\addspace\bibstring{and}\addspace}}%
                 }%
           }%
-          \iffirstinits
-             {\ifblank{#4}{}{#4\addspace}}%
-             {\ifblank{#3}{}{#3\addspace}}%
-          \ifblank{#5}{}{#5\addspace}%
+          \ifgiveninits
+             {\ifempty{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+             {\ifempty{\namepartgiven}{}{\namepartgiven\addspace}}%
+          \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
           \togglefalse{myselfprec}%
-          #1}%
+          \namepartfamily}%
           \usebibmacro{name:andothers}%
    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{author}>1}{\unspace\bibcloseparen}{}%
 }
 
 \DeclareNameFormat{editor}{%
+   \nameparts{#1}%
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{editor}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
-   \bpl@normalize{#1}{\bpl@tsurname}%
-   \bpl@normalize{#3}{\bpl@tfirstname}%
+   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \ifboolexpr{
@@ -325,22 +329,23 @@
                         {\addspace\bibstring{and}\addspace}}%
                 }%
           }%
-          \iffirstinits
-             {\ifblank{#4}{}{#4\addspace}}%
-             {\ifblank{#3}{}{#3\addspace}}%
-          \ifblank{#5}{}{#5\addspace}%
+          \ifgiveninits
+             {\ifempty{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+             {\ifempty{\namepartgiven}{}{\namepartgiven\addspace}}%
+          \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
           \togglefalse{myselfprec}%
-          #1}%
+          \namepartfamily}%
           \usebibmacro{name:andothers}%
    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{editor}>1}{\unspace\bibcloseparen}{}%
 }
 
 \DeclareNameFormat{bookauthor}{%
-  \ifblank{#5}{}{#5\addspace}%
-  #1%
-  \iffirstinits
-      {\ifblank{#4}{}{\addcomma\space #4}}%
-      {\ifblank{#3}{}{\addcomma\space #3}}%
+  \nameparts{#1}%
+  \ifempty{\namepartprefix}}{}{\namepartprefix}\addspace}%
+  \namepartfamily%
+  \ifgiveninits
+      {\ifempty{\namepartgiveni}{}{\addcomma\space\namepartgiveni}}%
+      {\ifempty{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addslash}
     {}%

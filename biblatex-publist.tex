@@ -53,7 +53,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.0, 2015/01/04}
+\date{Version 1.1, 2016/03/09}
 \maketitle
 
 \begin{abstract}
@@ -62,7 +62,7 @@
 publications. The style file draws on \bibltx's \emph{authoryear} style, but
 provides some extra features needed for publication lists, such as the omission
 of the own name from author or editor data. The package requires at least version
-2.0 of the \bibltx\ package\footnote{For \bibltx, see
+3.3 of the \bibltx\ package\footnote{For \bibltx, see
 \url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber}.
 \end{abstract}
 
@@ -346,7 +346,16 @@ That is, to sort your talks in descending order by full date in your CV, use:
 
 
 \section{Revision Log}
+
 \begin{description}
+\item [{V.~1.1 (2016-03-09):}]~
+
+\begin{itemize}
+\item Adapt to the \jfcsmacro{Declare*Name} changes of \bibltx~3.3.
+      Since \bibltx~3.3 introduced backwards-incompatible changes that
+      affect \bpl, this version of \bibltx\ is now required.
+\end{itemize}
+
 \item [{V.~1.0~(2015-01-04):}]~
 
 \begin{itemize}
@@ -368,7 +377,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \item Add custom sorting schemes \jmacro{ddnt}, \jmacro{ydmdnt} and \jmacro{dnt}
       (see sec.~\ref{sec:sorting}).
 \item Revise the documentation.
-\end{itemize}
+\end{itemize}\condbreak{2\baselineskip}
 
 \item [{V.~0.7~(2013-07-25):}]~
 
@@ -422,7 +431,7 @@ course Philipp Lehman (not only) for \bibltx.
 \begin{thebibliography}{1}
 \bibitem{bibltx}Lehman, Philipp (with Audrey Boruvka, Philip Kime
 and Joseph Wright): \emph{The biblatex Package. Programmable Bibliographies
-and Citations}. June 24, 2014.
+and Citations}. March 3, 2016.
 \url{http://mirror.ctan.org/macros/latex/contrib/biblatex}.
 
 \bibitem{ttb}Markey, Nicolas: \emph{Tame the BeaST. The B to X of
