@@ -341,7 +341,7 @@
 
 \DeclareNameFormat{bookauthor}{%
   \nameparts{#1}%
-  \ifempty{\namepartprefix}}{}{\namepartprefix}\addspace}%
+  \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
   \namepartfamily%
   \ifgiveninits
       {\ifempty{\namepartgiveni}{}{\addcomma\space\namepartgiveni}}%
