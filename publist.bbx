@@ -1,5 +1,5 @@
 % publist.bbx, biblatex bibliography style by Juergen Spitzmueller
-% requires biblatex >= 3.3
+% requires biblatex >= 3.4
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -25,17 +25,17 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.1}
-\def\bpl@rdate{2016/03/09}
+\def\bpl@version{1.2}
+\def\bpl@rdate{2016/03/20}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
 
-\@ifpackagelater{biblatex}{2016/03/03}
+\@ifpackagelater{biblatex}{2016/03/18}
   {}
   {\PackageError{biblatex-publist}
     {Outdated 'biblatex' package\MessageBreak
-     Upgrade to biblatex v3.3 (2016/03/03) or later.\MessageBreak
+     Upgrade to biblatex v3.4 (2016/03/18) or later.\MessageBreak
      I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
      This is a fatal error. I'm aborting now}%
      \endinput}
@@ -130,7 +130,7 @@
 \defbibenvironment{bibliography}
   {\list
      {\printtext[labelnumberwidth]{%
-      \printfield{prefixnumber}%
+      \printfield{labelprefix}%
       \printfield{labelnumber}}}
      {\setlength{\labelwidth}{\labelnumberwidth}%
       \setlength{\leftmargin}{\labelwidth}%
@@ -204,7 +204,6 @@
 \DeclareBibliographyCategory{filtered}
 
 \DeclareIndexNameFormat{authorfiltered}{%
-   \nameparts{#1}%
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
    \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
@@ -221,7 +220,6 @@
     {}}
 
 \DeclareIndexNameFormat{editorfiltered}{%
-   \nameparts{#1}%
    \edef\bpl@tsurname{\namepartfamily}%
    \edef\bpl@tfirstname{\namepartgiven}%
    \edef\bpl@tvonpart{\namepartprefix}%
@@ -254,7 +252,6 @@
 \newtoggle{hadmyself}
 
 \DeclareNameFormat{author}{%
-   \nameparts{#1}%
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
@@ -298,7 +295,6 @@
 }
 
 \DeclareNameFormat{editor}{%
-   \nameparts{#1}%
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{editor}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
@@ -340,7 +336,6 @@
 }
 
 \DeclareNameFormat{bookauthor}{%
-  \nameparts{#1}%
   \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
   \namepartfamily%
   \ifgiveninits
