@@ -1,5 +1,5 @@
 \documentclass[english]{article}
-\usepackage{charter}
+\usepackage[osf,sups]{XCharter}
 \usepackage[scaled=0.87]{beramono}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
@@ -63,7 +63,7 @@ publications. The style file draws on \bibltx's \emph{authoryear} style, but
 provides some extra features needed for publication lists, such as the omission
 of the own name from author or editor data. The package requires at least version
 3.4 of the \bibltx\ package\footnote{For \bibltx, see
-\url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (in the respective version required by \bibltx).
+\url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (the respective version as required by \bibltx).
 \end{abstract}
 
 \section{Aim of the package}
@@ -322,8 +322,8 @@ The sorting of the items is done via \bibltx's sorting mechanism
 \bpl\ uses the \jfmacro{ydnt} scheme, which sorts hierarchically
 by year (descending), name and title (both ascending). You can switch to another
 scheme via \bibltx's \jfmacro{sorting} option either globally (if you pass
-\jfmacro{sorting=<scheme>} to the \bibltx\ options) or locally (if you pass
-\jfmacro{sorting=<scheme>} to the \jfcsmacro{printbibliography} options).
+\joption{sorting=<scheme>} to the \bibltx\ options) or locally (if you pass
+\joption{sorting=<scheme>} to the \jfcsmacro{printbibliography} options).
 
 For convenience, \bpl\ provides 3 additional sorting schemes, which might
 be particularly useful for sorting talks:
@@ -348,10 +348,11 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \section{Revision Log}
 
 \begin{description}
-\item [{V.~1.2 (2016-03-20):}]~
+\item [{V.~1.2 (forthcoming):}]~
 
 	\begin{itemize}
-		\item Accomodate to the backwards-incompatible changes of \bibltx~3.4.
+		\item Accomodate to the backwards-incompatible changes of \bibltx~3.4
+		(\joption{prefixnumber} $\Rightarrow$ \joption{labelprefix}).
 		This version of \bibltx\ is now required.
 	\end{itemize}
 

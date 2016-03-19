@@ -16,13 +16,13 @@ See http://www.latex-project.org/lppl.txt
 == PURPOSE ==
 
 The biblatex-publist package provides a biblatex bibliography
-style file (*.bbx) for publication lists, i. e. a bibliography
+style file (*.bbx) for publication lists, i.e. a bibliography
 containing one's own publications. The style file draws on
 biblatex's authoryear style, but provides some extra features
 needed for publication lists, such as the omission of the own
 name from author or editor data.
 
-The package requires at least version 3.3 of the biblatex
+The package requires at least version 3.4 of the biblatex
 package.
 
 
@@ -45,8 +45,9 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.2 (2016-03-20):
-	- Accomodate to the backwards-incompatible changes of biblatex 3.4.
+* V. 1.2 (forthcoming):
+	- Accomodate to the backwards-incompatible changes of biblatex 3.4
+	  (prefixnumber > labelprefix).
 	  This version of biblatex is now required.
 
 * V. 1.1 (2016-03-09):
