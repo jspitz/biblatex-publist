@@ -286,9 +286,9 @@
                 }%
           }%
           \ifgiveninits
-             {\ifempty{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-             {\ifempty{\namepartgiven}{}{\namepartgiven\addspace}}%
-          \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
+             {\ifcontentempty{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+             {\ifcontentempty{\namepartgiven}{}{\namepartgiven\addspace}}%
+          \ifcontentempty{\namepartprefix}{}{\namepartprefix\addspace}%
           \togglefalse{myselfprec}%
           \namepartfamily}%
           \usebibmacro{name:andothers}%
@@ -327,9 +327,9 @@
                 }%
           }%
           \ifgiveninits
-             {\ifempty{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-             {\ifempty{\namepartgiven}{}{\namepartgiven\addspace}}%
-          \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
+             {\ifcontentempty{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+             {\ifcontentempty{\namepartgiven}{}{\namepartgiven\addspace}}%
+          \ifcontentempty{\namepartprefix}{}{\namepartprefix\addspace}%
           \togglefalse{myselfprec}%
           \namepartfamily}%
           \usebibmacro{name:andothers}%
@@ -337,11 +337,11 @@
 }
 
 \DeclareNameFormat{bookauthor}{%
-  \ifempty{\namepartprefix}{}{\namepartprefix\addspace}%
+  \ifcontentempty{\namepartprefix}{}{\namepartprefix\addspace}%
   \namepartfamily%
   \ifgiveninits
-      {\ifempty{\namepartgiveni}{}{\addcomma\space\namepartgiveni}}%
-      {\ifempty{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
+      {\ifcontentempty{\namepartgiveni}{}{\addcomma\space\namepartgiveni}}%
+      {\ifcontentempty{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\addslash}
     {}%

@@ -47,7 +47,7 @@ instructions.
 
 * V. 1.2 (forthcoming):
 	- Accomodate to the backwards-incompatible changes of biblatex 3.4
-	  (prefixnumber > labelprefix).
+	  (prefixnumber > labelprefix, \ifempty > \ifcontentempty).
 	  This version of biblatex is now required.
 
 * V. 1.1 (2016-03-09):
