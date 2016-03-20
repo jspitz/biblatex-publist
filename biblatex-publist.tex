@@ -29,6 +29,7 @@
 \newcommand*\@jcsmacro[1]{\@jmacro{\textbackslash{#1}}}
 \newcommand*\@@jcsmacro[1]{\@@jmacro{\textbackslash{#1}}}
 \newcommand*\joption[1]{\textbf{\texttt{#1}}}
+\newcommand*\jfoption[1]{\texttt{#1}}
 \newcommand*\jfmacro[1]{\texttt{#1}}
 \newcommand*\jfcsmacro[1]{\jfmacro{\textbackslash{#1}}}
 \newcommand*\bpl{\texttt{biblatex-publist}}
@@ -352,7 +353,8 @@ That is, to sort your talks in descending order by full date in your CV, use:
 
 	\begin{itemize}
 		\item Accomodate to the backwards-incompatible changes of \bibltx~3.4
-		(\joption{prefixnumber} $\Rightarrow$ \joption{labelprefix}).
+		(\jfoption{prefixnumber} $\Rightarrow$ \jfoption{labelprefix},
+		\jfcsmacro{ifempty} $\Rightarrow$ \jfcsmacro{ifcontentempty}).
 		This version of \bibltx\ is now required.
 	\end{itemize}
 
@@ -368,7 +370,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 
 \begin{itemize}
 \item Add portmanteau *.cbx file to allow loading \bpl\ also via 
-      the \joption{style} option (next to \joption{bibstyle}).
+      the \jfoption{style} option (next to \jfoption{bibstyle}).
 \end{itemize}
 
 \item [{V.~0.9~(2014-03-13):}]~
