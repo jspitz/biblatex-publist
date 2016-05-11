@@ -26,17 +26,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\bpl@version{1.2}
-\def\bpl@rdate{2016/03/20}
+\def\bpl@rdate{2016/05/11}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
 
-% FIXME: adapt date when biblatex 3.4 is out.
-\@ifpackagelater{biblatex}{2016/03/18}
+\@ifpackagelater{biblatex}{2016/05/10}
   {}
   {\PackageError{biblatex-publist}
     {Outdated 'biblatex' package\MessageBreak
-     Upgrade to biblatex v3.4 (2016/03/18) or later.\MessageBreak
+     Upgrade to biblatex v3.4 (2016/05/10) or later.\MessageBreak
      I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
      This is a fatal error. I'm aborting now}%
      \endinput}
