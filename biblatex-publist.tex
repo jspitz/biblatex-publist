@@ -85,10 +85,9 @@
 \begin{abstract}
 \noindent The \bpl\ package provides a \emph{biblatex bibliography style file}
 ({*}.bbx) for publication lists, i.\,e.\ a bibliography containing one's own
-publications. The style file draws on \bibltx's \emph{authoryear} style, but
-provides some extra features needed for publication lists, such as the omission
-of the own name from author or editor data. The package requires at least version
-3.4 of the \bibltx\ package\footnote{For \bibltx, see
+publications. The style file draws on \bibltx's \emph{authoryear} style per default
+(which can be changed), but provides some extra features needed for publication lists,
+such as the omission of the own name from author or editor data. The package requires at least version 3.4 of the \bibltx\ package\footnote{For \bibltx, see
 \url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (the respective version as required by \bibltx).
 \end{abstract}
 
@@ -195,6 +194,22 @@ The indendation of the bibliographic entries (lines > 1) can be adjusted by sett
 This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
 space the item number needs.
 
+
+\subsection{Using a different base style}\label{sec:basestyle}
+
+By default, \bpl\ loads \bibltx's \emph{authoryear} style, and it has been written
+to work with that style. However, it is possible to try a diffent base style, if
+\emph{author\-year} does not fit your needs.
+
+In order to do so, enter the following \emph{before} loading \bibltx:
+\begin{quote}
+	\begin{lstlisting}[language={[LaTeX]TeX},
+	                   moretexcs={[2]{publistbasestyle}}]
+	\newcommand*\publistbasestyle{<stylename>}
+	\end{lstlisting}\end{quote}
+where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) you want to use, without the \emph{bbx} entension (e.\,g., \lstinline|\newcommand*\publistbasestyle{mla}|).
+
+Note, though, that there is (and can be) no guarantee that \bpl\ will work with all styles, although it has been successfully tested with several. Be prepared to bump into \LaTeX\ errors and carefully check the output for correctness if you try a different base style.
 
 \section{Localization}
 
@@ -377,6 +392,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{lstlisting}
 \end{quote}
 
+\clearpage
 
 \section{Revision Log}
 
@@ -384,6 +400,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \item [{V.~1.3 (2016-08-05):}]~
 
 \begin{itemize}
+	\item It is now possible to change the base style that is used by \bpl. See sec.~\ref{sec:basestyle}.
 	\item Add possibility to increase the indentation of items (by means of the length  \jmacro{extralabelnumberwidth}). See sec.~\ref{sec:auxmacros}.
 	\item Use \jfoption{pagetracker=true} instead of \jfoption{pagetracker=spread}
 	      by default (avoids warning, no change in functionality).

@@ -46,6 +46,7 @@ instructions.
 == CHANGES ==
 
 * V. 1.3 (2016-08-05):
+	- It is now possible to change the base style that is used.
 	- Add possibility to increase the indentation of items (by means
           of the length extralabelnumberwidth).
 	- Use pagetracker=true instead of pagetracker=spread by default

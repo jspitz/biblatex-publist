@@ -40,16 +40,57 @@
      This is a fatal error. I'm aborting now}%
      \endinput}
 
-\RequireBibliographyStyle{authoryear}
+
+%
+% Bibliography Options and Base Style
+%
+
+\DeclareBibliographyOption{omitname}{\def\bpl@osurname{#1}}
+
+\DeclareBibliographyOption{omitfirstname}{\def\bpl@ofirstname{#1}}
+
+\DeclareBibliographyOption{omitnameprefix}{\def\bpl@ovonpart{#1}}
+
+\newif\if@marginyear\@marginyearfalse
+\DeclareBibliographyOption{marginyear}[true]{%
+    \ifstrequal{#1}{true}{\@marginyeartrue\reversemarginpar}{\@marginyearfalse}
+}
+
+\newif\if@unboldyear\@unboldyearfalse
+\DeclareBibliographyOption{boldyear}[true]{%
+    \ifstrequal{#1}{false}{\@unboldyeartrue}{\@unboldyearfalse}
+}
+
+% Check if users have defined different base styles
+% If not, use authoryear.
+\newif\ifbpl@standardbasestyle\bpl@standardbasestylefalse
+\@ifundefined{publistbasestyle}{%
+    \newcommand*\publistbasestyle{authoryear}
+    \bpl@standardbasestyletrue}{}
+
+\RequireBibliographyStyle{\publistbasestyle}
 
 \ExecuteBibliographyOptions{%
-    pagetracker=spread,
+    pagetracker=true,
     labelnumber,
     useprefix=false,
-    dashed=false,
     sorting=ydnt,
-    defernumbers=true,
-    maxnames=4}
+    defernumbers=true}
+
+% Execute these options only with the standard base style
+\ifbpl@standardbasestyle
+    \ExecuteBibliographyOptions{%
+        maxnames=4,
+        dashed=false}
+\else
+    % This corresponds to bib option dashed=false
+    % (dashed option is not defined in every style)
+    \providebibmacro*{bbx:savehash}{}%
+    \renewbibmacro*{bbx:savehash}{}%
+    % Do not print date twice with numeric styles
+    \renewbibmacro*{date}{}%
+    \renewbibmacro*{issue+date}{}%
+\fi
 
 
 %
@@ -84,27 +125,6 @@
 % Formatting of year in margin par (if requested)
 \providecommand*\plmarginyear[1]{%
   \raggedleft\small\textbf{#1}%
-}
-
-
-%
-% Options
-%
-
-\DeclareBibliographyOption{omitname}{\def\bpl@osurname{#1}}
-
-\DeclareBibliographyOption{omitfirstname}{\def\bpl@ofirstname{#1}}
-
-\DeclareBibliographyOption{omitnameprefix}{\def\bpl@ovonpart{#1}}
-
-\newif\if@marginyear\@marginyearfalse
-\DeclareBibliographyOption{marginyear}[true]{%
-    \ifstrequal{#1}{true}{\@marginyeartrue\reversemarginpar}{\@marginyearfalse}
-}
-
-\newif\if@unboldyear\@unboldyearfalse
-\DeclareBibliographyOption{boldyear}[true]{%
-    \ifstrequal{#1}{false}{\@unboldyeartrue}{\@unboldyearfalse}
 }
 
 
