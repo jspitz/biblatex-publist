@@ -650,4 +650,48 @@
   }
 }
 
+%
+% Mappings (biber)
+%
+
+% 1.) Only sort by omitted author, ignore co-authors
+% 2.) Correctly sort pubstates.
+
+\AtEndPreamble{%
+\bpl@normalize{\bpl@osurname}{\bpl@eesurname}%
+\bpl@normalize{\bpl@ofirstname}{\bpl@eefirstname}%
+\bpl@normalize{\bpl@ovonpart}{\bpl@eevonpart}%
+
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map[overwrite]{
+       \step[fieldsource=author, match=\regexp{.*\bpl@eesurname.*}, final=false]
+       \step[fieldset=shortauthor, fieldvalue={\bpl@eesurname, \bpl@eefirstname}]
+       \step[fieldset=sortname, fieldvalue={\bpl@eesurname, \bpl@eefirstname}]
+    }
+    \map{
+       \step[fieldsource=year, final]
+       \step[fieldset=sortyear, origfieldval]
+    }
+    \map{
+       \step[fieldsource=pubstate, match=\regexp{forthcoming}, final]
+       \step[fieldset=sortyear, fieldvalue={2222}]
+    }
+    \map{
+       \step[fieldsource=pubstate, match=\regexp{inpress}, final]
+       \step[fieldset=sortyear, fieldvalue={3333}]
+    }
+    \map{
+       \step[fieldsource=pubstate, match=\regexp{submitted}, final]
+       \step[fieldset=sortyear, fieldvalue={4444}]
+    }
+    \map{
+       \step[fieldsource=pubstate, match=\regexp{inpreparation}, final]
+       \step[fieldset=sortyear, fieldvalue={5555}]
+    }
+  }
+}
+}
+
+
 \endinput
