@@ -160,6 +160,7 @@
 \newrobustcmd{\mkbibdesc}[1]{%
   \number\numexpr\csuse{bbx@itemtotal}+#1\relax}
 
+% Way to manual shift the numbering (undocumented)
 \newcommand*\decreasebbxnumbering[1]{\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1}}
 
 
