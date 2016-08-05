@@ -172,6 +172,11 @@
   {\item}
 
 \DeclareFieldFormat{labelnumber}{%
+    \ifbool{newsection}{%
+       % Fix start counter value
+       \csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1+1}%
+       \global\setbool{newsection}{false}%
+    }{}%
     \mkbibdesc{#1}%
     \csnumgdef{bbx@currentitem}{#1}%
 }
