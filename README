@@ -18,9 +18,9 @@ See http://www.latex-project.org/lppl.txt
 The biblatex-publist package provides a biblatex bibliography
 style file (*.bbx) for publication lists, i.e. a bibliography
 containing one's own publications. The style file draws on
-biblatex's authoryear style, but provides some extra features
-needed for publication lists, such as the omission of the own
-name from author or editor data.
+biblatex's authoryear style per default (which can be changed),
+but provides some extra features needed for publication lists,
+such as the omission of the own name from author or editor data.
 
 The package requires at least version 3.4 of the biblatex
 package.
