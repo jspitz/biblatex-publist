@@ -127,8 +127,13 @@
 
 \preto\blx@refsection{\global\setbool{newsection}{true}}
 
+% Possibility to manually make the space occupied by the label wider
+\newlength\extralabelnumberwidth
+\setlength\extralabelnumberwidth{0pt}
+
 \defbibenvironment{bibliography}
-  {\list
+  {\addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
+   \list
      {\printtext[labelnumberwidth]{%
       \printfield{labelprefix}%
       \printfield{labelnumber}}}

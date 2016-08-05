@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.2, 2016/05/12}
+\date{Version 1.3, 2016/08/05}
 \maketitle
 
 \begin{abstract}
@@ -176,7 +176,9 @@ on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 
 \end{description}
 
-\noindent The appearance of the \emph{marginyear} is controlled by the
+\subsection{Auxiliary macros and lengths}\label{sec:auxmacros}
+
+The appearance of the \emph{marginyear} is controlled by the
 \jcsmacro*{plmarginyear} macro, which has the following default definition:
 \begin{quote}
 \begin{lstlisting}[language={[LaTeX]TeX},
@@ -187,6 +189,11 @@ on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 \end{lstlisting}\end{quote}
 If you want to change the appearance, just redefine this macro via
 \jfcsmacro{renewcommand{*}}.
+
+The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
+\jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is 0pt).
+This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
+space the item number needs.
 
 
 \section{Localization}
@@ -374,6 +381,14 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \section{Revision Log}
 
 \begin{description}
+\item [{V.~1.3 (2016-08-05):}]~
+
+\begin{itemize}
+	\item Add possibility to increase the indentation of items (by means of the length  \jmacro{extralabelnumberwidth}). See sec.~\ref{sec:auxmacros}.
+	\item Use \jfoption{pagetracker=true} instead of \jfoption{pagetracker=spread}
+	      by default (avoids warning, no change in functionality).
+\end{itemize}
+
 \item [{V.~1.2 (2016-05-12):}]~
 
 	\begin{itemize}
