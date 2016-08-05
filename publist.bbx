@@ -87,9 +87,6 @@
     % (dashed option is not defined in every style)
     \providebibmacro*{bbx:savehash}{}%
     \renewbibmacro*{bbx:savehash}{}%
-    % Do not print date twice with numeric styles
-    \renewbibmacro*{date}{}%
-    \renewbibmacro*{issue+date}{}%
 \fi
 
 
@@ -464,6 +461,7 @@
      }%
      \fi
      \savefield{labelyear}{\bbx@lasthash}%
+     \clearfield{year}%
     }}
 
 \newbibmacro*{rauthor/label}{%
