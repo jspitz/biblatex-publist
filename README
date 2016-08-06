@@ -45,6 +45,10 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.4 (forthcoming):
+	- Assure the margin text always starts uppercased (relevant for pubstates).
+	- Minor corrections to the manual.
+
 * V. 1.3 (2016-08-06):
 	- It is now possible to change the base style that is used.
 	- Proper sorting of pubstates.
