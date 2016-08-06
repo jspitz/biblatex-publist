@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.3dev, 2016/08/06}
+\date{Version 1.3, 2016/08/06}
 \maketitle
 
 \begin{abstract}
@@ -190,7 +190,7 @@ If you want to change the appearance, just redefine this macro via
 \jfcsmacro{renewcommand{*}}.
 
 The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
-\jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is 0pt).
+\jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is \texttt{0pt}).
 This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
 space the item number needs.
 
@@ -401,7 +401,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 
 \begin{itemize}
 	\item It is now possible to change the base style that is used by \bpl. See sec.~\ref{sec:basestyle}.
-	\item Sorting and extrayear label assignment is more consistent.
+	\item Proper sorting of pubstates.
 	\item Add possibility to increase the indentation of items (by means of the length  \jmacro{extralabelnumberwidth}). See sec.~\ref{sec:auxmacros}.
 	\item Use \jfoption{pagetracker=true} instead of \jfoption{pagetracker=spread}
 	      by default (avoids warning, no change in functionality).
@@ -410,7 +410,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \item [{V.~1.2 (2016-05-12):}]~
 
 	\begin{itemize}
-		\item Accomodate to the backwards-incompatible changes of \bibltx~3.4
+		\item Accomodate to the backwards-incompatible changes of \bibltx~3.4\\
 		(\jfoption{prefixnumber} $\Rightarrow$ \jfoption{labelprefix},
 		\jfcsmacro{ifempty} $\Rightarrow$ \jfcsmacro{ifdefvoid}).
 		This version of \bibltx\ is now required.
