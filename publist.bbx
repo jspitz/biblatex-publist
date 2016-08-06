@@ -25,7 +25,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.3}
+\def\bpl@version{1.4dev}
 \def\bpl@rdate{2016/08/06}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
@@ -457,7 +457,7 @@
      \usebibmacro{date:labelyear+extrayear}%
      \if@marginyear%
      \iffieldequals{labelyear}{\bbx@lasthash}{}{%
-      \printtext{\marginpar{\small\plmarginyear{\printfield{labelyear}}}}%
+      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{labelyear}}}}%
      }%
      \fi
      \savefield{labelyear}{\bbx@lasthash}%
