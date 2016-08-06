@@ -662,10 +662,10 @@
 \bpl@normalize{\bpl@ofirstname}{\bpl@eefirstname}%
 \bpl@normalize{\bpl@ovonpart}{\bpl@eevonpart}%
 
-\DeclareSourcemap{
+\DeclareStyleSourcemap{
   \maps[datatype=bibtex]{
     \map[overwrite]{
-       \step[fieldsource=author, match=\regexp{.*\bpl@eesurname.*}, final=false]
+       \step[fieldsource=author, match=\regexp{.*\bpl@eesurname.*}, final]
        \step[fieldset=shortauthor, fieldvalue={\bpl@eesurname, \bpl@eefirstname}]
        \step[fieldset=sortname, fieldvalue={\bpl@eesurname, \bpl@eefirstname}]
     }
