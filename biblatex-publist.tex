@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.4dev, 2016/08/06}
+\date{Version 1.4dev, 2017/02/08}
 \maketitle
 
 \begin{abstract}
@@ -87,7 +87,7 @@
 ({*}.bbx) for publication lists, i.\,e.\ a bibliography containing one's own
 publications. The style file draws on \bibltx's \emph{authoryear} style per default
 (which can be changed), but provides some extra features needed for publication lists,
-such as the omission of the own name from author or editor data. The package requires at least version 3.4 of the \bibltx\ package\footnote{For \bibltx, see
+such as the omission or emboldening of the own name from author or editor data. The package requires at least version 3.4 of the \bibltx\ package\footnote{For \bibltx, see
 \url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (the respective version as required by \bibltx).
 \end{abstract}
 
@@ -99,7 +99,8 @@ part of the academic CV, contain all or selected publications of a specific
 author, usually sorted by genre and year. Even though publication lists are actually
 nothing else than (specific) bibliographies, they diverge from those in some
 respects. Most notably, it is widespread practice to omit your own name in
-your publication list and only list your co-authors, if there are any.
+your publication list and only list your co-authors, if there are any, or to
+embolden your own name.
 If you want to follow this practice, a normal bibliography style does not
 produce the desired result.
 
@@ -121,17 +122,18 @@ Markey's conceptual ideas. Bug reports, comments and ideas are welcome.\filbreak
 
 The standard way of using the package is to load the style file via
 \begin{quote}
-\begin{lstlisting}[language={[LaTeX]TeX},moretexcs={[1]{omitname}}]
+\begin{lstlisting}[language={[LaTeX]TeX},moretexcs={[1]{plauthorname}}]
 \usepackage[bibstyle=publist]{biblatex}
-\omitname[first name][von-part]{surname}
+\plauthorname[first name][von-part]{surname}
 \end{lstlisting}
 \end{quote}
-The \jcsmacro*{omitname} macro (at least with the mandatory
-\emph{surname} argument) needs to be given once. It informs the style
-file which name it should suppress in the author\slash editor list
-(usually yours). That is to say: For all of your publications where
-you are the sole author or editor, the author\slash editor name
-will be omitted completely, as in:
+The \jcsmacro*{plauthorname} macro\footnote{The macro was named \jfcsmacro{omitname} until v.\,1.4 of the \bpl\ package. The old macro still works, but is marked as deprecated.}
+(at least with the mandatory \emph{surname} argument) needs to be given once. 
+It informs the style file which name it should suppress or embolden in the
+author\slash editor list (usually yours). 
+
+With the default settings, the author\slash editor name will be omitted completely for all of your publications
+where you are the sole author or editor, as in:
 \begin{quote}
 \textbf{2012.} Some recent trends in gardening. In: \emph{Gardening
 Practice} 56, pp.~34--86.
@@ -142,23 +144,34 @@ out and the collaborators added in parentheses, as in:
 \textbf{1987} (with John Doe and Mary Hall). Are there new trends
 in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
-
-
+If \joption{plauthorhandling=embolden} is used (see next section), the plauthor
+will be emboldened instead, as in:
+\begin{quote}
+	John Doe, \textbf{Me Myself} and Mary Hall \textbf{1987}. Are there new trends
+	in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
+\end{quote}
 \subsection{Additional options}
 
 Currently, the following additional options are provided (next to the
 options provided by the \bibltx\ package itself%
 \footnote{Please refer to the \bibltx\ manual \cite{bibltx} for those.}):
 \begin{description}
-\item [{\joption{omitname=<surname>}}]
-\item [{\joption{omitfirstname=<first name>}}]
-\item [{\joption{omitnameprefix=<von-part>}}] ~
+\item [{\joption{plauthorname=<surname>}}]
+\item [{\joption{plauthorfirstname=<first name>}}]
+\item [{\joption{plauthornameprefix=<von-part>}}] ~
 
-This is an alternative to the \jcsmacro{omitname} macro
-described in sec.~\ref{sec:standard-usage}. However, due to the
+This is an alternative to the \jcsmacro{plauthorname} macro
+described in sec.~\ref{sec:standard-usage}.\footnote{The options were called \jfoption{omitname}, \jfoption{omitfirstname} and \jfoption{omitnameprefix} until v.\,1.4
+of \bpl. The old options still work, but are marked as deprecated.} However, due to the
 way bibliography options are implemented in \bibltx, this only works
 if your name does not consist of non-ASCII characters. Hence, the
-\jcsmacro{omitname} macro is the recommended way.
+\jcsmacro{plauthorname} macro is the recommended way.
+
+\item [{\joption{plauthorhandling{[}=omit|embolden{]}}}] default: \emph{omit}.
+
+By default, the publist author (as defined with \jmacro{plauthor}) is omitted from
+the author or editor list. If you use the option \joption{plauthorhandling=embolden},
+it is set in bold face instead.
 
 \item [{\joption{boldyear{[}=true|false{]}}}] default: \emph{true}.
 
@@ -270,14 +283,14 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 		   frame=single,
 		   label={example},
 		   language={[LaTeX]TeX},
-		   moretexcs={[4]{omitname,addbibresource,printbibliography,maketitle}}]
+		   moretexcs={[4]{plauthorname,addbibresource,printbibliography,maketitle}}]
 \documentclass{article}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 
 \usepackage{csquotes}% not required, but recommended
 \usepackage[bibstyle=publist]{biblatex}
-\omitname[John]{Doe}
+\plauthorname[John]{Doe}
 
 \addbibresource{%
     mymonographs.bib,
@@ -392,17 +405,20 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{lstlisting}
 \end{quote}
 
-\clearpage
-
 \section{Revision Log}
 
 \begin{description}
 \item [{V.~1.4 (forthcoming):}]~
-	
 	\begin{itemize}
+		\item New option \joption{plauthorhandling} that defines how the publist author is
+		handled in the publication list (possible values: \joption{omit} [=~default],
+		\joption{embolden}).
+		\item  Rename \jcsmacro{omitname} to \jcsmacro{plauthorname} (the old macro is still functional, but marked as deprecated).
+		\item Rename \joption{omit*} options to \joption{plauthor*} (the old options are still functional, but marked as deprecated).
 		\item Assure the margin text always starts uppercased (relevant for pubstates).
 		\item Minor corrections to the manual.
 	\end{itemize}
+
 \item [{V.~1.3 (2016-08-06):}]~
 
 \begin{itemize}
@@ -414,7 +430,6 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{itemize}
 
 \item [{V.~1.2 (2016-05-12):}]~
-
 	\begin{itemize}
 		\item Accomodate to the backwards-incompatible changes of \bibltx~3.4\\
 		(\jfoption{prefixnumber} $\Rightarrow$ \jfoption{labelprefix},
@@ -423,7 +438,6 @@ That is, to sort your talks in descending order by full date in your CV, use:
 	\end{itemize}
 
 \item [{V.~1.1 (2016-03-09):}]~
-
 \begin{itemize}
 \item Adapt to the \jfcsmacro{Declare*Name} changes of \bibltx~3.3.
       Since \bibltx~3.3 introduced backwards-incompatible changes that
@@ -431,14 +445,12 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{itemize}
 
 \item [{V.~1.0~(2015-01-04):}]~
-
 \begin{itemize}
 \item Add portmanteau *.cbx file to allow loading \bpl\ also via 
       the \jfoption{style} option (next to \jfoption{bibstyle}).
 \end{itemize}
 
 \item [{V.~0.9~(2014-03-13):}]~
-
 \begin{itemize}
 \item Fix problem with multi-token names.
 \item Support name prefix in \jcsmacro{omitname}.
@@ -446,7 +458,6 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{itemize}
 
 \item [{V.~0.8~(2013-08-16):}]~
-
 \begin{itemize}
 \item Add custom sorting schemes \jmacro{ddnt}, \jmacro{ydmdnt} and \jmacro{dnt}
       (see sec.~\ref{sec:sorting}).
@@ -454,23 +465,22 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{itemize}\condbreak{2\baselineskip}
 
 \item [{V.~0.7~(2013-07-25):}]~
-
 \begin{itemize}
 \item Support full dates.
 \end{itemize}
-\item [{V.~0.6~(2013-07-21):}]~
 
+\item [{V.~0.6~(2013-07-21):}]~
 \begin{itemize}
 \item Fix numbering with recent \bibltx\ versions.
 \end{itemize}
-\item [{V.~0.5~(2013-05-03):}]~
 
+\item [{V.~0.5~(2013-05-03):}]~
 \begin{itemize}
 \item Fix numbering if \jfcsmacro{printbibliography} is used
 multiple times within the same or without any \jfmacro{refsection}.
 \end{itemize}
-\item [{V.~0.4~(2012-10-30):}]~
 
+\item [{V.~0.4~(2012-10-30):}]~
 \begin{itemize}
 \item More robust name parsing (especially for names with non-ASCII characters
 encoded with \LaTeX{} macros). The code was kindly suggested by Enrico
@@ -480,8 +490,8 @@ Gregorio.%
 \item Add \jcsmacro{omitname} command (see sec.~\ref{sec:standard-usage}).
 \item Support \joption{firstinits} option.
 \end{itemize}
-\item [{V.~0.3~(2012-10-23):}]~
 
+\item [{V.~0.3~(2012-10-23):}]~
 \begin{itemize}
 \item Bug fix: Add missing ``and'' if omitted name was last minus one.
 \item Bug fix: Fix output with ``et al.'' if omitted name is first and
@@ -491,6 +501,7 @@ Gregorio.%
 \item Add French localization.
 \item Some corrections to the manual.
 \end{itemize}
+
 \item [{V.~0.2~(2012-10-21):}] Initial release to CTAN.
 \end{description}
 
