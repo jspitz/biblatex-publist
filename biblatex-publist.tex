@@ -87,7 +87,8 @@
 ({*}.bbx) for publication lists, i.\,e.\ a bibliography containing one's own
 publications. The style file draws on \bibltx's \emph{authoryear} style per default
 (which can be changed), but provides some extra features needed for publication lists,
-such as the omission or emboldening of the own name from author or editor data. The package requires at least version 3.4 of the \bibltx\ package\footnote{For \bibltx, see
+such as the omission or highlighting of the own name from\slash in author or editor data.
+The package requires at least version 3.4 of the \bibltx\ package\footnote{For \bibltx, see
 \url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (the respective version as required by \bibltx).
 \end{abstract}
 
@@ -100,7 +101,7 @@ author, usually sorted by genre and year. Even though publication lists are actu
 nothing else than (specific) bibliographies, they diverge from those in some
 respects. Most notably, it is widespread practice to omit your own name in
 your publication list and only list your co-authors, if there are any, or to
-embolden your own name.
+highlight your own name (e.\,g., with bold face letters).
 If you want to follow this practice, a normal bibliography style does not
 produce the desired result.
 
@@ -144,12 +145,14 @@ out and the collaborators added in parentheses, as in:
 \textbf{1987} (with John Doe and Mary Hall). Are there new trends
 in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
-If \joption{plauthorhandling=embolden} is used (see next section), the plauthor
-will be emboldened instead, as in:
+If \joption{plauthorhandling=highlight} is used (see next section), the plauthor
+will be printed in bold face instead, as in:
 \begin{quote}
 	John Doe, \textbf{Me Myself} and Mary Hall \textbf{1987}. Are there new trends
 	in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
+
+
 \subsection{Additional options}
 
 Currently, the following additional options are provided (next to the
@@ -167,11 +170,11 @@ way bibliography options are implemented in \bibltx, this only works
 if your name does not consist of non-ASCII characters. Hence, the
 \jcsmacro{plauthorname} macro is the recommended way.
 
-\item [{\joption{plauthorhandling{[}=omit|embolden{]}}}] default: \emph{omit}.
+\item [{\joption{plauthorhandling{[}=omit|highlight{]}}}] default: \emph{omit}.
 
 By default, the publist author (as defined with \jmacro{plauthor}) is omitted from
-the author or editor list. If you use the option \joption{plauthorhandling=embolden},
-it is set in bold face instead.
+the author or editor list. If you use the option \joption{plauthorhandling=highlight},
+it is highlighted instead (i.\,e., set in bold face by default; see sec.~\ref{sec:auxmacros} how to change that).
 
 \item [{\joption{boldyear{[}=true|false{]}}}] default: \emph{true}.
 
@@ -202,6 +205,17 @@ The appearance of the \emph{marginyear} is controlled by the
 If you want to change the appearance, just redefine this macro via
 \jfcsmacro{renewcommand{*}}.
 
+The highlighting of the publication list author, if \joption{plauthorhandling=highlight} has been set,
+is controlled by the \jcsmacro*{plauthorhl} macro, which has the following default definition:
+\begin{quote}
+	\begin{lstlisting}[language={[LaTeX]TeX},
+	moretexcs={[2]{providecommand,plauthorhl,mkbibbold}}]
+\providecommand*\plauthorhl[1]{%
+	\mkbibbold{#1}%
+}
+\end{lstlisting}\end{quote}
+If you need another form of highlighting, redefine this macro via \jfcsmacro{renewcommand{*}}.
+
 The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
 \jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is \texttt{0pt}).
 This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
@@ -212,7 +226,7 @@ space the item number needs.
 
 By default, \bpl\ loads \bibltx's \emph{authoryear} style, and it has been written
 to work with that style. However, it is possible to try a diffent base style, if
-\emph{author\-year} does not fit your needs.
+\emph{author\-year} does not fit your needs.\condbreak{2\baselineskip}
 
 In order to do so, enter the following \emph{before} loading \bibltx:
 \begin{quote}
@@ -223,6 +237,7 @@ In order to do so, enter the following \emph{before} loading \bibltx:
 where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) you want to use, without the \emph{bbx} entension (e.\,g., \lstinline|\newcommand*\publistbasestyle{mla}|).
 
 Note, though, that there is (and can be) no guarantee that \bpl\ will work with all styles, although it has been successfully tested with several. Be prepared to bump into \LaTeX\ errors and carefully check the output for correctness if you try a different base style.
+
 
 \section{Localization}
 
@@ -412,7 +427,8 @@ That is, to sort your talks in descending order by full date in your CV, use:
 	\begin{itemize}
 		\item New option \joption{plauthorhandling} that defines how the publist author is
 		handled in the publication list (possible values: \joption{omit} [=~default],
-		\joption{embolden}).
+		\joption{highlight}).
+		\item New command \jcsmacro{plauthorhl} that determines the aforementioned highlighting.
 		\item  Rename \jcsmacro{omitname} to \jcsmacro{plauthorname} (the old macro is still functional, but marked as deprecated).
 		\item Rename \joption{omit*} options to \joption{plauthor*} (the old options are still functional, but marked as deprecated).
 		\item Assure the margin text always starts uppercased (relevant for pubstates).

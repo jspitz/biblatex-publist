@@ -74,9 +74,9 @@
     \ifstrequal{#1}{false}{\@unboldyeartrue}{\@unboldyearfalse}
 }
 
-\newif\if@boldauthor\@boldauthorfalse
+\newif\if@hlauthor\@hlauthorfalse
 \DeclareBibliographyOption{plauthorhandling}[omit]{%
-    \ifstrequal{#1}{embolden}{\@boldauthortrue}{\@boldauthorfalse}
+    \ifstrequal{#1}{highlight}{\@hlauthortrue}{\@hlauthorfalse}
 }
 
 % Check if users have defined different base styles
@@ -140,6 +140,12 @@
 % Formatting of year in margin par (if requested)
 \providecommand*\plmarginyear[1]{%
   \raggedleft\small\textbf{#1}%
+}
+
+%
+% Highlighting auf publist author with plauthorhandling=highlight
+\providecommand*\plauthorhl[1]{%
+  \mkbibbold{#1}%
 }
 
 
@@ -292,7 +298,7 @@
 \newtoggle{hadmyself}
 \newtoggle{ismyself}
 \DeclareNameFormat{author}{%
- \if@boldauthor
+ \if@hlauthor
    % Embolden omitted author
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
@@ -312,7 +318,7 @@
             {\addcomma\addspace}%
             {\addspace\bibstring{and}\addspace}%
       }%
-      \iftoggle{ismyself}{\mkbibbold{%
+      \iftoggle{ismyself}{\plauthorhl{%
          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
          \namepartfamily%
          \ifgiveninits
@@ -326,7 +332,7 @@
             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
       }%
       \usebibmacro{name:andothers}%
- \else% \if@boldauthor false
+ \else% \if@hlauthor false
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
@@ -367,11 +373,11 @@
           \namepartfamily}%
           \usebibmacro{name:andothers}%
    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{author}>1}{\unspace\bibcloseparen}{}%
- \fi% end of \if@boldauthor else condition
+ \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{editor}{%
- \if@boldauthor
+ \if@hlauthor
    % Embolden omitted editor
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
@@ -389,7 +395,7 @@
             {\addcomma\addspace}%
             {\addspace\bibstring{and}\addspace}%
       }%
-      \iftoggle{ismyself}{\mkbibbold{%
+      \iftoggle{ismyself}{\plauthorhl{%
          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
          \namepartfamily%
          \ifgiveninits
@@ -403,7 +409,7 @@
             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
       }%
       \usebibmacro{name:andothers}%
- \else% \if@boldauthor false
+ \else% \if@hlauthor false
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{editor}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
@@ -442,7 +448,7 @@
           \namepartfamily}%
           \usebibmacro{name:andothers}%
    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{editor}>1}{\unspace\bibcloseparen}{}%
- \fi% end of \if@boldauthor else condition
+ \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{bookauthor}{%
@@ -462,7 +468,7 @@
 %
 
 \renewbibmacro*{author}{%
- \if@boldauthor
+ \if@hlauthor
   \ifnameundef{author}
     {}
     {\printnames{author}%
@@ -472,7 +478,7 @@
       {\mkbibbrackets{\bibstring{alias}%
        \addspace\printfield{nameaddon}}}}
        \addspace\usebibmacro{year+labelyear}%
- \else% \if@boldauthor false
+ \else% \if@hlauthor false
   \ifnameundef{author}
     {}
     {\usebibmacro{year+labelyear}\addspace%
@@ -482,11 +488,11 @@
       {}
       {\mkbibbrackets{\bibstring{alias}%
        \addspace\printfield{nameaddon}}}}
- \fi% end of \if@boldauthor else condition
+ \fi% end of \if@hlauthor else condition
 }
 
 \renewbibmacro*{editor}{%
- \if@boldauthor
+ \if@hlauthor
   \ifnameundef{editor}
     {}
     {\printnames{editor}%
@@ -494,7 +500,7 @@
      \usebibmacro{editorstrg}}
      \addspace%
      \usebibmacro{year+labelyear}%
- \else% \if@boldauthor false
+ \else% \if@hlauthor false
   \ifnameundef{editor}
     {}
     {\usebibmacro{year+labelyear}%
@@ -502,11 +508,11 @@
       \printnames{editor}%
      \setunit{\addspace}%
      \usebibmacro{editorstrg}}
- \fi% end of \if@boldauthor else condition
+ \fi% end of \if@hlauthor else condition
 }
 
 \renewbibmacro*{editor+others}{%
-\if@boldauthor
+\if@hlauthor
   \ifboolexpr{
     test \ifuseeditor
     and
@@ -519,7 +525,7 @@
      \usebibmacro{year+labelyear}%
      \clearname{editor}}
     {}%
-\else% \if@boldauthor false
+\else% \if@hlauthor false
   \ifboolexpr{
     test \ifuseeditor
     and
@@ -532,7 +538,7 @@
      \usebibmacro{editor+othersstrg}%
      \clearname{editor}}
     {}%
-\fi% end of \if@boldauthor else condition
+\fi% end of \if@hlauthor else condition
 }
 
 \renewbibmacro*{name:andothers}{%

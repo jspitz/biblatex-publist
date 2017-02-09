@@ -48,7 +48,8 @@ instructions.
 * V. 1.4 (forthcoming):
 	- New option 'plauthorhandling' that defines how the publist author is
 	  handled in the publication list (possible values: "omit" [= default],
-	  "embolden".
+	  "highlight".
+	- New command \plauthorhl that determines the aforementioned highlighting.
 	- Rename \omitname to \plauthorname (the old macro is still functional,
 	  but marked as deprecated).
 	- Rename omit* options to plauthor* (the old options are still functional,
