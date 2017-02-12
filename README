@@ -45,10 +45,10 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.4 (forthcoming):
+* V. 1.4 (2017-02-12):
 	- New option 'plauthorhandling' that defines how the publist author is
 	  handled in the publication list (possible values: "omit" [= default],
-	  "highlight".
+	  "highlight").
 	- New command \plauthorhl that determines the aforementioned highlighting.
 	- Rename \omitname to \plauthorname (the old macro is still functional,
 	  but marked as deprecated).

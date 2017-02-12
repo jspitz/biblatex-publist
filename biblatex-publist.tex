@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.4dev, 2017/02/08}
+\date{Version 1.4, 2017/02/12}
 \maketitle
 
 \begin{abstract}
@@ -128,13 +128,14 @@ The standard way of using the package is to load the style file via
 \plauthorname[first name][von-part]{surname}
 \end{lstlisting}
 \end{quote}
-The \jcsmacro*{plauthorname} macro\footnote{The macro was named \jfcsmacro{omitname} until v.\,1.4 of the \bpl\ package. The old macro still works, but is marked as deprecated.}
+The \jcsmacro*{plauthorname} macro\footnote{The macro was named \jfcsmacro{omitname} until v.\,1.4
+of the \bpl\ package. The old macro still works, but is marked as deprecated.}
 (at least with the mandatory \emph{surname} argument) needs to be given once. 
-It informs the style file which name it should suppress or embolden in the
+It informs the style file which name it should suppress or highlight in the
 author\slash editor list (usually yours). 
 
-With the default settings, the author\slash editor name will be omitted completely for all of your publications
-where you are the sole author or editor, as in:
+With the default settings, the author\slash editor name will be omitted completely
+for all of your publications where you are the sole author or editor, as in:
 \begin{quote}
 \textbf{2012.} Some recent trends in gardening. In: \emph{Gardening
 Practice} 56, pp.~34--86.
@@ -246,7 +247,7 @@ The following additional localization keys (\jfcsmacro{bibstrings})
 are added by the package:
 \begin{itemize}
 \item \emph{with}: the preposition ``with'' that precedes the list of
-co-authors.
+co-authors by default (i.\,e., with \joption{plauthorhandling=omit}).
 \item \emph{parttranslationof}: the expression ``partial translation of''
 for entries referring to partially translated work via \bibltx's
 ``related entries'' feature (see sec.~\ref{sec:partial-translations}).
@@ -423,7 +424,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \section{Revision Log}
 
 \begin{description}
-\item [{V.~1.4 (forthcoming):}]~
+\item [{V.~1.4 (2017-02-12):}]~
 	\begin{itemize}
 		\item New option \joption{plauthorhandling} that defines how the publist author is
 		handled in the publication list (possible values: \joption{omit} [=~default],
