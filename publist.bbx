@@ -298,7 +298,7 @@
 \newtoggle{hadmyself}
 \newtoggle{ismyself}
 \DeclareNameFormat{author}{%
- \if@hlauthor
+ \if@hlauthor%
    % Embolden omitted author
    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
@@ -312,7 +312,7 @@
       ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\toggletrue{ismyself}}{\togglefalse{ismyself}}
+          {\toggletrue{ismyself}}{\togglefalse{ismyself}}%
       \ifthenelse{\value{listcount}=1}{}{%
          \ifnumless{\value{listcount}}{\value{liststop}}%
             {\addcomma\addspace}%
