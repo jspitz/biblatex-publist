@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.4}
-\def\bpl@rdate{2017/02/12}
+\def\bpl@version{1.5}
+\def\bpl@rdate{2017/02/28}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -314,7 +314,7 @@
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\toggletrue{ismyself}}{\togglefalse{ismyself}}
       \ifthenelse{\value{listcount}=1}{}{%
-         \ifnumless{\value{listcount}}{\value{liststop}-1}%
+         \ifnumless{\value{listcount}}{\value{liststop}}%
             {\addcomma\addspace}%
             {\addspace\bibstring{and}\addspace}%
       }%
