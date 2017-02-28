@@ -48,6 +48,7 @@ instructions.
 * V. 1.5 (2017-02-28):
 	- Fix extra "and" in name list with plauthorhandling=highlight.
 	- Whitespace fix with plauthorhandling=highlight.
+	- Use proper name delimiters.
 
 * V. 1.4 (2017-02-12):
 	- New option 'plauthorhandling' that defines how the publist author is

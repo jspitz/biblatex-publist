@@ -315,8 +315,8 @@
           {\toggletrue{ismyself}}{\togglefalse{ismyself}}%
       \ifthenelse{\value{listcount}=1}{}{%
          \ifnumless{\value{listcount}}{\value{liststop}}%
-            {\addcomma\addspace}%
-            {\addspace\bibstring{and}\addspace}%
+            {\multinamedelim}%
+            {\finalnamedelim}%
       }%
       \iftoggle{ismyself}{\plauthorhl{%
          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
@@ -357,12 +357,12 @@
               test { \ifnumless{\value{listcount}}{3} } }
               {}{%
                  \ifnumless{\value{listcount}}{\value{liststop}-1}%
-                    {\addcomma\addspace}%
+                    {\multinamedelim}%
                     {\iftoggle{hadmyself}{%
                         \ifnumless{\value{listcount}}{\value{liststop}}%
-                           {\addcomma\addspace}%
-                           {\addspace\bibstring{and}\addspace}}
-                       {\addspace\bibstring{and}\addspace}}%
+                           {\multinamedelim}%
+                           {\finalnamedelim}}
+                       {\finalnamedelim}}%
                 }%
           }%
           \ifgiveninits
@@ -392,8 +392,8 @@
           {\toggletrue{ismyself}}{\togglefalse{ismyself}}
       \ifthenelse{\value{listcount}=1}{}{%
          \ifnumless{\value{listcount}}{\value{liststop}-1}%
-            {\addcomma\addspace}%
-            {\addspace\bibstring{and}\addspace}%
+            {\multinamedelim}%
+            {\finalnamedelim}%
       }%
       \iftoggle{ismyself}{\plauthorhl{%
          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
@@ -432,12 +432,12 @@
               test { \ifnumless{\value{listcount}}{3} } }
               {}{%
                  \ifnumless{\value{listcount}}{\value{liststop}-1}%
-                     {\addcomma\addspace}%
+                     {\multinamedelim}%
                      {\iftoggle{hadmyself}{%
                          \ifnumless{\value{listcount}}{\value{liststop}}%
-                             {\addcomma\addspace}%
-                             {\addspace\bibstring{and}\addspace}}
-                        {\addspace\bibstring{and}\addspace}}%
+                             {\multinamedelim}%
+                             {\finalnamedelim}}
+                        {\finalnamedelim}}%
                 }%
           }%
           \ifgiveninits
