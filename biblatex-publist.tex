@@ -299,7 +299,7 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 		   frame=single,
 		   label={example},
 		   language={[LaTeX]TeX},
-		   moretexcs={[4]{plauthorname,addbibresource,printbibliography,maketitle}}]
+		   moretexcs={[5]{plauthorname,addbibresource,printbibliography,maketitle,newrefsection}}]
 \documentclass{article}
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
@@ -321,22 +321,19 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 \maketitle
 
 \section{Monographs}
-\begin{refsection}[mymonographs]
+\newrefsection[mymonographs]
 \nocite{*}
 \printbibliography[heading=none]
-\end{refsection}
 
 \section{Proceedings}
-\begin{refsection}[myproceedings]
+\newrefsection[myproceedings]
 \nocite{*}
 \printbibliography[heading=none]
-\end{refsection}
 
 \section{Articles}
-\begin{refsection}[myarticles]
+\newrefsection[myarticles]
 \nocite{*}
 \printbibliography[heading=none]
-\end{refsection}
 
 \end{document}
 \end{lstlisting}
@@ -348,13 +345,12 @@ such as the following:
 \begin{lstlisting}[caption={Adding foreign reviews},
 		  frame=single,
 		  language={[LaTeX]TeX},
-		  moretexcs={[3]{bibfont,subsubsection,printbibliography}}]
+		  moretexcs={[4]{bibfont,subsubsection,printbibliography,newrefsection}}]
 \subsubsection*{Reviews of my thesis}
-\begin{refsection}[mythesis-reviews]
+\newrefsection[mythesis-reviews]
 \renewcommand\bibfont{\small}
 \nocite{*}
 \printbibliography[heading=none,env=reviews]
-\end{refsection}
 \end{lstlisting}
 
 \end{quote}
@@ -373,10 +369,8 @@ which has to be passed to \jfcsmacro{printbibliography}, as in:
 		  frame=single,
 		  language={[LaTeX]TeX},
 		  moretexcs={[1]{printbibliography}}]
-\begin{refsection}[mybibliography]
 \nocite{*}
 \printbibliography[heading=none,filter=mine]
-\end{refsection}
 \end{lstlisting}
 
 \end{quote}
