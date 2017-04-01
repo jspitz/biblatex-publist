@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.5}
-\def\bpl@rdate{2017/02/28}
+\def\bpl@version{1.6}
+\def\bpl@rdate{2017/04/01}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -77,6 +77,11 @@
 \newif\if@hlauthor\@hlauthorfalse
 \DeclareBibliographyOption{plauthorhandling}[omit]{%
     \ifstrequal{#1}{highlight}{\@hlauthortrue}{\@hlauthorfalse}
+}
+
+\newif\if@givenfirst\@givenfirstfalse
+\DeclareBibliographyOption{nameorder}[family-given]{%
+    \ifstrequal{#1}{given-family}{\@givenfirsttrue}{\@givenfirstfalse}
 }
 
 % Check if users have defined different base styles
@@ -319,17 +324,33 @@
             {\finalnamedelim}%
       }%
       \iftoggle{ismyself}{\plauthorhl{%
-         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-         \namepartfamily%
-         \ifgiveninits
-            {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-            {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+         \if@givenfirst% given name first
+            \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+          \else% family name first
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+             \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+         \fi
       }}{%
-         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-         \namepartfamily%
-         \ifgiveninits
-            {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-            {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+        \if@givenfirst% given name first
+            \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+          \else% family name first
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+             \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+         \fi
       }%
       \usebibmacro{name:andothers}%
  \else% \if@hlauthor false
@@ -396,17 +417,33 @@
             {\finalnamedelim}%
       }%
       \iftoggle{ismyself}{\plauthorhl{%
-         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-         \namepartfamily%
-         \ifgiveninits
-            {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-            {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
-      }}{%
-         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-         \namepartfamily%
-         \ifgiveninits
-            {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-            {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+          \if@givenfirst% given name first
+            \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+          \else% family name first
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+             \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+         \fi
+       }}{%
+         \if@givenfirst% given name first
+            \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+          \else% family name first
+             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+             \namepartfamily%
+             \ifgiveninits
+                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+         \fi
       }%
       \usebibmacro{name:andothers}%
  \else% \if@hlauthor false
@@ -452,13 +489,23 @@
 }
 
 \DeclareNameFormat{bookauthor}{%
-  \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-  \namepartfamily%
-  \ifgiveninits
-      {\ifdefvoid{\namepartgiveni}{}{\addcomma\space\namepartgiveni}}%
-      {\ifdefvoid{\namepartgiven}{}{\addcomma\space\namepartgiven}}%
+  \if@givenfirst% given name first
+      \ifgiveninits
+          {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+          {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+       \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+       \namepartfamily%
+  \else% family name first
+       \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+       \namepartfamily%
+       \ifgiveninits
+          {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+          {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+  \fi
   \ifthenelse{\value{listcount}<\value{liststop}}
-    {\addslash}
+    {\ifnumless{\value{listcount}}{\value{liststop}-1}%
+         {\multinamedelim}%
+         {\finalnamedelim}}%
     {}%
   \usebibmacro{name:andothers}}
 
@@ -477,7 +524,7 @@
       {}
       {\mkbibbrackets{\bibstring{alias}%
        \addspace\printfield{nameaddon}}}}
-       \addspace\usebibmacro{year+labelyear}%
+       \adddot\addspace\usebibmacro{year+labelyear}%
  \else% \if@hlauthor false
   \ifnameundef{author}
     {}
@@ -498,7 +545,7 @@
     {\printnames{editor}%
      \setunit{\addspace}%
      \usebibmacro{editorstrg}}
-     \addspace%
+     \adddot\addspace%
      \usebibmacro{year+labelyear}%
  \else% \if@hlauthor false
   \ifnameundef{editor}
@@ -521,7 +568,7 @@
     {\printnames{editor}%
      \setunit{\addcomma\space}%
      \usebibmacro{editor+othersstrg}%
-     \addspace%
+     \adddot\addspace%
      \usebibmacro{year+labelyear}%
      \clearname{editor}}
     {}%

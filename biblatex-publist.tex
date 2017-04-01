@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.5, 2017/02/28}
+\date{Version 1.6, 2017/04/01}
 \maketitle
 
 \begin{abstract}
@@ -149,12 +149,12 @@ in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 If \joption{plauthorhandling=highlight} is used (see next section), the plauthor
 will be printed in bold face instead, as in:
 \begin{quote}
-	John Doe, \textbf{Me Myself} and Mary Hall \textbf{1987}. Are there new trends
+	Doe, John, \textbf{Myself, Me} and Hall, Mary \textbf{1987}. Are there new trends
 	in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
 
 
-\subsection{Additional options}
+\subsection{Additional options}\label{sec:addopts}
 
 Currently, the following additional options are provided (next to the
 options provided by the \bibltx\ package itself%
@@ -176,6 +176,11 @@ if your name does not consist of non-ASCII characters. Hence, the
 By default, the publist author (as defined with \jmacro{plauthor}) is omitted from
 the author or editor list. If you use the option \joption{plauthorhandling=highlight},
 it is highlighted instead (i.\,e., set in bold face by default; see sec.~\ref{sec:auxmacros} how to change that).
+
+\item [{\joption{nameorder{[}=family-given|given-family{]}}}] default: \emph{family-given}.
+
+By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order ``Lastname, Given Names''.
+In order to change the order to ``Given Names Lastname'', pass the option \joption{nameorder=given-family} to \bibltx.
 
 \item [{\joption{boldyear{[}=true|false{]}}}] default: \emph{true}.
 
@@ -238,6 +243,11 @@ In order to do so, enter the following \emph{before} loading \bibltx:
 where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) you want to use, without the \emph{bbx} entension (e.\,g., \lstinline|\newcommand*\publistbasestyle{mla}|).
 
 Note, though, that there is (and can be) no guarantee that \bpl\ will work with all styles, although it has been successfully tested with several. Be prepared to bump into \LaTeX\ errors and carefully check the output for correctness if you try a different base style.
+
+Note, further, that the order of author and editor given and family names is hardcoded in
+\bpl\ due to the complex omission\slash highlighting mechanism. This might
+differ from what you expect with specific base styles. To change the order,
+use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 
 
 \section{Localization}
@@ -418,12 +428,19 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \section{Revision Log}
 
 \begin{description}
-\item [{V.~1.5 (2017-02-28):}]~
-	\begin{itemize}
-	\item Fix extra \emph{and} in name list with \joption{plauthorhandling=highlight}.
-	\item Whitespace fix with \joption{plauthorhandling=highlight}.
-	\item Use proper name delimiters.
-\end{itemize}
+	\item [{V.~1.6 (2017-04-01):}]~
+	    \begin{itemize}
+		    \item New option \joption{nameorder} that allows to change the ordering of author and editor
+		          name (\joption{given-family} vs. \joption{family-given} [=~default]).
+		    \item Use proper name delimiters also for bookauthor.
+        \end{itemize}
+
+   \item [{V.~1.5 (2017-02-28):}]~
+	    \begin{itemize}
+	        \item Fix extra \emph{and} in name list with \joption{plauthorhandling=highlight}.
+	        \item Whitespace fix with \joption{plauthorhandling=highlight}.
+	        \item Use proper name delimiters.
+        \end{itemize}
 	
 \item [{V.~1.4 (2017-02-12):}]~
 	\begin{itemize}

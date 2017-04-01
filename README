@@ -45,6 +45,11 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.6 (2017-04-01):
+	- New option 'nameorder' that allows to change the ordering of author and editor
+	  name ("given-family" vs. "family-given" [= default]).
+	- Use proper name delimiters also for bookauthor.
+
 * V. 1.5 (2017-02-28):
 	- Fix extra "and" in name list with plauthorhandling=highlight.
 	- Whitespace fix with plauthorhandling=highlight.
