@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.6, 2017/04/01}
+\date{Version 1.6, 2017/04/02}
 \maketitle
 
 \begin{abstract}
@@ -149,7 +149,7 @@ in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 If \joption{plauthorhandling=highlight} is used (see next section), the plauthor
 will be printed in bold face instead, as in:
 \begin{quote}
-	Doe, John, \textbf{Myself, Me} and Hall, Mary \textbf{1987}. Are there new trends
+	Doe, John, \textbf{Myself, Me} and Hall, Mary, \textbf{1987}. Are there new trends
 	in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
 
@@ -180,7 +180,7 @@ it is highlighted instead (i.\,e., set in bold face by default; see sec.~\ref{se
 \item [{\joption{nameorder{[}=family-given|given-family{]}}}] default: \emph{family-given}.
 
 By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order ``Lastname, Given Names''.
-In order to change the order to ``Given Names Lastname'', pass the option \joption{nameorder=given-family} to \bibltx.
+To change the order to ``Given Names Lastname'', pass the option \joption{nameorder=given-family} to \bibltx.
 
 \item [{\joption{boldyear{[}=true|false{]}}}] default: \emph{true}.
 
@@ -244,7 +244,7 @@ where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) yo
 
 Note, though, that there is (and can be) no guarantee that \bpl\ will work with all styles, although it has been successfully tested with several. Be prepared to bump into \LaTeX\ errors and carefully check the output for correctness if you try a different base style.
 
-Note, further, that the order of author and editor given and family names is hardcoded in
+Note, further, that the order of author's and editor's given and family names is hardcoded in
 \bpl\ due to the complex omission\slash highlighting mechanism. This might
 differ from what you expect with specific base styles. To change the order,
 use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
@@ -428,7 +428,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \section{Revision Log}
 
 \begin{description}
-	\item [{V.~1.6 (2017-04-01):}]~
+	\item [{V.~1.6 (2017-04-02):}]~
 	    \begin{itemize}
 		    \item New option \joption{nameorder} that allows to change the ordering of author and editor
 		          name (\joption{given-family} vs. \joption{family-given} [=~default]).
