@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.6}
-\def\bpl@rdate{2017/04/02}
+\def\bpl@version{1.7dev}
+\def\bpl@rdate{2017/04/03}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -518,7 +518,8 @@
  \if@hlauthor
   \ifnameundef{author}
     {}
-    {\printnames{author}%
+    {\usebibmacro{marginyear}%
+     \printnames{author}%
      \setunit{\addspace}%
       \iffieldundef{nameaddon}
       {}
@@ -528,7 +529,8 @@
  \else% \if@hlauthor false
   \ifnameundef{author}
     {}
-    {\usebibmacro{year+labelyear}\addspace%
+    {\usebibmacro{marginyear}%
+     \usebibmacro{year+labelyear}\addspace%
      \printnames{author}%
      \setunit{\addspace}%
       \iffieldundef{nameaddon}
@@ -542,7 +544,8 @@
  \if@hlauthor
   \ifnameundef{editor}
     {}
-    {\printnames{editor}%
+    {\usebibmacro{marginyear}%
+     \printnames{editor}%
      \setunit{\addspace}%
      \usebibmacro{editorstrg}}
      \adddot\addspace%
@@ -550,7 +553,8 @@
  \else% \if@hlauthor false
   \ifnameundef{editor}
     {}
-    {\usebibmacro{year+labelyear}%
+    {\usebibmacro{marginyear}%
+     \usebibmacro{year+labelyear}%
       \addspace%
       \printnames{editor}%
      \setunit{\addspace}%
@@ -565,7 +569,8 @@
     and
     not test {\ifnameundef{editor}}
   }
-    {\printnames{editor}%
+    {\usebibmacro{marginyear}%
+     \printnames{editor}%
      \setunit{\addcomma\space}%
      \usebibmacro{editor+othersstrg}%
      \adddot\addspace%
@@ -578,7 +583,8 @@
     and
     not test {\ifnameundef{editor}}
   }
-    {\usebibmacro{year+labelyear}%
+    {\usebibmacro{marginyear}%
+     \usebibmacro{year+labelyear}%
      \addspace%
      \printnames{editor}%
      \setunit{\addcomma\space}%
@@ -620,29 +626,36 @@
 }
 \fi
 }
+
+\newbibmacro*{marginyear}{%
+\if@marginyear%
+  \iffieldundef{year}{%
+    \iffieldundef{pubstate}{}{%   
+     \iffieldequals{pubstate}{\bbx@lasthash}{}{%
+      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
+     }%
+      }
+    }{%
+     \iffieldequals{labelyear}{\bbx@lasthash}{}{%
+      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{labelyear}}}}%
+     }%
+    }%
+\fi
+}
     
 \newbibmacro*{year+labelyear}{%
   \iffieldundef{year}{%
     \iffieldundef{pubstate}{\let\bbx@lasthash\undefined}{%
      \usebibmacro{date:labelyear+extrayear}%
-     \if@marginyear%
-     \iffieldequals{pubstate}{\bbx@lasthash}{}{%
-      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
+     \savefield{pubstate}{\bbx@lasthash}%
+     \clearfield{pubstate}%
      }%
-     \fi
-      \savefield{pubstate}{\bbx@lasthash}%
-      \clearfield{pubstate}%
-     }
     }{%
      \usebibmacro{date:labelyear+extrayear}%
-     \if@marginyear%
-     \iffieldequals{labelyear}{\bbx@lasthash}{}{%
-      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{labelyear}}}}%
-     }%
-     \fi
      \savefield{labelyear}{\bbx@lasthash}%
      \clearfield{year}%
-    }}
+    }%
+}
 
 \newbibmacro*{rauthor/label}{%
   \ifnameundef{author}
