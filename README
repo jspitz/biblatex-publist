@@ -45,6 +45,10 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.7 (forthcoming):
+        - Output marginyear before the author list. This prevents it from being vertically
+          shifted in case of long author lists.
+
 * V. 1.6 (2017-04-02):
 	- New option 'nameorder' that allows to change the ordering of author and editor
 	  name ("given-family" vs. "family-given" [= default]).
