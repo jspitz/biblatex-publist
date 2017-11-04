@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.7}
-\def\bpl@rdate{2017/04/12}
+\def\bpl@version{1.8}
+\def\bpl@rdate{2017/11/04}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -615,13 +615,13 @@
      }%
 }
 
-\newbibmacro*{date:labelyear+extrayear}{%
+\newbibmacro*{date:labelyear+extradate}{%
    \mkbibbold{\usebibmacro{date:makedate}}%
 }
 
 \AtBeginDocument{%
 \if@unboldyear
-\renewbibmacro*{date:labelyear+extrayear}{%
+\renewbibmacro*{date:labelyear+extradate}{%
    \usebibmacro{date:makedate}%
 }
 \fi
@@ -646,12 +646,12 @@
 \newbibmacro*{year+labelyear}{%
   \iffieldundef{year}{%
     \iffieldundef{pubstate}{\let\bbx@lasthash\undefined}{%
-     \usebibmacro{date:labelyear+extrayear}%
+     \usebibmacro{date:labelyear+extradate}%
      \savefield{pubstate}{\bbx@lasthash}%
      \clearfield{pubstate}%
      }%
     }{%
-     \usebibmacro{date:labelyear+extrayear}%
+     \usebibmacro{date:labelyear+extradate}%
      \savefield{labelyear}{\bbx@lasthash}%
      \clearfield{year}%
     }%
@@ -683,7 +683,7 @@
     {}
     {\printtext[parens]{%
       \printfield{labelyear}%
-      \printfield{extrayear}}}}
+      \printfield{extradate}}}}
 
 %
 % l7n
@@ -739,7 +739,7 @@
 
 % Consider the whole date (year-month-day)
 % Sorting date (descending), name, title
-\DeclareSortingScheme{ddnt}{
+\DeclareSortingTemplate{ddnt}{
   \sort{
     \field{presort}
   }
@@ -774,7 +774,7 @@
 }
 
 % Sorting year (descending), month, day, name, title
-\DeclareSortingScheme{ydmdnt}{
+\DeclareSortingTemplate{ydmdnt}{
   \sort{
     \field{presort}
   }
@@ -809,7 +809,7 @@
 }
 
 % Sorting date (ascending), name, title
-\DeclareSortingScheme{dnt}{
+\DeclareSortingTemplate{dnt}{
   \sort{
     \field{presort}
   }

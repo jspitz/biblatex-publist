@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.8 (forthcoming):
+	- Adapt to biblatex 3.8.
+
 * V. 1.7 (2017-04-12):
         - Output marginyear before the author list. This prevents it from being vertically
           shifted in case of long author lists.
