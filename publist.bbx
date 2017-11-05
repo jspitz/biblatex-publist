@@ -35,7 +35,7 @@
   {}
   {\PackageError{biblatex-publist}
     {Outdated 'biblatex' package\MessageBreak
-     Upgrade to biblatex v3.4 (2016/05/10) or later.\MessageBreak
+     Upgrade to biblatex v3.8 (2016/05/10) or later.\MessageBreak
      I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
      This is a fatal error. I'm aborting now}%
      \endinput}
@@ -518,19 +518,19 @@
  \if@hlauthor
   \ifnameundef{author}
     {}
-    {\usebibmacro{marginyear}%
+    {\usebibmacro{bpl:marginyear}%
      \printnames{author}%
      \setunit{\addspace}%
       \iffieldundef{nameaddon}
       {}
       {\mkbibbrackets{\bibstring{alias}%
        \addspace\printfield{nameaddon}}}}
-       \adddot\addspace\usebibmacro{year+labelyear}%
+       \adddot\addspace\usebibmacro{bpl:year+labelyear}%
  \else% \if@hlauthor false
   \ifnameundef{author}
     {}
-    {\usebibmacro{marginyear}%
-     \usebibmacro{year+labelyear}\addspace%
+    {\usebibmacro{bpl:marginyear}%
+     \usebibmacro{bpl:year+labelyear}\addspace%
      \printnames{author}%
      \setunit{\addspace}%
       \iffieldundef{nameaddon}
@@ -544,17 +544,17 @@
  \if@hlauthor
   \ifnameundef{editor}
     {}
-    {\usebibmacro{marginyear}%
+    {\usebibmacro{bpl:marginyear}%
      \printnames{editor}%
      \setunit{\addspace}%
      \usebibmacro{editorstrg}}
      \adddot\addspace%
-     \usebibmacro{year+labelyear}%
+     \usebibmacro{bpl:year+labelyear}%
  \else% \if@hlauthor false
   \ifnameundef{editor}
     {}
-    {\usebibmacro{marginyear}%
-     \usebibmacro{year+labelyear}%
+    {\usebibmacro{bpl:marginyear}%
+     \usebibmacro{bpl:year+labelyear}%
       \addspace%
       \printnames{editor}%
      \setunit{\addspace}%
@@ -569,12 +569,12 @@
     and
     not test {\ifnameundef{editor}}
   }
-    {\usebibmacro{marginyear}%
+    {\usebibmacro{bpl:marginyear}%
      \printnames{editor}%
      \setunit{\addcomma\space}%
      \usebibmacro{editor+othersstrg}%
      \adddot\addspace%
-     \usebibmacro{year+labelyear}%
+     \usebibmacro{bpl:year+labelyear}%
      \clearname{editor}}
     {}%
 \else% \if@hlauthor false
@@ -583,8 +583,8 @@
     and
     not test {\ifnameundef{editor}}
   }
-    {\usebibmacro{marginyear}%
-     \usebibmacro{year+labelyear}%
+    {\usebibmacro{bpl:marginyear}%
+     \usebibmacro{bpl:year+labelyear}%
      \addspace%
      \printnames{editor}%
      \setunit{\addcomma\space}%
@@ -601,7 +601,7 @@
      \andothersdelim\biblcstring{andothers}}
     {}}
 
-\newbibmacro*{date:makedate}{%
+\newbibmacro*{bpl:date:makedate}{%
   \printtext{%
      \iffieldundef{year}{%
        \iffieldundef{pubstate}{}{%
@@ -615,19 +615,19 @@
      }%
 }
 
-\newbibmacro*{date:labelyear+extradate}{%
-   \mkbibbold{\usebibmacro{date:makedate}}%
+\newbibmacro*{bpl:date:labeldate+extradate}{%
+   \mkbibbold{\usebibmacro{bpl:date:makedate}}%
 }
 
 \AtBeginDocument{%
 \if@unboldyear
-\renewbibmacro*{date:labelyear+extradate}{%
-   \usebibmacro{date:makedate}%
+\renewbibmacro*{bpl:date:labeldate+extradate}{%
+   \usebibmacro{bpl:date:makedate}%
 }
 \fi
 }
 
-\newbibmacro*{marginyear}{%
+\newbibmacro*{bpl:marginyear}{%
 \if@marginyear%
   \iffieldundef{year}{%
     \iffieldundef{pubstate}{}{%   
@@ -643,27 +643,27 @@
 \fi
 }
     
-\newbibmacro*{year+labelyear}{%
+\newbibmacro*{bpl:year+labelyear}{%
   \iffieldundef{year}{%
     \iffieldundef{pubstate}{\let\bbx@lasthash\undefined}{%
-     \usebibmacro{date:labelyear+extradate}%
+     \usebibmacro{bpl:date:labeldate+extradate}%
      \savefield{pubstate}{\bbx@lasthash}%
      \clearfield{pubstate}%
      }%
     }{%
-     \usebibmacro{date:labelyear+extradate}%
+     \usebibmacro{bpl:date:labeldate+extradate}%
      \savefield{labelyear}{\bbx@lasthash}%
      \clearfield{year}%
     }%
 }
 
-\newbibmacro*{rauthor/label}{%
+\newbibmacro*{bpl:review:author/label}{%
   \ifnameundef{author}
     {\usebibmacro{label}}
-    {\usebibmacro{rauthor}}
+    {\usebibmacro{bpl:review:author}}
 }
 
-\newbibmacro*{rauthor}{%
+\newbibmacro*{bpl:review:author}{%
   \ifnameundef{author}
     {\let\bbx@lasthash\undefined}
     {\ifthenelse{\iffieldequals{namehash}{\bbx@lasthash}\AND\NOT
@@ -676,9 +676,9 @@
     {}
     {\mkbibbrackets{\bibstring[\unspace]{alias}\addspace\printfield{nameaddon}}%
      \addspace}%
-  \usebibmacro{ryear+labelyear}}
+  \usebibmacro{bpl:review:year+labelyear}}
 
-\newbibmacro*{ryear+labelyear}{%
+\newbibmacro*{bpl:review:year+labelyear}{%
   \iffieldundef{year}
     {}
     {\printtext[parens]{%
@@ -709,7 +709,7 @@
 %
 
 \DeclareBibliographyDriver{review}{%
-  \usebibmacro{rauthor/label}%
+  \usebibmacro{bpl:review:author/label}%
   \setunit*{\addcolon\space}%
   \usebibmacro{title}%
   \newunit\newblock

@@ -46,7 +46,14 @@ instructions.
 == CHANGES ==
 
 * V. 1.8 (forthcoming):
-	- Adapt to biblatex 3.8.
+	- Adapt to biblatex 3.8. This version is now required.
+	- Rename some macros, using pseudo-namespaces:
+		* date:makedate => bpl:date:makedate
+	    	* date:labelyear+extrayear => bpl:date:labeldate+extradate
+	    	* marginyear => bpl:marginyear
+	    	* rauthor => bpl:review:author
+	    	* rauthor/label => bpl:review:author/label
+	    	* year+labelyear => bpl:year+labelyear
 
 * V. 1.7 (2017-04-12):
         - Output marginyear before the author list. This prevents it from being vertically

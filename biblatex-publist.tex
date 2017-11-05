@@ -430,7 +430,16 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \begin{description}
 	\item [{V.~1.8 (forthcoming):}]~
 	\begin{itemize}
-		\item Adapt to \bibltx\ 3.8.
+		\item Adapt to \bibltx\ 3.8. This version is now required.
+		\item Rename some macros, using pseudo-namespaces:
+		\begin{itemize}
+			\item \texttt{date:makedate} $\Rightarrow$ \texttt{bpl:date:makedate}
+	    	\item \texttt{date:labelyear+extrayear} $\Rightarrow$ \texttt{bpl:date:labeldate+extradate}
+	    	\item \texttt{marginyear} $\Rightarrow$ \texttt{bpl:marginyear}
+	    	\item \texttt{rauthor} $\Rightarrow$ \texttt{bpl:review:author}
+	    	\item \texttt{rauthor/label} $\Rightarrow$ \texttt{bpl:review:author/label}
+	    	\item \texttt{year+labelyear} $\Rightarrow$ \texttt{bpl:year+labelyear}
+				\end{itemize}
 	\end{itemize}
 
 	\item [{V.~1.7 (2017-04-12):}]~
@@ -438,7 +447,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 	\item Output marginyear before the author list. This prevents it from being vertically
 	      shifted in case of long author lists.
     \end{itemize}
-
+\clearpage
 	\item [{V.~1.6 (2017-04-02):}]~
 	    \begin{itemize}
 		    \item New option \joption{nameorder} that allows to change the ordering of author and editor
@@ -452,8 +461,7 @@ That is, to sort your talks in descending order by full date in your CV, use:
 	        \item Whitespace fix with \joption{plauthorhandling=highlight}.
 	        \item Use proper name delimiters.
         \end{itemize}
-\clearpage
-\item [{V.~1.4 (2017-02-12):}]~
+   \item [{V.~1.4 (2017-02-12):}]~
 	\begin{itemize}
 		\item New option \joption{plauthorhandling} that defines how the publist author is
 		handled in the publication list (possible values: \joption{omit} [=~default],
