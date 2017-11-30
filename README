@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.9 (forthcoming):
+	- Documentation improvements.
+
 * V. 1.8 (2017-11-14):
 	- Adapt to biblatex 3.8. This version is now required.
 	- Rename some macros, using pseudo-namespaces:
