@@ -318,41 +318,41 @@
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\toggletrue{ismyself}}{\togglefalse{ismyself}}%
-      \ifthenelse{\value{listcount}=1}{}{%
-         \ifnumless{\value{listcount}}{\value{liststop}}%
-            {\multinamedelim}%
-            {\finalnamedelim}%
-      }%
-      \iftoggle{ismyself}{\plauthorhl{%
-         \if@givenfirst% given name first
-            \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-          \else% family name first
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-             \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
-         \fi
-      }}{%
-        \if@givenfirst% given name first
-            \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-          \else% family name first
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-             \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
-         \fi
-      }%
-      \usebibmacro{name:andothers}%
+   \ifthenelse{\value{listcount}=1}{}{%
+       \ifnumless{\value{listcount}}{\value{liststop}}%
+          {\multinamedelim}%
+          {\finalnamedelim}%
+   }%
+   \iftoggle{ismyself}{\plauthorhl{%
+      \if@givenfirst% given name first
+         \ifgiveninits
+             {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+          \namepartfamily%
+       \else% family name first
+          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+          \namepartfamily%
+          \ifgiveninits
+             {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+      \fi
+   }}{%
+     \if@givenfirst% given name first
+         \ifgiveninits
+             {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+          \namepartfamily%
+       \else% family name first
+          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+          \namepartfamily%
+          \ifgiveninits
+             {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+      \fi
+   }%
+   \usebibmacro{name:andothers}%
  \else% \if@hlauthor false
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
