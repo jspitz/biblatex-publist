@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.8}
-\def\bpl@rdate{2017/11/14}
+\def\bpl@version{1.9}
+\def\bpl@rdate{2018/03/01}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -82,6 +82,21 @@
 \newif\if@givenfirst\@givenfirstfalse
 \DeclareBibliographyOption{nameorder}[family-given]{%
     \ifstrequal{#1}{given-family}{\@givenfirsttrue}{\@givenfirstfalse}
+}
+
+\newif\if@bplnumbered\@bplnumberedtrue
+\DeclareBibliographyOption{plnumbered}[true]{%
+    \ifstrequal{#1}{false}{%
+	\defbibenvironment{bibliography}
+	  {\list
+	    {}
+	    {\setlength{\leftmargin}{\bibhang}%
+	     \setlength{\itemindent}{-\leftmargin}%
+	     \setlength{\itemsep}{\bibitemsep}%
+	     \setlength{\parsep}{\bibparsep}}%
+	  }
+	  {\endlist}
+	  {\item}}{}
 }
 
 % Check if users have defined different base styles

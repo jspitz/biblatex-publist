@@ -79,7 +79,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.9dev, 2017/11/30}
+\date{Version 1.9, 2018/03/01}
 \maketitle
 
 \begin{abstract}
@@ -194,6 +194,11 @@ With this option set to \joption{true}, the publication year (or pubstate) will
 be printed in the margin once a new year starts. The option also has
 the effect that all marginpars are printed ``reversed'', i.\,e.
 on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
+
+\item [{\joption{plnumbered{[}=true|false{]}}}] default: \emph{true}.
+
+By default, the publication list is numbered. If you want to omit the numbers,
+set this option to \joption{false}.
 
 \end{description}
 
@@ -428,8 +433,10 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \section{Revision Log}
 
 \begin{description}
-	\item [{V.~1.9 (forthcoming):}]~
+	\item [{V.~1.9 (2018-03-01):}]~
 	\begin{itemize}
+		\item New option \joption{plnumbered} that allows to omit the numbering
+		      of the publication list items
 		\item Documentation improvements.
 	\end{itemize}
 
@@ -452,7 +459,6 @@ That is, to sort your talks in descending order by full date in your CV, use:
 	\item Output marginyear before the author list. This prevents it from being vertically
 	      shifted in case of long author lists.
     \end{itemize}
-\clearpage
 	\item [{V.~1.6 (2017-04-02):}]~
 	    \begin{itemize}
 		    \item New option \joption{nameorder} that allows to change the ordering of author and editor

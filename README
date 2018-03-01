@@ -45,7 +45,8 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.9 (forthcoming):
+* V. 1.9 (2018-03-01):
+	- Add option "plnumbered" to switch of numbering in bibliography.
 	- Documentation improvements.
 
 * V. 1.8 (2017-11-14):
