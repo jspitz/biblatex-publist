@@ -33,15 +33,22 @@
 \lstset{basicstyle={\ttfamily}}
 \usepackage{babel}
 \usepackage{url}
-\usepackage[
-	    unicode=true,
-	    bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
-	    breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false
-	   ]{hyperref}
+\usepackage[svgnames]{xcolor}
+\usepackage[unicode=true]{hyperref}
 \hypersetup{%
 	pdftitle={The biblatex-publist manual},
 	pdfauthor={Jürgen Spitzmüller},
 	pdfkeywords={biblatex,publication list}
+	bookmarks=true,
+	bookmarksnumbered=false,
+	bookmarksopen=false,
+	breaklinks=false,
+	backref=false,
+	colorlinks,
+	linkcolor=black,
+	filecolor=Maroon,
+	urlcolor=Maroon,
+	citecolor=black
 }
 
 % Some semantic markup
@@ -195,10 +202,15 @@ be printed in the margin once a new year starts. The option also has
 the effect that all marginpars are printed ``reversed'', i.\,e.
 on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 
-\item [{\joption{plnumbered{[}=true|false{]}}}] default: \emph{true}.
+\item [{\joption{plnumbered{[}=true|false|reset{]}}}] default: \emph{true}.
 
-By default, the publication list is numbered. If you want to omit the numbers,
-set this option to \joption{false}.
+By default, the publication list is numbered continuously. If you divide your publication list into sections by means of
+\jfcsmacro{refsection}s (as documented in section~\ref{sec:example}), you will thus get a global numbering over all sections.
+
+If you prefer the numbering to start from 1 at each section instead, set this option to \joption{reset}.
+
+If you do not want to have any numbers at all, set this option to \joption{false}.
+
 
 \end{description}
 
@@ -271,6 +283,8 @@ Currently, these additional localization keys are available in the following
 languages: English, French and German.%
 \footnote{Please send suggestions for other languages to the package author.}
 
+\clearpage
+
 \section{Further Extensions}
 
 The following extensions of standard \bibltx\ features are provided.
@@ -302,7 +316,8 @@ on what ``related entries'' are and how to use them.
 
 Publication lists are usually categorized by genre (monographs, articles,
 book chapters, etc.). For this task, the use of \jfmacro{refsections} (see \cite[sec 3.7.4]{bibltx} for details) is
-suggested. Other possibilities were not tested extensively and might fail.
+suggested. Other possibilities were not tested extensively and might fail (in particular as far as the numbering of the items
+is concerned).
 
 The suggested procedure is to maintain separate bib files for each
 category, say \emph{mymonographs.bib}, \emph{myarticles.bib}, \emph{myproceedings.bib}.%
@@ -397,6 +412,8 @@ of diverse type and authors, specify:
 \printbibliography[heading=none,filter=mine,type=article]
 \end{lstlisting}
 \end{quote}
+%
+Note that several reruns of \texttt{latex} might be required to fix the numbering.
 
 
 \section{Sorting\label{sec:sorting}}
@@ -428,9 +445,19 @@ That is, to sort your talks in descending order by full date in your CV, use:
 \end{lstlisting}
 \end{quote}
 
+\clearpage
+
 \section{Revision Log}
 
 \begin{description}
+	\item [{V.~1.10 (2018-04-08):}]~
+	\begin{itemize}
+		\item Extend option \joption{plnumbered} with \joption{plnumbered=reset}.
+		This allows to restart the numbering of the publication list items at
+		\jcsmacro{refsection}s.
+		\item Documentation improvements.
+	\end{itemize}
+	
 	\item [{V.~1.9 (2018-03-01):}]~
 	\begin{itemize}
 		\item New option \joption{plnumbered} that allows to omit the numbering

@@ -45,6 +45,12 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.10 (2018-04-08):
+	- Extend option "plnumbered" with "plnumbered=reset".
+	  This allows to restart the numbering of the publication list items
+	  at \refsection's.
+	- Documentation improvements.
+
 * V. 1.9 (2018-03-01):
 	- Add option "plnumbered" to switch of numbering in bibliography.
 	- Documentation improvements.
