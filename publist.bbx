@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.9}
-\def\bpl@rdate{2018/03/01}
+\def\bpl@version{1.10}
+\def\bpl@rdate{2018/04/08}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -86,7 +86,7 @@
 
 \newif\if@bplnumbered\@bplnumberedtrue
 \DeclareBibliographyOption{plnumbered}[true]{%
-    \ifstrequal{#1}{false}{%
+    \ifstrequal{#1}{false}{% 1. "false"
 	\defbibenvironment{bibliography}
 	  {\list
 	    {}
@@ -96,7 +96,27 @@
 	     \setlength{\parsep}{\bibparsep}}%
 	  }
 	  {\endlist}
-	  {\item}}{}
+	  {\item}}{% else: 2. "reset"
+	     \ifstrequal{#1}{reset}{%
+	       \defbibenvironment{bibliography}
+		  {\addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
+		   \list
+		     {\printtext[labelnumberwidth]{%
+		      \printfield{labelprefix}%
+		      \printfield{labelnumber}}}
+		     {\setlength{\labelwidth}{\labelnumberwidth}%
+		      \setlength{\leftmargin}{\labelwidth}%
+		      \setlength{\labelsep}{\biblabelsep}%
+		      \addtolength{\leftmargin}{\labelsep}%
+		      \setlength{\itemsep}{\bibitemsep}%
+		      \setlength{\parsep}{\bibparsep}}}%
+		  {\endlist
+		   \csnumdef{blx@labelnumber@\the\c@refsection}{0}%
+		  }
+		  {\item}
+             }{% else: "true" (default: nothing to do here)
+          }% end of clause
+	}
 }
 
 % Check if users have defined different base styles
