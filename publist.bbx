@@ -636,6 +636,22 @@
      \andothersdelim\biblcstring{andothers}}
     {}}
 
+
+\ifbpl@standardbasestyle
+% Work around issue in authoryear.bbx:
+% test for empty year before printing parens
+\renewbibmacro*{issue+date}{%
+  \ifboolexpr{test {\iffieldundef{year}}
+              and test {\iffieldundef{issue}}}
+    {}
+    {\printtext[parens]{%
+       \printfield{issue}%
+       \setunit*{\addspace}%
+       \usebibmacro{date}}}%
+  \newunit}
+\fi
+
+
 \newbibmacro*{bpl:date:makedate}{%
   \printtext{%
      \iffieldundef{year}{%
