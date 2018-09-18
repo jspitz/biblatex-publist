@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.11}
-\def\bpl@rdate{2018/09/01}
+\def\bpl@version{1.12dev}
+\def\bpl@rdate{2018/09/18}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -82,6 +82,11 @@
 \newif\if@givenfirst\@givenfirstfalse
 \DeclareBibliographyOption{nameorder}[family-given]{%
     \ifstrequal{#1}{given-family}{\@givenfirsttrue}{\@givenfirstfalse}
+}
+
+\newtoggle{firstinit}
+\DeclareBibliographyOption{plauthorfirstinit}[true]{%
+    \ifstrequal{#1}{false}{\togglefalse{firstinit}}{\toggletrue{firstinit}}
 }
 
 \newif\if@bplnumbered\@bplnumberedtrue
@@ -261,7 +266,7 @@
 
 
 %
-% Helper function:
+% Helper functions:
 % Removing braces from names (courtesy of egreg at
 % http://tex.stackexchange.com/a/79583/19291)
 % and normalize spaces
@@ -282,6 +287,18 @@
     \expandafter\bpl@@normalize
   \fi
 }
+% Check first token of macro
+% (based on a suggestion by Qrrbrbirlbel at
+% https://tex.stackexchange.com/a/132254)
+\newcommand*{\iffirstinitialsequal}{%
+  \@expandtwoargs\if@startswith}
+\newcommand*{\if@startswith}[2]{%
+  \if\@car#1.\@nil\@car#2.\@nil
+     \expandafter\@firstoftwo
+  \else
+     \expandafter\@secondoftwo
+  \fi
+}
 
 
 %
@@ -300,7 +317,9 @@
    \ifboolexpr{
       test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
     {\addtocategory{filtered}{\thefield{entrykey}}}
@@ -316,7 +335,9 @@
    \ifboolexpr{
       test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
     {\addtocategory{filtered}{\thefield{entrykey}}}
@@ -349,7 +370,9 @@
    \ifboolexpr{
       test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
+      )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\toggletrue{ismyself}}{\togglefalse{ismyself}}%
@@ -400,7 +423,9 @@
    \ifboolexpr{
       test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      ) 
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\toggletrue{myselfprec}\toggletrue{hadmyself}%
@@ -442,7 +467,9 @@
    \ifboolexpr{
       test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\toggletrue{ismyself}}{\togglefalse{ismyself}}
@@ -491,7 +518,9 @@
    \ifboolexpr{
       test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }) 
+      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\toggletrue{myselfprec}\toggletrue{hadmyself}%
