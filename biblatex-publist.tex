@@ -30,7 +30,10 @@
 \usepackage[latin9]{inputenc}
 
 \usepackage{listings}
-\lstset{basicstyle={\ttfamily}}
+\lstset{%
+	language={[LaTeX]TeX},
+	basicstyle={\small\ttfamily},
+	frame=single}
 \usepackage{babel}
 \usepackage{url}
 \usepackage[svgnames]{xcolor}
@@ -86,7 +89,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.11, 2018/09/01}
+\date{Version 1.12dev, 2018/09/18}
 \maketitle
 
 \begin{abstract}
@@ -129,12 +132,10 @@ Markey's conceptual ideas. Bug reports, comments and ideas are welcome.\filbreak
 \subsection{Standard usage\label{sec:standard-usage}}
 
 The standard way of using the package is to load the style file via
-\begin{quote}
-\begin{lstlisting}[language={[LaTeX]TeX},moretexcs={[1]{plauthorname}}]
+\begin{lstlisting}[moretexcs={[1]{plauthorname}}]
 \usepackage[bibstyle=publist]{biblatex}
 \plauthorname[first name][von-part]{surname}
 \end{lstlisting}
-\end{quote}
 The \jcsmacro*{plauthorname} macro\footnote{The macro was named \jfcsmacro{omitname} until v.\,1.4
 of the \bpl\ package. The old macro still works, but is marked as deprecated.}
 (at least with the mandatory \emph{surname} argument) needs to be given once. 
@@ -159,6 +160,10 @@ will be printed in bold face instead, as in:
 	Doe, John, \textbf{Myself, Me} and Hall, Mary, \textbf{1987}. Are there new trends
 	in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
+%
+Note that \jcsmacro{plauthorname} expects the name constituents as they are recorded in the
+database (special characters expanded). The option \joption{plauthorfirstinit} (see next section),
+however, allows you to pass only an initial character instead of a first name.
 
 
 \subsection{Additional options}\label{sec:addopts}
@@ -211,32 +216,40 @@ If you prefer the numbering to start from 1 at each section instead, set this op
 
 If you do not want to have any numbers at all, set this option to \joption{false}.
 
+\item [{\joption{plauthorfirstinit{[}=true|false{]}}}] default: \emph{false}.
+
+If you set this option to true, you can (and are supposed to) pass only an initial character as first name value of
+\jcsmacro{plauthorname} (e.\,g., \jcsmacro{plauthorname[J]\{Doe\}} or \jcsmacro{plauthorname[J][van]\{Doe\}}).
+In consequence, \bpl\ will consider all entries of the specified given name (and prefix, if specified)
+whose prename starts with the specified character. This allows you to deal with databases that record entries of your work
+with abbreviated and full first name (\textsc{J. Doe} and well as \textsc{John Doe} and \textsc{John Robert Doe}) \emph{as well as}
+works of colleagues with the same surname (maybe your family members), which you will not want to mark as your own's.
+Of course, the solution does not help if there is an entry with same surname and same first name initial (such as \textsc{Jane Doe}).
+
 
 \end{description}
+
+\clearpage
 
 \subsection{Auxiliary macros and lengths}\label{sec:auxmacros}
 
 The appearance of the \emph{marginyear} is controlled by the
 \jcsmacro*{plmarginyear} macro, which has the following default definition:
-\begin{quote}
-\begin{lstlisting}[language={[LaTeX]TeX},
-                   moretexcs={[2]{providecommand,plmarginyear}}]
+\begin{lstlisting}[moretexcs={[2]{providecommand,plmarginyear}}]
 \providecommand*\plmarginyear[1]{%
   \raggedleft\small\textbf{#1}%
 }
-\end{lstlisting}\end{quote}
+\end{lstlisting}
 If you want to change the appearance, just redefine this macro via
 \jfcsmacro{renewcommand{*}}.
 
 The highlighting of the publication list author, if \joption{plauthorhandling=highlight} has been set,
 is controlled by the \jcsmacro*{plauthorhl} macro, which has the following default definition:
-\begin{quote}
-	\begin{lstlisting}[language={[LaTeX]TeX},
-	moretexcs={[2]{providecommand,plauthorhl,mkbibbold}}]
+\begin{lstlisting}[moretexcs={[2]{providecommand,plauthorhl,mkbibbold}}]
 \providecommand*\plauthorhl[1]{%
 	\mkbibbold{#1}%
 }
-\end{lstlisting}\end{quote}
+\end{lstlisting}
 If you need another form of highlighting, redefine this macro via \jfcsmacro{renewcommand{*}}.
 
 The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
@@ -252,11 +265,9 @@ to work with that style. However, it is possible to try a diffent base style, if
 \emph{author\-year} does not fit your needs.\condbreak{2\baselineskip}
 
 In order to do so, enter the following \emph{before} loading \bibltx:
-\begin{quote}
-	\begin{lstlisting}[language={[LaTeX]TeX},
-	                   moretexcs={[2]{publistbasestyle}}]
-	\newcommand*\publistbasestyle{<stylename>}
-	\end{lstlisting}\end{quote}
+\begin{lstlisting}[moretexcs={[2]{publistbasestyle}}]
+\newcommand*\publistbasestyle{<stylename>}
+\end{lstlisting}
 where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) you want to use, without the \emph{bbx} entension (e.\,g., \lstinline|\newcommand*\publistbasestyle{mla}|).
 
 Note, though, that there is (and can be) no guarantee that \bpl\ will work with all styles, although it has been successfully tested with several. Be prepared to bump into \LaTeX\ errors and carefully check the output for correctness if you try a different base style.
@@ -266,6 +277,7 @@ Note, further, that the order of author's and editor's given and family names is
 differ from what you expect with specific base styles. To change the order,
 use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 
+\clearpage
 
 \section{Localization}
 
@@ -283,7 +295,6 @@ Currently, these additional localization keys are available in the following
 languages: English, French and German.%
 \footnote{Please send suggestions for other languages to the package author.}
 
-\clearpage
 
 \section{Further Extensions}
 
@@ -328,7 +339,6 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 		   float,
 		   frame=single,
 		   label={example},
-		   language={[LaTeX]TeX},
 		   moretexcs={[5]{plauthorname,addbibresource,printbibliography,maketitle,newrefsection}}]
 \documentclass{article}
 \usepackage[T1]{fontenc}
@@ -369,10 +379,7 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 
 If you want to add other people's reviews of your work, add a section
 such as the following:
-\begin{quote}
 \begin{lstlisting}[caption={Adding foreign reviews},
-		  frame=single,
-		  language={[LaTeX]TeX},
 		  moretexcs={[4]{bibfont,subsubsection,printbibliography,newrefsection}}]
 \subsubsection*{Reviews of my thesis}
 \newrefsection[mythesis-reviews]
@@ -381,7 +388,6 @@ such as the following:
 \printbibliography[heading=none,env=reviews]
 \end{lstlisting}
 
-\end{quote}
 Note that the \jfcsmacro{printbibliography} option
 \joption{env=reviews}  is crucial if you want to use the specifics
 \bpl\ defines for reviews (see sec.~\ref{sec:review-bibliography-type}).
@@ -392,26 +398,19 @@ Note that the \jfcsmacro{printbibliography} option
 If you have a bibliographic database consisting not only of your own
 publications, you can extract yours with the bibliography filter \joption{mine},
 which has to be passed to \jfcsmacro{printbibliography}, as in:
-\begin{quote}
 \begin{lstlisting}[caption={Using a bibliography filter},
-		  frame=single,
-		  language={[LaTeX]TeX},
 		  moretexcs={[1]{printbibliography}}]
 \nocite{*}
 \printbibliography[heading=none,filter=mine]
 \end{lstlisting}
 
-\end{quote}
 Of course, you can also use other filter possibilities provided by
 \bibltx, such as filtering by type or by keyword. So if you want
 to extract all of your articles from a larger database with entries
 of diverse type and authors, specify:
-\begin{quote}
-\begin{lstlisting}[language={[LaTeX]TeX},
-		   moretexcs={[1]{printbibliography}}]
+\begin{lstlisting}[moretexcs={[1]{printbibliography}}]
 \printbibliography[heading=none,filter=mine,type=article]
 \end{lstlisting}
-\end{quote}
 %
 Note that several reruns of \texttt{latex} might be required to fix the numbering.
 
@@ -438,18 +437,21 @@ be particularly useful for sorting talks:
                         (all ascending).
 \end{itemize}
 That is, to sort your talks in descending order by full date in your CV, use:
-\begin{quote}
-\begin{lstlisting}[language={[LaTeX]TeX},
-		   moretexcs={[1]{printbibliography}}]
+\begin{lstlisting}[moretexcs={[1]{printbibliography}}]
 \printbibliography[heading=none,sorting=ddnt]
 \end{lstlisting}
-\end{quote}
 
-\clearpage
 
 \section{Revision Log}
 
 \begin{description}
+	
+	\item [{V. 1.12 (forthcoming):}]~
+	\begin{itemize}
+		\item Add option \joption{plauthorfirstinit} that allows for specifying initials in first names
+	          of \jcsmacro{plauthorname}. See sec.~\ref{sec:addopts}.
+    \end{itemize}
+	
 	\item [{V.~1.11 (2018-09-01):}]~
 	\begin{itemize}
 		\item Fix \joption{marginyear=true} with \joption{labeldateparts=false}.

@@ -45,6 +45,10 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.12 (forthcoming):
+	- Add option "plauthorfirstinit" that allows for specifying initials in
+          first names of \plauthorname.
+
 * V. 1.11 (2018-09-01):
 	- Fix marginyear=true with labeldateparts=false.
 	- Fix problem with empty parentheses in article with standard base style
