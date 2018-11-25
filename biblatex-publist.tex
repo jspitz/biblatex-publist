@@ -89,7 +89,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.12dev, 2018/09/18}
+\date{Version 1.12, 2018/11/25}
 \maketitle
 
 \begin{abstract}
@@ -446,8 +446,11 @@ That is, to sort your talks in descending order by full date in your CV, use:
 
 \begin{description}
 	
-	\item [{V. 1.12 (forthcoming):}]~
+	\item [{V. 1.12 (2018-11-25):}]~
 	\begin{itemize}
+		\item Switch name parsing toggles globally (fixes regression with \bibltx\ 3.12).
+		\item Account for omitted author when adding \jfcsmacro{finalnamedelim}.
+		\item Fix issue with initial dot in \joption{nameorder=family-given}.
 		\item Add option \joption{plauthorfirstinit} that allows for specifying initials in first names
 	          of \jcsmacro{plauthorname}. See sec.~\ref{sec:addopts}.
     \end{itemize}
