@@ -375,7 +375,7 @@
       )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\toggletrue{ismyself}}{\togglefalse{ismyself}}%
+          {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
    \ifthenelse{\value{listcount}=1}{}{%
        \ifnumless{\value{listcount}}{\value{liststop}}%
           {\multinamedelim}%
@@ -428,10 +428,10 @@
       ) 
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\toggletrue{myselfprec}\toggletrue{hadmyself}%
+          {\global\toggletrue{myselfprec}\global\toggletrue{hadmyself}%
            \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
                    {\stepcounter{liststop}}{}}
-          {\ifthenelse{\value{listcount}=1}{\togglefalse{hadmyself}}{%
+          {\ifthenelse{\value{listcount}=1}{\global\togglefalse{hadmyself}}{%
           \ifboolexpr{
               test { \iftoggle{myselfprec} }
               and
@@ -450,7 +450,7 @@
              {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
              {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
           \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-          \togglefalse{myselfprec}%
+          \global\togglefalse{myselfprec}%
           \namepartfamily}%
           \usebibmacro{name:andothers}%
    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{author}>1}{\unspace\bibcloseparen}{}%
@@ -472,7 +472,7 @@
       )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\toggletrue{ismyself}}{\togglefalse{ismyself}}
+          {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}
       \ifthenelse{\value{listcount}=1}{}{%
          \ifnumless{\value{listcount}}{\value{liststop}-1}%
             {\multinamedelim}%
@@ -523,10 +523,10 @@
       )
       and
       ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\toggletrue{myselfprec}\toggletrue{hadmyself}%
+          {\global\toggletrue{myselfprec}\global\toggletrue{hadmyself}%
            \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
                    {\stepcounter{liststop}}{}}
-          {\ifthenelse{\value{listcount}=1}{\togglefalse{hadmyself}}{%
+          {\ifthenelse{\value{listcount}=1}{\global\togglefalse{hadmyself}}{%
             \ifboolexpr{
               test { \iftoggle{myselfprec} }
               and
@@ -545,7 +545,7 @@
              {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
              {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
           \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-          \togglefalse{myselfprec}%
+          \global\togglefalse{myselfprec}%
           \namepartfamily}%
           \usebibmacro{name:andothers}%
    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{editor}>1}{\unspace\bibcloseparen}{}%
