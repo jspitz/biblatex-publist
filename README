@@ -47,6 +47,7 @@ instructions.
 
 * V. 1.12 (forthcoming):
         - Switch name parsing toggles globally (fixes regression with biblatex 3.12).
+        - Account for omitted author when adding \finalnamedelim.
 	- Add option "plauthorfirstinit" that allows for specifying initials in
           first names of \plauthorname.
 

@@ -344,6 +344,10 @@
     {}}
 
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
+
+\DeclareDelimFormat{bplfinalnamedelim}{%
+  \ifnumgreater{\value{liststop}}{3}{\finalandcomma}{}%
+  \addspace\bibstring{and}\space}
     
 \AtDataInput{%
   \indexnames[authorfiltered]{author}%
@@ -442,8 +446,8 @@
                     {\iftoggle{hadmyself}{%
                         \ifnumless{\value{listcount}}{\value{liststop}}%
                            {\multinamedelim}%
-                           {\finalnamedelim}}
-                       {\finalnamedelim}}%
+                           {\bplfinalnamedelim}}
+                       {\bplfinalnamedelim}}%
                 }%
           }%
           \ifgiveninits
@@ -537,8 +541,8 @@
                      {\iftoggle{hadmyself}{%
                          \ifnumless{\value{listcount}}{\value{liststop}}%
                              {\multinamedelim}%
-                             {\finalnamedelim}}
-                        {\finalnamedelim}}%
+                             {\bplfinalnamedelim}}
+                        {\bplfinalnamedelim}}%
                 }%
           }%
           \ifgiveninits
