@@ -397,7 +397,7 @@
           \namepartfamily%
           \ifgiveninits
              {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
       \fi
    }}{%
      \if@givenfirst% given name first
@@ -411,7 +411,7 @@
           \namepartfamily%
           \ifgiveninits
              {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
       \fi
    }%
    \usebibmacro{name:andothers}%
@@ -494,7 +494,7 @@
              \namepartfamily%
              \ifgiveninits
                 {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
          \fi
        }}{%
          \if@givenfirst% given name first
@@ -508,7 +508,7 @@
              \namepartfamily%
              \ifgiveninits
                 {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
          \fi
       }%
       \usebibmacro{name:andothers}%
@@ -568,7 +568,7 @@
        \namepartfamily%
        \ifgiveninits
           {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-          {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\addspace}}%
+          {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
   \fi
   \ifthenelse{\value{listcount}<\value{liststop}}
     {\ifnumless{\value{listcount}}{\value{liststop}-1}%
