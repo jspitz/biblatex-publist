@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.12}
-\def\bpl@rdate{2018/11/25}
+\def\bpl@version{1.13dev}
+\def\bpl@rdate{2018/11/29}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -137,8 +137,14 @@
     pagetracker=true,
     labelnumber,
     useprefix=false,
-    sorting=ydnt,
     defernumbers=true}
+
+% Default sorting depends on plauthorhandling
+\if@hlauthor%
+  \ExecuteBibliographyOptions{sorting=ydnt}
+\else
+  \ExecuteBibliographyOptions{sorting=ydt}
+\fi
 
 % Execute these options only with the standard base style
 \ifbpl@standardbasestyle
@@ -926,6 +932,110 @@
     \field{title}
   }
 }
+
+% Sorting schemes without name
+
+% Sorting year (descending), title
+\DeclareSortingTemplate{ydt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+% Consider the whole date (year-month-day)
+% Sorting date (descending), title
+\DeclareSortingTemplate{ddt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort[direction=descending]{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort[direction=descending]{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+% Sorting year (descending), month, day, title
+\DeclareSortingTemplate{ydmdt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort[direction=descending]{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
+% Sorting date (ascending), title
+\DeclareSortingTemplate{dt}{
+  \sort{
+    \field{presort}
+  }
+  \sort[final]{
+    \field{sortkey}
+  }
+  \sort{
+    \field[strside=left,strwidth=4]{sortyear}
+    \field[strside=left,strwidth=4]{year}
+    \literal{9999}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{month}
+    \literal{00}
+  }
+  \sort{
+    \field[padside=left,padwidth=2,padchar=0]{day}
+    \literal{00}
+  }
+  \sort{
+    \field{sorttitle}
+    \field{title}
+  }
+}
+
 
 %
 % Mappings (biber)

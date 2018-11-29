@@ -89,7 +89,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.12, 2018/11/25}
+\date{Version 1.13dev, 2018/11/29}
 \maketitle
 
 \begin{abstract}
@@ -417,34 +417,72 @@ Note that several reruns of \texttt{latex} might be required to fix the numberin
 
 \section{Sorting\label{sec:sorting}}
 
-The sorting of the items is done via \bibltx's sorting mechanism
-(please refer to the \bibltx\ manual for details). By default,
-\bpl\ uses the \jfmacro{ydnt} template, which sorts hierarchically
-by year (descending), name and title (both ascending). You can switch to another
-template via \bibltx's \jfmacro{sorting} option either globally (if you pass
-\joption{sorting=<template>} to the \bibltx\ options) or locally (if you pass
-\joption{sorting=<template>} to the \jfcsmacro{printbibliography} options).
+\subsection{Sorting Publication Lists}
 
-For convenience, \bpl\ provides 3 additional sorting templates, which might
-be particularly useful for sorting talks:
+The sorting conventions of publication lists differ from those of normal bibliographies.
+Publication lists are usually not sorted by author name, the prime criterion of normal
+bibliographies, but rather chronologically (usually \emph{descending} from the newest through
+the oldest publication). How to sub-sort within a year depends on the handling of author names.
+If you display all authors and only highlight your own (via \joption{plauthorhandling=highlight}),
+it probably makes sense to sub-sort first by author name, and then by title. If you omit your own name
+and just mention your co-authors (the default), it makes more sense to sub-sort by title right away,
+without taking the author names into account.
+
+To account for these needs, \bpl\ adds some sorting options on top of those that come with
+\bibltx\ itself.
+
+\subsection{Sorting Templates}\label{sec:sorttemplates}
+
+Generally, the sorting of items is done via \bibltx's sorting mechanism, via so called \emph{sorting templates}
+(please refer to the \bibltx\ manual for details). 
+
+By default, \bpl\ uses an own template, \jfmacro{ydt},
+which sorts hierarchically by year (descending) and title (alphabetically ascending), ignoring author
+names. If you use \joption{plauthorhandling=highlight}, however, the default changes to \jfmacro{ydnt}
+which sub-sorts by author names (alphabetically ascending) before sub-sorting by title.
+
+In order to diverge from the respective default, you can select a different template via \bibltx's \jfmacro{sorting}
+option either globally (by passing \joption{sorting=<template>} to the \bibltx\ options) or locally
+(by passing \joption{sorting=<template>} to the options of the \jfcsmacro{printbibliography} command).
+
+Since author name sorting does not make much sense at least in the default configuration,
+\bpl\ provides the following additional sorting template that ignores author names, and that is
+used by default:
 \begin{itemize}
+	\item \jmacro{ydt}: Sort by \textbf{y}ear (\textbf{d}escending)
+	      and \textbf{t}itle (ascending).
+\end{itemize}
+For convenience, \bpl\ furthermore provides the following additional sorting templates
+(with and without name sorting), which might be particularly useful for sorting talks
+(since those usually have more detailed date information):
+\begin{itemize}
+ \item \jmacro{ddt}: Sort by full \textbf{d}ate (\textbf{d}escending)
+     and \textbf{t}itle (both ascending).
  \item \jmacro{ddnt}: Sort by full \textbf{d}ate (\textbf{d}escending),
-                      \textbf{n}ame and \textbf{t}itle (both ascending).
- \item \jmacro{ydmdnt}: Sort by \textbf{y}ear (\textbf{d}escending),
-                        \textbf{m}onth, \textbf{d}ay, \textbf{n}ame and \textbf{t}itle
-                        (all ascending).
+     \textbf{n}ame and \textbf{t}itle (both ascending).
+ \item \jmacro{ydmdt}: Sort by \textbf{y}ear (\textbf{d}escending),
+	\textbf{m}onth, \textbf{d}ay and \textbf{t}itle	(all ascending).
+\item \jmacro{ydmdnt}: Sort by \textbf{y}ear (\textbf{d}escending),
+\textbf{m}onth, \textbf{d}ay, \textbf{n}ame and \textbf{t}itle
+(all ascending).
+ \item \jmacro{dt}: Sort by full \textbf{d}ate and \textbf{t}itle (all ascending).
  \item \jmacro{dnt}: Sort by full \textbf{d}ate, \textbf{n}ame and \textbf{t}itle
                         (all ascending).
 \end{itemize}
-That is, to sort your talks in descending order by full date in your CV, use:
+To sort your talks in descending order by full date in your CV, thus, use:
 \begin{lstlisting}[moretexcs={[1]{printbibliography}}]
-\printbibliography[heading=none,sorting=ddnt]
+\printbibliography[heading=none,sorting=ddt]
 \end{lstlisting}
 
 
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 1.13 (forthcoming):}]~
+	\begin{itemize}
+		\item Introduce new sorting templates that ignore names. See sec.~\ref{sec:sorttemplates}.
+		\item \textbf{Change of output!} Use \joption{ydt} template by default. See sec.~\ref{sec:sorttemplates}.
+	\end{itemize}
 	
 	\item [{V. 1.12 (2018-11-25):}]~
 	\begin{itemize}
