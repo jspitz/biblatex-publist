@@ -1041,8 +1041,20 @@
 % Mappings (biber)
 %
 
-% Correctly sort pubstates.
+% Add a dummy constant shortauthor in order to
+% ignore author constellation on extralabel assignment.
+\if@hlauthor
+\else
+\DeclareSourcemap{
+  \maps[datatype=bibtex]{
+    \map[overwrite]{
+       \step[fieldset=shortauthor, fieldvalue={1111}]
+    }
+  }
+}
+\fi
 
+% Correctly sort pubstates.
 \DeclareStyleSourcemap{
   \maps[datatype=bibtex]{
     \map{

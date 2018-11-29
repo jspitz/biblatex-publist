@@ -48,6 +48,7 @@ instructions.
 * V. 1.13 (forthcoming):
         - Introduce new sorting templates that ignore names.
         - CHANGE OF OUTPUT! Use ydt tempate by default.
+        - Assign extralabel independent of author group with plauthorhandling=omit.
 
 * V. 1.12 (2018-11-25):
         - Switch name parsing toggles globally (fixes regression with biblatex 3.12).
