@@ -435,7 +435,7 @@ To account for these needs, \bpl\ adds some sorting options on top of those that
 
 \subsection{Sorting Templates}\label{sec:sorttemplates}
 
-Generally, the sorting of items is done via \bibltx's sorting mechanism, via so called \emph{sorting templates}
+The sorting of items is done via \bibltx's sorting mechanism, via so called \emph{sorting templates}
 (please refer to the \bibltx\ manual for details). 
 
 By default, \bpl\ uses an own template, \joption{ydt}, which sorts hierarchically by \textbf{y}ear
@@ -451,20 +451,20 @@ In addition to this default template, \bpl\ provides some sorting templates that
 for the full date (rather than just the year).
 This is especially useful for sorting talks, since those usually do not only have a year, but a full
 date (day, month and year).
-There are templates with and without author sorting:
+The following templates, with and without author sorting, are provided:
 \begin{itemize}
  \item \jmacro{ddt}: Sort by full \textbf{d}ate (\textbf{d}escending)
-     and \textbf{t}itle (both ascending).
+        and \textbf{t}itle (both ascending).
  \item \jmacro{ddnt}: Sort by full \textbf{d}ate (\textbf{d}escending),
-     author \textbf{n}ame and \textbf{t}itle (both ascending).
- \item \jmacro{ydmdt}: Sort by \textbf{y}ear (\textbf{d}escending),
-	\textbf{m}onth, \textbf{d}ay and \textbf{t}itle	(all ascending).
-\item \jmacro{ydmdnt}: Sort by \textbf{y}ear (\textbf{d}escending),
-\textbf{m}onth, \textbf{d}ay, author \textbf{n}ame and \textbf{t}itle
-(all ascending).
+        author \textbf{n}ame and \textbf{t}itle (both ascending).
  \item \jmacro{dt}: Sort by full \textbf{d}ate and \textbf{t}itle (all ascending).
  \item \jmacro{dnt}: Sort by full \textbf{d}ate, author \textbf{n}ame and \textbf{t}itle
-                        (all ascending).
+        (all ascending).
+ \item \jmacro{ydmdt}: Sort by \textbf{y}ear (\textbf{d}escending),
+	    \textbf{m}onth, \textbf{d}ay and \textbf{t}itle	(all ascending).
+\item \jmacro{ydmdnt}: Sort by \textbf{y}ear (\textbf{d}escending),
+       \textbf{m}onth, \textbf{d}ay, author \textbf{n}ame and \textbf{t}itle
+       (all ascending).
 \end{itemize}
 In order to use any of these, or another sorting template provided by \bibltx\, 
 use \bibltx's \jfmacro{sorting} option, which can be passed either globally
@@ -657,9 +657,11 @@ Gregorio.%
 
 Thanks go to Enrico Gregorio (egreg on \emph{tex.stackexchange.com})
 for helping me with correct name parsing (actually, the code the package
-uses is completely his), Marko Budi¨i\'{c}, Clea F. Rees and Yannick Kalff
-for testing and bug reports, Nicolas Markey for \emph{publist.bst} and of
-course Philipp Lehman (not only) for \bibltx.
+uses is completely his), user gusbrs on \emph{tex.stackexchange.com},
+Marko Budi¨i\'{c}, Clea F. Rees, Yannick Kalff and many other users for
+testing and bug reports, Nicolas Markey for \emph{publist.bst} and of
+course Philipp Lehman and the current \bibltx\ team (Philipp Kime,
+Moritz Wemheuer, Audrey Boruvka and Joseph Wright) for \bibltx.
 
 \begin{thebibliography}{1}
 \bibitem{bibltx}Lehman, Philipp (with Audrey Boruvka, Philip Kime
