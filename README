@@ -45,7 +45,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.13 (forthcoming):
+* V. 1.13 (2018-11-30):
         - Introduce new sorting templates that ignore names.
         - CHANGE OF OUTPUT! Use ydt tempate by default.
         - Assign extralabel independent of author group with plauthorhandling=omit.
