@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.13}
-\def\bpl@rdate{2018/11/30}
+\def\bpl@version{1.14dev}
+\def\bpl@rdate{2018/12/14}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -1045,7 +1045,7 @@
 % ignore author constellation on extralabel assignment.
 \if@hlauthor
 \else
-\DeclareSourcemap{
+\DeclareStyleSourcemap{
   \maps[datatype=bibtex]{
     \map[overwrite]{
        \step[fieldset=shortauthor, fieldvalue={1111}]

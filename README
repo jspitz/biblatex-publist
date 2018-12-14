@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.14 (forthcoming):
+	- Use \DeclareStyleSourcemap rather that \DeclareSourcemap.
+
 * V. 1.13 (2018-11-30):
         - Introduce new sorting templates that ignore names.
         - CHANGE OF OUTPUT! Use ydt tempate by default.
