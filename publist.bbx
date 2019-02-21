@@ -160,6 +160,45 @@
 
 
 %
+% Helper functions
+%
+
+%
+% Removing braces from names (courtesy of egreg at
+% http://tex.stackexchange.com/a/79583/19291)
+% and normalize spaces
+\def\bpl@normalize#1#2{%
+  \begingroup
+  \def\bibnamedelima{ }%
+  \def\bibnamedelimb{ }%
+  \def\IeC##1{##1}%
+  \protected@edef\@tempa{#1}%
+  \gdef\@gtempa{}%
+  \expandafter\bpl@@normalize\@tempa\@nil
+  \endgroup
+  \let#2\@gtempa
+}
+\def\bpl@@normalize#1{%
+  \ifx#1\@nil\else
+    \expandafter\gdef\expandafter\@gtempa\expandafter{\@gtempa#1}%
+    \expandafter\bpl@@normalize
+  \fi
+}
+%
+% Check first token of macro
+% (based on a suggestion by Qrrbrbirlbel at
+% https://tex.stackexchange.com/a/132254)
+\newcommand*{\iffirstinitialsequal}{%
+  \@expandtwoargs\if@startswith}
+\newcommand*{\if@startswith}[2]{%
+  \if\@car#1.\@nil\@car#2.\@nil
+     \expandafter\@firstoftwo
+  \else
+     \expandafter\@secondoftwo
+  \fi
+}
+
+%
 % Customization settings
 %
 
@@ -269,42 +308,6 @@
    \small\setlength\itemsep{0pt}}
   {\end{enumerate}}
   {\item}
-
-
-%
-% Helper functions:
-% Removing braces from names (courtesy of egreg at
-% http://tex.stackexchange.com/a/79583/19291)
-% and normalize spaces
-\def\bpl@normalize#1#2{%
-  \begingroup
-  \def\bibnamedelima{ }%
-  \def\bibnamedelimb{ }%
-  \def\IeC##1{##1}%
-  \protected@edef\@tempa{#1}%
-  \gdef\@gtempa{}%
-  \expandafter\bpl@@normalize\@tempa\@nil
-  \endgroup
-  \let#2\@gtempa
-}
-\def\bpl@@normalize#1{%
-  \ifx#1\@nil\else
-    \expandafter\gdef\expandafter\@gtempa\expandafter{\@gtempa#1}%
-    \expandafter\bpl@@normalize
-  \fi
-}
-% Check first token of macro
-% (based on a suggestion by Qrrbrbirlbel at
-% https://tex.stackexchange.com/a/132254)
-\newcommand*{\iffirstinitialsequal}{%
-  \@expandtwoargs\if@startswith}
-\newcommand*{\if@startswith}[2]{%
-  \if\@car#1.\@nil\@car#2.\@nil
-     \expandafter\@firstoftwo
-  \else
-     \expandafter\@secondoftwo
-  \fi
-}
 
 
 %
