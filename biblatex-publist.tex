@@ -89,7 +89,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.14dev, 2018/12/14}
+\date{Version 1.14, 2019/02/21}
 \maketitle
 
 \begin{abstract}
@@ -138,8 +138,9 @@ The standard way of using the package is to load the style file via
 \end{lstlisting}
 The \jcsmacro*{plauthorname} macro\footnote{The macro was named \jfcsmacro{omitname} until v.\,1.4
 of the \bpl\ package. The old macro still works, but is marked as deprecated.}
-(at least with the mandatory \emph{surname} argument) needs to be given once. 
-It informs the style file which name it should suppress or highlight in the
+(at least with the mandatory \emph{surname} argument) needs to be given (at least\footnote{See
+sec.~\ref{sec:multiauthors} for the case of handling multiple authors.}) once. 
+It informs the style file which name(s) it should suppress or highlight in the
 author\slash editor list (usually yours). 
 
 With the default settings, the author\slash editor name will be omitted completely
@@ -154,7 +155,7 @@ out and the collaborators added in parentheses, as in:
 \textbf{1987} (with John Doe and Mary Hall). Are there new trends
 in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{quote}
-If \joption{plauthorhandling=highlight} is used (see next section), the plauthor
+If \joption{plauthorhandling=highlight} is used (see next section), the plauthor(s)
 will be printed in bold face instead, as in:
 \begin{quote}
 	Doe, John, \textbf{Myself, Me} and Hall, Mary, \textbf{1987}. Are there new trends
@@ -229,7 +230,26 @@ Of course, the solution does not help if there is an entry with same surname and
 
 \end{description}
 
-\clearpage
+
+\subsection{Highlighting multiple authors}\label{sec:multiauthors}
+
+If the option \joption{plauthorhandling=hilight} has been selected, \bpl\ will consider all \jcsmacro{plauthorname}
+specifications you have entered.
+
+Thus it is possible to highlight multiple authors in the publication list (for instance to mark) contributions
+of a research team):
+\begin{lstlisting}[moretexcs={[2]{plauthorname}}]
+% All these names will be highlighted
+\plauthorname[John]{Doe}
+\plauthorname[Mary][van]{Smith}
+\plauthorname{Wittgenstein}
+\end{lstlisting}
+
+Note that this also applies to filtering (see sec.~\ref{sec:filtering}), i.\,e., the \joption{mine} filter considers
+entries authored by \emph{any} of the specified persons with \joption{plauthorhandling=hilight}.
+
+Note further that multiple authors are not supported with \joption{plauthorhandling=omit} (since it does not strike me useful).
+In this case, only the \emph{last} specified \jcsmacro{plauthorname} is considered.
 
 \subsection{Auxiliary macros and lengths}\label{sec:auxmacros}
 
@@ -277,7 +297,6 @@ Note, further, that the order of author's and editor's given and family names is
 differ from what you expect with specific base styles. To change the order,
 use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 
-\clearpage
 
 \section{Localization}
 
@@ -334,7 +353,7 @@ The suggested procedure is to maintain separate bib files for each
 category, say \emph{mymonographs.bib}, \emph{myarticles.bib}, \emph{myproceedings.bib}.%
 \footnote{But see sec.~\ref{sec:filtering} for an alternative.}
 Then a typical file would look like example~\ref{example} (p.~\pageref{example}).
-
+%
 \begin{lstlisting}[caption={Typical document},
 		   float,
 		   frame=single,
@@ -469,25 +488,29 @@ The following templates, with and without author sorting, are provided:
 In order to use any of these, or another sorting template provided by \bibltx\, 
 use \bibltx's \jfmacro{sorting} option, which can be passed either globally
 (via \joption{sorting=<template>} as a \bibltx\ option) or locally
-(via \joption{sorting=<template>} as a \jfcsmacro{printbibliography} option).
+(by means of a \jfcsmacro{newrefcontext} macro with the option \joption{sorting=<template>}).
 So, to sort your talks in descending order by full date in your CV, you would
 use either
 \begin{lstlisting}[moretexcs={[1]{printbibliography}}]
 \usepackage[style=publist,sorting=ddt]{biblatex}
 \end{lstlisting}
 or
-\begin{lstlisting}[moretexcs={[1]{printbibliography}}]
-\printbibliography[heading=none,sorting=ddt]
+\begin{lstlisting}[moretexcs={[3]{printbibliography,newrefcontext,endrefcontext}}]
+\newrefcontext[sorting=ddt]
+\printbibliography[heading=none]
+\endrefcontext
 \end{lstlisting}
 
-\clearpage
 
 \section{Revision Log}
 
 \begin{description}
-	\item [{V. 1.14 (forthcoming):}]~
+	\item [{V. 1.14 (2019-02-21):}]~
 	\begin{itemize}
+		\item Add support for highlighting multiple authors.
+		\item Fix handling of non-ASCII names.
 		\item Use \jfcsmacro{DeclareStyleSourcemap} rather that \jfcsmacro{DeclareSourcemap}.
+		\item Update sorting documentation in the wake of \bibltx\ changes.
 	\end{itemize}
 
 	\item [{V. 1.13 (2018-11-30):}]~
@@ -520,7 +543,7 @@ or
 		\jcsmacro{refsection}s.
 		\item Documentation improvements.
 	\end{itemize}
-	
+\clearpage	
 	\item [{V.~1.9 (2018-03-01):}]~
 	\begin{itemize}
 		\item New option \joption{plnumbered} that allows to omit the numbering
@@ -541,7 +564,7 @@ or
 	    	\item \texttt{year+labelyear} $\Rightarrow$ \texttt{bpl:year+labelyear}
 				\end{itemize}
 	\end{itemize}
-\clearpage
+
 	\item [{V.~1.7 (2017-04-12):}]~
     \begin{itemize}
 	\item Output marginyear before the author list. This prevents it from being vertically
