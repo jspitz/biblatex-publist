@@ -198,6 +198,22 @@
   \fi
 }
 %
+% Split plauthors list item
+\def\bpl@lsurname{}
+\def\bpl@lfirstname{}
+\def\bpl@lvonpart{}
+\def\jsp@splitpllist#1{%
+    \begingroup
+    \edef\@tempa{#1}%
+    \expandafter\endgroup
+    \expandafter\jsp@@splitpllist\@tempa\relax%
+}
+\def\jsp@@splitpllist#1,#2,#3\relax{%
+   \global\def\bpl@lfirstname{#1}%
+   \global\def\bpl@lvonpart{#2}%
+   \global\def\bpl@lsurname{#3}%
+}
+%
 % Fully expanded comparison
 % (adapted from scrbase.sty)
 \newcommand\bpl@ifstreq[2]{%
@@ -210,6 +226,7 @@
 }
 
 
+
 %
 % Customization settings
 %
@@ -219,6 +236,9 @@
 \def\bpl@osurname{}
 \def\bpl@ofirstname{}
 \def\bpl@ovonpart{}
+%
+% List to store multiple pl authors (for highlight only)
+\def\bpl@plauthors{}
 %
 % Manual way to specify publication list author name
 \def\plauthorname{%
@@ -235,6 +255,9 @@
   \def\bpl@osurname{#3}
   \ifx\@empty#1\def\bpl@ofirstname{}\else\def\bpl@ofirstname{#1}\fi
   \ifx\@empty#2\def\bpl@ovonpart{}\else\def\bpl@ovonpart{#2}\fi
+  \if@hlauthor%
+     \listgadd{\bpl@plauthors}{#1,#2,#3}
+  \fi
 }
 
 %
@@ -343,7 +366,27 @@
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
     {\addtocategory{filtered}{\thefield{entrykey}}}
-    {}}
+    {}%
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+              and
+              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              )
+              and
+              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+             {\addtocategory{filtered}{\thefield{entrykey}}}{}%
+    }%
+   \dolistloop{\bpl@plauthors}%
+}
 
 \DeclareIndexNameFormat{editorfiltered}{%
    \edef\bpl@tsurname{\namepartfamily}%
@@ -361,7 +404,27 @@
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
     {\addtocategory{filtered}{\thefield{entrykey}}}
-    {}}
+    {}%
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+              and
+              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              )
+              and
+              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+             {\addtocategory{filtered}{\thefield{entrykey}}}{}%
+    }%
+   \dolistloop{\bpl@plauthors}%
+}
 
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
 
@@ -402,6 +465,25 @@
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+              and
+              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              )
+              and
+              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+             {\global\toggletrue{ismyself}}{}%
+    }%
+   \dolistloop{\bpl@plauthors}%
    \ifthenelse{\value{listcount}=1}{}{%
        \ifnumless{\value{listcount}}{\value{liststop}}%
           {\multinamedelim}%
@@ -495,6 +577,25 @@
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+              and
+              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              )
+              and
+              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+             {\global\toggletrue{ismyself}}{}%
+    }%
+   \dolistloop{\bpl@plauthors}%
    \ifthenelse{\value{listcount}=1}{}{%
          \ifnumless{\value{listcount}}{\value{liststop}-1}%
             {\multinamedelim}%
