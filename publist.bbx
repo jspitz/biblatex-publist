@@ -197,6 +197,18 @@
      \expandafter\@secondoftwo
   \fi
 }
+%
+% Fully expanded comparison
+% (adapted from scrbase.sty)
+\newcommand\bpl@ifstreq[2]{%
+  \begingroup\edef\@tempa{#1}\edef\@tempb{#2}%
+  \ifx\@tempa\@tempb
+    \endgroup\expandafter\@firstoftwo
+  \else
+    \endgroup\expandafter\@secondoftwo
+  \fi
+}
+
 
 %
 % Customization settings
@@ -323,13 +335,13 @@
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
    \ifboolexpr{
-      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
       )
       and
-      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
     {\addtocategory{filtered}{\thefield{entrykey}}}
     {}}
 
@@ -341,13 +353,13 @@
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
    \ifboolexpr{
-      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
       )
       and
-      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
     {\addtocategory{filtered}{\thefield{entrykey}}}
     {}}
 
@@ -380,13 +392,13 @@
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
    \ifboolexpr{
-      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
       )
       and
-      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
    \ifthenelse{\value{listcount}=1}{}{%
        \ifnumless{\value{listcount}}{\value{liststop}}%
@@ -433,13 +445,13 @@
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
    \ifboolexpr{
-      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
       ) 
       and
-      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\global\toggletrue{myselfprec}\global\toggletrue{hadmyself}%
            \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
                    {\stepcounter{liststop}}{}}
@@ -477,15 +489,15 @@
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \ifboolexpr{
-      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
       )
       and
-      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}
-      \ifthenelse{\value{listcount}=1}{}{%
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+          {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
+   \ifthenelse{\value{listcount}=1}{}{%
          \ifnumless{\value{listcount}}{\value{liststop}-1}%
             {\multinamedelim}%
             {\finalnamedelim}%
@@ -528,13 +540,13 @@
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \ifboolexpr{
-      test { \ifdefstrequal{\bpl@esurname}{\bpl@tsurname} }
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
-      ( test { \ifdefstrequal{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
       )
       and
-      ( test { \ifdefstrequal{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
           {\global\toggletrue{myselfprec}\global\toggletrue{hadmyself}%
            \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
                    {\stepcounter{liststop}}{}}
