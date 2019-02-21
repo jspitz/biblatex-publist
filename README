@@ -45,8 +45,11 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.14 (forthcoming):
+* V. 1.14 (2019-02-21):
+	- Add support for highlighting multiple authors.
+	- Fix handling of non-ASCII names.
 	- Use \DeclareStyleSourcemap rather that \DeclareSourcemap.
+	- Update sorting documentation in the wake of biblatex changes.
 
 * V. 1.13 (2018-11-30):
         - Introduce new sorting templates that ignore names.
