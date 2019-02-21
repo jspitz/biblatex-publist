@@ -233,10 +233,10 @@ Of course, the solution does not help if there is an entry with same surname and
 
 \subsection{Highlighting multiple authors}\label{sec:multiauthors}
 
-If the option \joption{plauthorhandling=hilight} has been selected, \bpl\ will consider all \jcsmacro{plauthorname}
+If the option \joption{plauthorhandling=highlight} has been selected, \bpl\ will consider all \jcsmacro{plauthorname}
 specifications you have entered.
 
-Thus it is possible to highlight multiple authors in the publication list (for instance to mark) contributions
+Thus it is possible to highlight multiple authors in the publication list (for instance to mark contributions
 of a research team):
 \begin{lstlisting}[moretexcs={[2]{plauthorname}}]
 % All these names will be highlighted
@@ -246,7 +246,7 @@ of a research team):
 \end{lstlisting}
 
 Note that this also applies to filtering (see sec.~\ref{sec:filtering}), i.\,e., the \joption{mine} filter considers
-entries authored by \emph{any} of the specified persons with \joption{plauthorhandling=hilight}.
+entries authored by \emph{any} of the specified persons with \joption{plauthorhandling=highlight}.
 
 Note further that multiple authors are not supported with \joption{plauthorhandling=omit} (since it does not strike me useful).
 In this case, only the \emph{last} specified \jcsmacro{plauthorname} is considered.
