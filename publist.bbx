@@ -220,10 +220,9 @@
      {\plauthorname@ii{#1}[]}%
 }
 \def\plauthorname@ii#1[#2]#3{%
-  % Do stuff
   \def\bpl@osurname{#3}
-  \ifx\@empty#1\else\def\bpl@ofirstname{#1}\fi
-  \ifx\@empty#2\else\def\bpl@ovonpart{#2}\fi
+  \ifx\@empty#1\def\bpl@ofirstname{}\else\def\bpl@ofirstname{#1}\fi
+  \ifx\@empty#2\def\bpl@ovonpart{}\else\def\bpl@ovonpart{#2}\fi
 }
 
 %
