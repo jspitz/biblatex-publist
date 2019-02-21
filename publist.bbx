@@ -377,20 +377,22 @@
 \defbibfilter{mine}{category=filtered}
 
 %
-% Remove or embolden omitted name in author and editor lists
+% Remove or highlight omitted name in author and editor lists
 %
 \newtoggle{myselfprec}
 \newtoggle{hadmyself}
 \newtoggle{ismyself}
+
+
 \DeclareNameFormat{author}{%
+ \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+ \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+ \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+ \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+ \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+ \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
  \if@hlauthor%
-   % Embolden omitted author
-   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   % Highlight omitted author
    \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
@@ -438,12 +440,6 @@
  \else% \if@hlauthor false
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
-   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
    \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
@@ -482,12 +478,14 @@
 }
 
 \DeclareNameFormat{editor}{%
+ \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+ \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+ \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+ \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+ \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+ \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
  \if@hlauthor
-   % Embolden omitted editor
-   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   % Highlight omitted editor
    \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
@@ -502,7 +500,7 @@
             {\multinamedelim}%
             {\finalnamedelim}%
       }%
-      \iftoggle{ismyself}{\plauthorhl{%
+   \iftoggle{ismyself}{\plauthorhl{%
           \if@givenfirst% given name first
             \ifgiveninits
                 {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
@@ -516,7 +514,7 @@
                 {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
                 {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
          \fi
-       }}{%
+   }}{%
          \if@givenfirst% given name first
             \ifgiveninits
                 {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
@@ -530,15 +528,11 @@
                 {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
                 {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
          \fi
-      }%
-      \usebibmacro{name:andothers}%
+   }%
+   \usebibmacro{name:andothers}%
  \else% \if@hlauthor false
    \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{editor}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
    % Exclude omitted author
-   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
