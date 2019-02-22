@@ -45,6 +45,10 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.15 (2019-02-22):
+	- Add support for omitting multiple authors.
+	- Fix documentation issues.
+
 * V. 1.14 (2019-02-21):
 	- Add support for highlighting multiple authors.
 	- Fix handling of non-ASCII names.
