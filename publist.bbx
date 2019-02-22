@@ -432,7 +432,11 @@
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
 
 \DeclareDelimFormat{bplfinalnamedelim}{%
-  \ifnumgreater{\value{liststop}}{3}{\finalandcomma}{}%
+  \ifnumgreater{\value{nonplauthors}}{3}{\finalandcomma}{}%
+  \addspace\bibstring{and}\space}
+
+\DeclareDelimFormat{bplfinalnamedelimed}{%
+  \ifnumgreater{\value{nonpleditors}}{3}{\finalandcomma}{}%
   \addspace\bibstring{and}\space}
     
 \AtDataInput{%
@@ -804,7 +808,7 @@
                    {%
                      \ifnumless{\value{nonpleditor}}{\value{nonpleditors}}%
                         {\multinamedelim}%
-                        {\bplfinalnamedelim}%
+                        {\bplfinalnamedelimed}%
                    }%
                  }%
             \ifgiveninits
