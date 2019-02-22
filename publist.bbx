@@ -432,11 +432,11 @@
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
 
 \DeclareDelimFormat{bplfinalnamedelim}{%
-  \ifnumgreater{\value{nonplauthors}}{3}{\finalandcomma}{}%
+  \ifnumgreater{\value{nonplauthors}}{2}{\finalandcomma}{}%
   \addspace\bibstring{and}\space}
 
 \DeclareDelimFormat{bplfinalnamedelimed}{%
-  \ifnumgreater{\value{nonpleditors}}{3}{\finalandcomma}{}%
+  \ifnumgreater{\value{nonpleditors}}{2}{\finalandcomma}{}%
   \addspace\bibstring{and}\space}
     
 \AtDataInput{%
