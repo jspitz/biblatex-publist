@@ -54,6 +54,17 @@
 	citecolor=black
 }
 
+% Tweak the TOC (make it more compact)
+\usepackage{tocloft}
+\setlength{\cftaftertoctitleskip}{6pt}
+\setlength{\cftbeforesecskip}{3pt}
+\setlength{\cftbeforesubsecskip}{0pt}
+\renewcommand{\cfttoctitlefont}{\normalsize\bfseries}
+\renewcommand{\cftsecfont}{\small\bfseries}
+\renewcommand{\cftsecpagefont}{\small\bfseries}
+\renewcommand{\cftsubsecfont}{\small}
+\renewcommand{\cftsubsecpagefont}{\small}
+
 % Some semantic markup
 \makeatletter
 \def\jmacro{\@ifstar\@@jmacro\@jmacro}
@@ -89,7 +100,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.14, 2019/02/21}
+\date{Version 1.15, 2019/02/22}
 \maketitle
 
 \begin{abstract}
@@ -101,6 +112,8 @@ such as the omission or highlighting of the own name from\slash in author or edi
 The package requires at least version 3.8 of the \bibltx\ package\footnote{For \bibltx, see
 \url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (the respective version as required by \bibltx).
 \end{abstract}
+
+\tableofcontents
 
 \section{Aim of the package}
 
@@ -124,10 +137,10 @@ style file, \emph{publist.bst}%
 see also \cite{ttb}.}, which helps a lot if you want to produce a publication
 list with Bib\TeX. The \bpl\ package is the result of the aim of emulating
 the features of \emph{publist.bst} with \bibltx's means. It partly draws on
-Markey's conceptual ideas. Bug reports, comments and ideas are welcome.\filbreak
+Markey's conceptual ideas. Bug reports, comments and ideas are welcome.
 
 
-\section{Loading the package}
+\section{Usage}
 
 \subsection{Standard usage\label{sec:standard-usage}}
 
@@ -139,17 +152,17 @@ The standard way of using the package is to load the style file via
 The \jcsmacro*{plauthorname} macro\footnote{The macro was named \jfcsmacro{omitname} until v.\,1.4
 of the \bpl\ package. The old macro still works, but is marked as deprecated.}
 (at least with the mandatory \emph{surname} argument) needs to be given (at least\footnote{See
-sec.~\ref{sec:multiauthors} for the case of handling multiple authors.}) once. 
+sec.~\ref{sec:multiauthors} for the case of handling multiple authors and name variants.}) once. 
 It informs the style file which name(s) it should suppress or highlight in the
 author\slash editor list (usually yours). 
 
-With the default settings, the author\slash editor name will be omitted completely
-for all of your publications where you are the sole author or editor, as in:
+With the default settings, the author\slash editor name(s) will be omitted completely
+for all of publications which are authored or edited only by the specified person(s), as in:
 \begin{quote}
 \textbf{2012.} Some recent trends in gardening. In: \emph{Gardening
 Practice} 56, pp.~34--86.
 \end{quote}
-If there are co-authors\slash co-editors, your name will be filtered
+If there are co-authors\slash co-editors, your name(s) will be filtered
 out and the collaborators added in parentheses, as in:
 \begin{quote}
 \textbf{1987} (with John Doe and Mary Hall). Are there new trends
@@ -163,7 +176,7 @@ will be printed in bold face instead, as in:
 \end{quote}
 %
 Note that \jcsmacro{plauthorname} expects the name constituents as they are recorded in the
-database (special characters expanded). The option \joption{plauthorfirstinit} (see next section),
+database (special characters will be expanded). The option \joption{plauthorfirstinit} (see next section),
 however, allows you to pass only an initial character instead of a first name.
 
 
@@ -231,25 +244,40 @@ Of course, the solution does not help if there is an entry with same surname and
 \end{description}
 
 
-\subsection{Highlighting multiple authors}\label{sec:multiauthors}
+\subsection{Multiple authors and\slash or name variants}\label{sec:multiauthors}
 
-If the option \joption{plauthorhandling=highlight} has been selected, \bpl\ will consider all \jcsmacro{plauthorname}
-specifications you have entered.
+If multiple \jcsmacro{plauthorname} specifications have been entered (or a \jcsmacro{plauthorname} specification
+in addition to a specification via the options \joption{plauthorname}, \joption{plauthorname} and
+\joption{plauthornameprefix}), all of them will be considered.
 
-Thus it is possible to highlight multiple authors in the publication list (for instance to mark contributions
-of a research team):
+Thus it is possible to highlight multiple authors in the publication
+list (for instance to mark contributions of a research team):
 \begin{lstlisting}[moretexcs={[2]{plauthorname}}]
-% All these names will be highlighted
+\usepackage[style=publist,plauthorhandling=highlight]{biblatex}
 \plauthorname[John]{Doe}
 \plauthorname[Mary][van]{Smith}
 \plauthorname{Wittgenstein}
 \end{lstlisting}
+%
+Multiple specifications can also be used to deal with name variants:
+\begin{lstlisting}[moretexcs={[2]{plauthorname}}]
+\plauthorname[Bill]{Gates}
+\plauthorname[William]{Gates}
+\plauthorname[William Henry]{Gates}
+\plauthorname[William H.]{Gates}
+\end{lstlisting}
+%
+Since the latter is also useful with \joption{plauthorhandling=omit}, this mode also considers multiple specifications.
+By entering something such as the former, it is even possible to omit more than one and different authors from the entries
+(and \bpl\ will take care of the change in the author separation this involves; think of final \emph{and} vs. \emph{comma},
+which have to be adjusted accordingly if names are omitted). However, it does not strike me sensible to do so (in other words,
+if you need to deal with a \emph{team} of authors, you should really consider to use \joption{plauthorhandling=highlight}).
 
 Note that this also applies to filtering (see sec.~\ref{sec:filtering}), i.\,e., the \joption{mine} filter considers
-entries authored by \emph{any} of the specified persons with \joption{plauthorhandling=highlight}.
+entries authored by \emph{any} of the specified persons.
 
-Note further that multiple authors are not supported with \joption{plauthorhandling=omit} (since it does not strike me useful).
-In this case, only the \emph{last} specified \jcsmacro{plauthorname} is considered.
+
+\section{Customization}
 
 \subsection{Auxiliary macros and lengths}\label{sec:auxmacros}
 
@@ -422,6 +450,9 @@ which has to be passed to \jfcsmacro{printbibliography}, as in:
 \nocite{*}
 \printbibliography[heading=none,filter=mine]
 \end{lstlisting}
+%
+This will effectively print only publications which have been authored or edited by the
+person(s) specified as via \jcsmacro{plauthorname} (or the corresponding option).
 
 Of course, you can also use other filter possibilities provided by
 \bibltx, such as filtering by type or by keyword. So if you want
@@ -501,13 +532,20 @@ or
 \endrefcontext
 \end{lstlisting}
 
+\clearpage
 
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 1.15 (2019-02-22):}]~
+	\begin{itemize}
+		\item Add support for omitting multiple authors. See sec.~\ref{sec:multiauthors}.
+		\item Fix documentation issues.
+	\end{itemize}
+	
 	\item [{V. 1.14 (2019-02-21):}]~
 	\begin{itemize}
-		\item Add support for highlighting multiple authors.
+		\item Add support for highlighting multiple authors. See sec.~\ref{sec:multiauthors}.
 		\item Fix handling of non-ASCII names.
 		\item Use \jfcsmacro{DeclareStyleSourcemap} rather that \jfcsmacro{DeclareSourcemap}.
 		\item Update sorting documentation in the wake of \bibltx\ changes.
@@ -543,14 +581,14 @@ or
 		\jcsmacro{refsection}s.
 		\item Documentation improvements.
 	\end{itemize}
-\clearpage	
+
 	\item [{V.~1.9 (2018-03-01):}]~
 	\begin{itemize}
 		\item New option \joption{plnumbered} that allows to omit the numbering
 		      of the publication list items
 		\item Documentation improvements.
 	\end{itemize}
-
+\clearpage
 	\item [{V.~1.8 (2017-11-14):}]~
 	\begin{itemize}
 		\item Adapt to \bibltx\ 3.8. This version is now required.
@@ -594,10 +632,10 @@ or
 		\item Assure the margin text always starts uppercased (relevant for pubstates).
 		\item Minor corrections to the manual.
 	\end{itemize}
+\clearpage
+   \item [{V.~1.3 (2016-08-06):}]~
 
-\item [{V.~1.3 (2016-08-06):}]~
-
-\begin{itemize}
+   \begin{itemize}
 	\item It is now possible to change the base style that is used by \bpl. See sec.~\ref{sec:basestyle}.
 	\item Proper sorting of pubstates.
 	\item Add possibility to increase the indentation of items (by means of the length  \jmacro{extralabelnumberwidth}). See sec.~\ref{sec:auxmacros}.
