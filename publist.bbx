@@ -226,7 +226,6 @@
 }
 
 
-
 %
 % Customization settings
 %
@@ -252,12 +251,7 @@
      {\plauthorname@ii{#1}[]}%
 }
 \def\plauthorname@ii#1[#2]#3{%
-  \def\bpl@osurname{#3}
-  \ifx\@empty#1\def\bpl@ofirstname{}\else\def\bpl@ofirstname{#1}\fi
-  \ifx\@empty#2\def\bpl@ovonpart{}\else\def\bpl@ovonpart{#2}\fi
-  \if@hlauthor%
-     \listgadd{\bpl@plauthors}{#1,#2,#3}
-  \fi
+    \listgadd{\bpl@plauthors}{#1,#2,#3}
 }
 
 %
@@ -348,6 +342,7 @@
 % Bibliography filter
 %
 % Inspired by http://tex.stackexchange.com/a/28555/19291
+%
 \DeclareBibliographyCategory{filtered}
 
 \DeclareIndexNameFormat{authorfiltered}{%
@@ -357,6 +352,8 @@
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   % Check if we are dealing with a plauthor
+   % First the plauthorname as set via option
    \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
@@ -365,8 +362,9 @@
       )
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-    {\addtocategory{filtered}{\thefield{entrykey}}}
+    {\addtocategory{filtered}{\thefield{entrykey}}}%
     {}%
+    % Then the name(s) set via macro
     \def\bpl@lsurname{}%
     \def\bpl@lfirstname{}%
     \def\bpl@lvonpart{}%
@@ -383,7 +381,8 @@
               )
               and
               ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-             {\addtocategory{filtered}{\thefield{entrykey}}}{}%
+            {\addtocategory{filtered}{\thefield{entrykey}}}%
+            {}%
     }%
    \dolistloop{\bpl@plauthors}%
 }
@@ -395,6 +394,8 @@
    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   % Check if we are dealing with a plauthor
+   % First the plauthorname as set via option
    \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
@@ -403,8 +404,9 @@
       )
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-    {\addtocategory{filtered}{\thefield{entrykey}}}
+    {\addtocategory{filtered}{\thefield{entrykey}}}%
     {}%
+    % Then the name(s) set via macro
     \def\bpl@lsurname{}%
     \def\bpl@lfirstname{}%
     \def\bpl@lvonpart{}%
@@ -421,7 +423,8 @@
               )
               and
               ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-             {\addtocategory{filtered}{\thefield{entrykey}}}{}%
+            {\addtocategory{filtered}{\thefield{entrykey}}}%
+            {}%
     }%
    \dolistloop{\bpl@plauthors}%
 }
@@ -439,24 +442,134 @@
 
 \defbibfilter{mine}{category=filtered}
 
+
 %
-% Remove or highlight omitted name in author and editor lists
+% Count non-plauthors
 %
-\newtoggle{myselfprecedes}
-\newtoggle{hadmyself}
-\newtoggle{ismyself}
+
+\newcounter{nonplauthors}
+
+\DeclareIndexNameFormat{nonplauthorcount}{%
+   \newtoggle{havenonplauthor}%
+   \toggletrue{havenonplauthor}%
+   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   % Check if we are dealing with a plauthor
+   % First the plauthorname as set via option
+   \ifboolexpr{
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+      and
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      )
+      and
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+    {\togglefalse{havenonplauthor}}%
+    {}%
+    % Then the name(s) set via macro
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+              and
+              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              )
+              and
+              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+            {\togglefalse{havenonplauthor}}%
+            {}%
+    }%
+   \dolistloop{\bpl@plauthors}%
+   \iftoggle{havenonplauthor}{\stepcounter{nonplauthors}}{}%
+}
+
+\newcounter{nonpleditors}
+
+\DeclareIndexNameFormat{nonpleditorcount}{%
+   \newtoggle{havenonplauthor}%
+   \toggletrue{havenonplauthor}%
+   \edef\bpl@tsurname{\namepartfamily}%
+   \edef\bpl@tfirstname{\namepartgiven}%
+   \edef\bpl@tvonpart{\namepartprefix}%
+   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+   % Check if we are dealing with a plauthor
+   % First the plauthorname as set via option
+   \ifboolexpr{
+      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+      and
+      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+      )
+      and
+      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+    {\togglefalse{havenonplauthor}}%
+    {}%
+    % Then the name(s) set via macro
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+              and
+              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              )
+              and
+              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+            {\togglefalse{havenonplauthor}}%
+            {}%
+    }%
+   \dolistloop{\bpl@plauthors}%
+   \iftoggle{havenonplauthor}{\stepcounter{nonpleditors}}{}%
+}
+
+\newcounter{nonplauthor}
+\newcounter{nonpleditor}
+\AtEveryBibitem{%
+  \setcounter{nonplauthors}{0}%
+  \setcounter{nonpleditors}{0}%
+  \setcounter{nonplauthor}{0}%
+  \setcounter{nonpleditor}{0}%
+  \indexnames[nonplauthorcount]{author}%
+  \indexnames[nonpleditorcount]{editor}%
+}
+
+%
+% Remove or highlight plauthorname in author and editor lists
+%
+\newtoggle{plauthorprecedes}
+\newtoggle{hadplauthor}
+\newtoggle{isplauthor}
 
 
 \DeclareNameFormat{author}{%
- \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
- \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
- \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
- \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
- \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
- \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
- \if@hlauthor%
-   % Highlight omitted author
-   \ifboolexpr{
+  \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+  \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+  \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+  \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+  \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+  \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+  % Check if we are dealing with a plauthor
+  % First the plauthorname as set via option
+  \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
       ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
@@ -464,235 +577,247 @@
       )
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
-    \def\bpl@lsurname{}%
-    \def\bpl@lfirstname{}%
-    \def\bpl@lvonpart{}%
-    \renewcommand*{\do}[1]{%
-        \jsp@splitpllist{##1}%
-        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
-        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
-        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
-        \ifboolexpr{
-              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-              and
-              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-              )
-              and
-              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-             {\global\toggletrue{ismyself}}{}%
-    }%
-   \dolistloop{\bpl@plauthors}%
-   \ifthenelse{\value{listcount}=1}{}{%
-       \ifnumless{\value{listcount}}{\value{liststop}}%
-          {\multinamedelim}%
-          {\finalnamedelim}%
-   }%
-   \iftoggle{ismyself}{\plauthorhl{%
-      \if@givenfirst% given name first
-         \ifgiveninits
-             {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-          \namepartfamily%
-       \else% family name first
-          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-          \namepartfamily%
-          \ifgiveninits
-             {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-      \fi
-   }}{%
-     \if@givenfirst% given name first
-         \ifgiveninits
-             {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-          \namepartfamily%
-       \else% family name first
-          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-          \namepartfamily%
-          \ifgiveninits
-             {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-      \fi
-   }%
-   \usebibmacro{name:andothers}%
-%
- \else% \if@hlauthor false
-   \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{author}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
-   % Exclude omitted author
-   \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
-      ) 
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-%
+      {\global\toggletrue{isplauthor}}{\global\togglefalse{isplauthor}}%
+  % Then the name(s) set via macro
+  \def\bpl@lsurname{}%
+  \def\bpl@lfirstname{}%
+  \def\bpl@lvonpart{}%
+  \renewcommand*{\do}[1]{%
+     \jsp@splitpllist{##1}%
+     \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+     \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+     \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+     \ifboolexpr{
+           test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+           and
+           ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+             or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+           )
+           and
+           ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+          {\global\toggletrue{isplauthor}}{}%
+  }%
+  \dolistloop{\bpl@plauthors}%
+  %
+  % First case: plauthorhandling=highlight
+  \if@hlauthor%
+      % Highlight plauthor(s)
+      \ifthenelse{\value{listcount}=1}{}{%
+          \ifnumless{\value{listcount}}{\value{liststop}}%
+             {\multinamedelim}%
+             {\finalnamedelim}%
+      }%
+      \iftoggle{isplauthor}{%
+          \plauthorhl{%
+              \if@givenfirst% given name first
+                  \ifgiveninits
+                      {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                      {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                  \ifdefvoid{\namepartprefix}%
+                      {}%
+                      {\namepartprefix\addspace}%
+                  \namepartfamily%
+              \else% family name first
+                  \ifdefvoid{\namepartprefix}%
+                      {}%
+                      {\namepartprefix\addspace}%
+                  \namepartfamily%
+                  \ifgiveninits
+                      {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                      {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+              \fi
+          }%
+      }{%
+          \if@givenfirst% given name first
+              \ifgiveninits
+                  {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                  {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+              \ifdefvoid{\namepartprefix}%
+                  {}%
+                  {\namepartprefix\addspace}%
+              \namepartfamily%
+          \else% family name first
+              \ifdefvoid{\namepartprefix}%
+                    {}%
+                    {\namepartprefix\addspace}%
+              \namepartfamily%
+              \ifgiveninits
+                 {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                 {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+          \fi
+      }%
+      \usebibmacro{name:andothers}%
+  %
+  % Second case: plauthorhandling=omit
+  \else% \if@hlauthor false
+      \ifthenelse{\value{listcount}=1}%
+          {\ifthenelse{\value{nonplauthors}>0}%
+               {\bibopenparen\bibstring{with}\addspace}%
+               {}%
+           \iftoggle{isplauthor}%
+               {\global\toggletrue{plauthorprecedes}}%
+               {\global\togglefalse{plauthorprecedes}}%
+          }%
+          {}%
+      % Exclude omitted author
+      \iftoggle{isplauthor}%
           {% <- TRUE condition
-            \global\toggletrue{myselfprecedes}%
-            \global\toggletrue{hadmyself}%
-            \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
-                       {\stepcounter{liststop}}{}%
+            \global\toggletrue{hadplauthor}%
           }% <- end TRUE condition
-%
           {% <- FALSE condition
+            \stepcounter{nonplauthor}%
             \ifthenelse{\value{listcount}=1}%
-                 {\global\togglefalse{hadmyself}}%
+                 {\global\togglefalse{hadplauthor}}%
                  {%
-                   \ifboolexpr{
-                        test { \iftoggle{myselfprecedes} }
-                        and
-                        test { \ifnumless{\value{listcount}}{3} } }
+                   \iftoggle{plauthorprecedes}%
                    {}%
                    {%
-                     \ifnumless{\value{listcount}}{\value{liststop}-1}%
+                     \ifnumless{\value{nonplauthor}}{\value{nonplauthors}}%
                         {\multinamedelim}%
-                        {\iftoggle{hadmyself}{%
-                            \ifnumless{\value{listcount}}{\value{liststop}}%
-                                {\multinamedelim}%
-                                {\bplfinalnamedelim}%
-                        }{\bplfinalnamedelim}}%
+                        {\bplfinalnamedelim}%
                    }%
                  }%
             \ifgiveninits
                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-            \global\togglefalse{myselfprecedes}%
+            \global\togglefalse{plauthorprecedes}%
             \namepartfamily%
           }% <- end FALSE condition
-%
-          \usebibmacro{name:andothers}%
-   \ifthenelse{\value{listcount}=\value{liststop}\AND\value{author}>1}{\unspace\bibcloseparen}{}%
- \fi% end of \if@hlauthor else condition
+      %
+      \usebibmacro{name:andothers}%
+      \ifthenelse{\value{nonplauthors}>0\AND\value{listcount}=\value{liststop}}{\unspace\bibcloseparen}{}%
+  \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{editor}{%
- \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
- \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
- \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
- \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
- \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
- \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
- \if@hlauthor
-   % Highlight omitted editor
-   \ifboolexpr{
+  \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+  \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+  \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+  \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+  \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+  \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+  % Check if we are dealing with a plauthor
+  % First the plauthorname as set via option
+  \ifboolexpr{
       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
       and
       ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
       )
       and
       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-          {\global\toggletrue{ismyself}}{\global\togglefalse{ismyself}}%
-    \def\bpl@lsurname{}%
-    \def\bpl@lfirstname{}%
-    \def\bpl@lvonpart{}%
-    \renewcommand*{\do}[1]{%
-        \jsp@splitpllist{##1}%
-        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
-        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
-        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
-        \ifboolexpr{
-              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-              and
-              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-              )
-              and
-              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-             {\global\toggletrue{ismyself}}{}%
-    }%
-   \dolistloop{\bpl@plauthors}%
-   \ifthenelse{\value{listcount}=1}{}{%
-         \ifnumless{\value{listcount}}{\value{liststop}-1}%
-            {\multinamedelim}%
-            {\finalnamedelim}%
+      {\global\toggletrue{isplauthor}}{\global\togglefalse{isplauthor}}%
+  % Then the name(s) set via macro
+  \def\bpl@lsurname{}%
+  \def\bpl@lfirstname{}%
+  \def\bpl@lvonpart{}%
+  \renewcommand*{\do}[1]{%
+     \jsp@splitpllist{##1}%
+     \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+     \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+     \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+     \ifboolexpr{
+           test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+           and
+           ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+             or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+           )
+           and
+           ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+          {\global\toggletrue{isplauthor}}{}%
+  }%
+  \dolistloop{\bpl@plauthors}%
+  %
+  % First case: plauthorhandling=highlight
+  \if@hlauthor
+      % Highlight omitted editor
+      \ifthenelse{\value{listcount}=1}{}{%
+          \ifnumless{\value{listcount}}{\value{liststop}-1}%
+              {\multinamedelim}%
+              {\finalnamedelim}%
       }%
-   \iftoggle{ismyself}{\plauthorhl{%
+      \iftoggle{isplauthor}{%
+          \plauthorhl{%
+              \if@givenfirst% given name first
+                  \ifgiveninits
+                      {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                      {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                  \ifdefvoid{\namepartprefix}%
+                      {}%
+                      {\namepartprefix\addspace}%
+                  \namepartfamily%
+              \else% family name first
+                  \ifdefvoid{\namepartprefix}%
+                      {}%
+                      {\namepartprefix\addspace}%
+                  \namepartfamily%
+                  \ifgiveninits
+                      {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                      {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+              \fi
+          }%
+      }{%
           \if@givenfirst% given name first
-            \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
+              \ifgiveninits
+                  {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                  {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+              \ifdefvoid{\namepartprefix}%
+                  {}%
+                  {\namepartprefix\addspace}%
+              \namepartfamily%
           \else% family name first
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-             \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-         \fi
-   }}{%
-         \if@givenfirst% given name first
-            \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-          \else% family name first
-             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-             \namepartfamily%
-             \ifgiveninits
-                {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-         \fi
-   }%
-   \usebibmacro{name:andothers}%
-%
- \else% \if@hlauthor false
-   \ifthenelse{\value{listcount}=1}{\ifthenelse{\value{editor}>1}{\bibopenparen\bibstring{with}\addspace}{}}{}%
-   % Exclude omitted editor
-   \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
-      ) 
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-%
+              \ifdefvoid{\namepartprefix}%
+                  {}%
+                  {\namepartprefix\addspace}%
+              \namepartfamily%
+              \ifgiveninits
+                  {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                  {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+          \fi
+      }%
+      \usebibmacro{name:andothers}%
+  %
+  % Second case: plauthorhandling=omit
+  \else% \if@hlauthor false
+      \ifthenelse{\value{listcount}=1}%
+          {\ifthenelse{\value{nonpleditors}>0}%
+               {\bibopenparen\bibstring{with}\addspace}%
+               {}%
+           \iftoggle{isplauthor}%
+               {\global\toggletrue{plauthorprecedes}}%
+               {\global\togglefalse{plauthorprecedes}}%
+          }%
+          {}%
+      % Exclude omitted editor
+      \iftoggle{isplauthor}%
           {% <- TRUE condition
-            \global\toggletrue{myselfprecedes}%
-            \global\toggletrue{hadmyself}%
-            \ifthenelse{\value{listcount}=1\AND\value{liststop}=1}
-                       {\stepcounter{liststop}}{}%
+            \global\toggletrue{hadplauthor}%
           }% <- end TRUE condition
-%
           {% <- FALSE condition
+            \stepcounter{nonpleditor}%
             \ifthenelse{\value{listcount}=1}%
-                 {\global\togglefalse{hadmyself}}%
+                 {\global\togglefalse{hadplauthor}}%
                  {%
-                   \ifboolexpr{
-                        test { \iftoggle{myselfprecedes} }
-                        and
-                        test { \ifnumless{\value{listcount}}{3} } }
+                   \iftoggle{plauthorprecedes}%
                    {}%
                    {%
-                     \ifnumless{\value{listcount}}{\value{liststop}-1}%
+                     \ifnumless{\value{nonpleditor}}{\value{nonpleditors}}%
                         {\multinamedelim}%
-                        {\iftoggle{hadmyself}{%
-                            \ifnumless{\value{listcount}}{\value{liststop}}%
-                                {\multinamedelim}%
-                                {\bplfinalnamedelim}%
-                        }{\bplfinalnamedelim}}%
+                        {\bplfinalnamedelim}%
                    }%
                  }%
             \ifgiveninits
                {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
                {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
             \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-            \global\togglefalse{myselfprecedes}%
+            \global\togglefalse{plauthorprecedes}%
             \namepartfamily%
           }% <- end FALSE condition
-%
-          \usebibmacro{name:andothers}%
-   \ifthenelse{\value{listcount}=\value{liststop}\AND\value{editor}>1}{\unspace\bibcloseparen}{}%
- \fi% end of \if@hlauthor else condition
+      %
+      \usebibmacro{name:andothers}%
+      \ifthenelse{\value{nonpleditors}>0\AND\value{listcount}=\value{liststop}}{\unspace\bibcloseparen}{}%
+  \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{bookauthor}{%
