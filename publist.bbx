@@ -936,10 +936,9 @@
     \if@hlauthor
         \ifboolexpr{
             test \ifuseeditor
-            and
-            not test {\ifnameundef{editor}}
-        }
-            {\usebibmacro{bpl:marginyear}%
+            and not test {\ifnameundef{editor}}}
+            {%
+             \usebibmacro{bpl:marginyear}%
              \printnames{editor}%
              \setunit{\addcomma\space}%
              \usebibmacro{editor+othersstrg}%
@@ -951,10 +950,9 @@
     \else% \if@hlauthor false
         \ifboolexpr{
             test \ifuseeditor
-            and
-            not test {\ifnameundef{editor}}
-        }
-            {\usebibmacro{bpl:marginyear}%
+            and not test {\ifnameundef{editor}}}
+            {%
+             \usebibmacro{bpl:marginyear}%
              \usebibmacro{bpl:year+labelyear}%
              \addspace%
              \printnames{editor}%
