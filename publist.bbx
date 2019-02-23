@@ -25,19 +25,19 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.15}
-\def\bpl@rdate{2019/02/22}
+\def\bpl@version{1.16dev}
+\def\bpl@rdate{2019/02/23}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
 
 \@ifpackagelater{biblatex}{2017/11/04}
-  {}
-  {\PackageError{biblatex-publist}
-    {Outdated 'biblatex' package\MessageBreak
-     Upgrade to biblatex v3.8 (2017/11/04) or later.\MessageBreak
-     I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
-     This is a fatal error. I'm aborting now}%
+    {}
+    {\PackageError{biblatex-publist}
+        {Outdated 'biblatex' package\MessageBreak
+         Upgrade to biblatex v3.8 (2017/11/04) or later.\MessageBreak
+         I found: '\csuse{ver@biblatex.sty}'.\MessageBreak
+         This is a fatal error. I'm aborting now}%
      \endinput}
 
 
@@ -47,17 +47,20 @@
 
 % Deprecated Options (as of v. 1.4)
 \DeclareBibliographyOption{omitname}{%
-  \PackageWarning{biblatex-publist}{The omitname option is deprecated!\MessageBreak
-                                  Please use plauthorname instead.}{}%
-  \def\bpl@osurname{#1}}
+    \PackageWarning{biblatex-publist}
+        {The omitname option is deprecated!\MessageBreak
+         Please use plauthorname instead.}{}%
+    \def\bpl@osurname{#1}}
 \DeclareBibliographyOption{omitfirstname}{%
-  \PackageWarning{biblatex-publist}{The omitfirstname option is deprecated!\MessageBreak
-                                  Please use plauthorfirstname instead.}{}%
-  \def\bpl@ofirstname{#1}}
+    \PackageWarning{biblatex-publist}
+         {The omitfirstname option is deprecated!\MessageBreak
+          Please use plauthorfirstname instead.}{}%
+    \def\bpl@ofirstname{#1}}
 \DeclareBibliographyOption{omitnameprefix}{%
-  \PackageWarning{biblatex-publist}{The omitnameprefix option is deprecated!\MessageBreak
-                                  Please use plauthornameprefix instead.}{}%
-  \def\bpl@ovonpart{#1}}
+    \PackageWarning{biblatex-publist}
+        {The omitnameprefix option is deprecated!\MessageBreak
+         Please use plauthornameprefix instead.}{}%
+    \def\bpl@ovonpart{#1}}
 
 % Valid options
 \DeclareBibliographyOption{plauthorname}{\def\bpl@osurname{#1}}
@@ -141,9 +144,9 @@
 
 % Default sorting depends on plauthorhandling
 \if@hlauthor%
-  \ExecuteBibliographyOptions{sorting=ydnt}
+    \ExecuteBibliographyOptions{sorting=ydnt}
 \else
-  \ExecuteBibliographyOptions{sorting=ydt}
+    \ExecuteBibliographyOptions{sorting=ydt}
 \fi
 
 % Execute these options only with the standard base style
@@ -168,34 +171,35 @@
 % http://tex.stackexchange.com/a/79583/19291)
 % and normalize spaces
 \def\bpl@normalize#1#2{%
-  \begingroup
-  \def\bibnamedelima{ }%
-  \def\bibnamedelimb{ }%
-  \def\IeC##1{##1}%
-  \protected@edef\@tempa{#1}%
-  \gdef\@gtempa{}%
-  \expandafter\bpl@@normalize\@tempa\@nil
-  \endgroup
-  \let#2\@gtempa
+    \begingroup
+    \def\bibnamedelima{ }%
+    \def\bibnamedelimb{ }%
+    \def\IeC##1{##1}%
+    \protected@edef\@tempa{#1}%
+    \gdef\@gtempa{}%
+    \expandafter\bpl@@normalize\@tempa\@nil
+    \endgroup
+    \let#2\@gtempa
 }
 \def\bpl@@normalize#1{%
-  \ifx#1\@nil\else
-    \expandafter\gdef\expandafter\@gtempa\expandafter{\@gtempa#1}%
-    \expandafter\bpl@@normalize
-  \fi
+    \ifx#1\@nil\else
+        \expandafter\gdef\expandafter%
+        \@gtempa\expandafter{\@gtempa#1}%
+        \expandafter\bpl@@normalize
+    \fi
 }
 %
 % Check first token of macro
 % (based on a suggestion by Qrrbrbirlbel at
 % https://tex.stackexchange.com/a/132254)
 \newcommand*{\iffirstinitialsequal}{%
-  \@expandtwoargs\if@startswith}
+    \@expandtwoargs\if@startswith}
 \newcommand*{\if@startswith}[2]{%
-  \if\@car#1.\@nil\@car#2.\@nil
-     \expandafter\@firstoftwo
-  \else
-     \expandafter\@secondoftwo
-  \fi
+    \if\@car#1.\@nil\@car#2.\@nil
+        \expandafter\@firstoftwo
+    \else
+        \expandafter\@secondoftwo
+    \fi
 }
 %
 % Split plauthors list item
@@ -217,12 +221,12 @@
 % Fully expanded comparison
 % (adapted from scrbase.sty)
 \newcommand\bpl@ifstreq[2]{%
-  \begingroup\edef\@tempa{#1}\edef\@tempb{#2}%
-  \ifx\@tempa\@tempb
-    \endgroup\expandafter\@firstoftwo
-  \else
-    \endgroup\expandafter\@secondoftwo
-  \fi
+    \begingroup\edef\@tempa{#1}\edef\@tempb{#2}%
+    \ifx\@tempa\@tempb
+        \endgroup\expandafter\@firstoftwo
+    \else
+        \endgroup\expandafter\@secondoftwo
+    \fi
 }
 
 
@@ -239,7 +243,7 @@
 % List to store multiple pl authors (for highlight only)
 \def\bpl@plauthors{}
 %
-% Manual way to specify publication list author name
+% Manual way to specify publication list author(s) name
 \def\plauthorname{%
    \@ifnextchar[%
      {\plauthorname@i}
@@ -257,13 +261,13 @@
 %
 % Formatting of year in margin par (if requested)
 \providecommand*\plmarginyear[1]{%
-  \raggedleft\small\textbf{#1}%
+    \raggedleft\small\textbf{#1}%
 }
 
 %
 % Highlighting auf publist author with plauthorhandling=highlight
 \providecommand*\plauthorhl[1]{%
-  \mkbibbold{#1}%
+    \mkbibbold{#1}%
 }
 
 
@@ -291,24 +295,28 @@
 \setlength\extralabelnumberwidth{0pt}
 
 \defbibenvironment{bibliography}
-  {\addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
-   \list
-     {\printtext[labelnumberwidth]{%
-      \printfield{labelprefix}%
-      \printfield{labelnumber}}}
-     {\setlength{\labelwidth}{\labelnumberwidth}%
-      \setlength{\leftmargin}{\labelwidth}%
-      \setlength{\labelsep}{\biblabelsep}%
-      \addtolength{\leftmargin}{\labelsep}%
-      \setlength{\itemsep}{\bibitemsep}%
-      \setlength{\parsep}{\bibparsep}}%
-      \renewcommand*{\makelabel}[1]{\hss##1}}%
-  {\endlist
-   \ifnumgreater{\c@refsection}{\bbx@saverefsection}%
-    {\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}+\csuse{bbx@currentitem}}}{}%
-   \csnumgdef{bbx@saverefsection}{\c@refsection}%
-  }
-  {\item}
+    {%
+     \addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
+     \list
+         {\printtext[labelnumberwidth]{%
+          \printfield{labelprefix}%
+          \printfield{labelnumber}}%
+         }
+         {\setlength{\labelwidth}{\labelnumberwidth}%
+          \setlength{\leftmargin}{\labelwidth}%
+          \setlength{\labelsep}{\biblabelsep}%
+          \addtolength{\leftmargin}{\labelsep}%
+          \setlength{\itemsep}{\bibitemsep}%
+          \setlength{\parsep}{\bibparsep}%
+         }%
+          \renewcommand*{\makelabel}[1]{\hss##1}%
+    }%
+    {\endlist
+     \ifnumgreater{\c@refsection}{\bbx@saverefsection}%
+     {\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}+\csuse{bbx@currentitem}}}{}%
+      \csnumgdef{bbx@saverefsection}{\c@refsection}%
+    }
+    {\item}
 
 \DeclareFieldFormat{labelnumber}{%
     \ifbool{newsection}{%
@@ -322,20 +330,25 @@
 
 % Print labelnumber as actual number, plus item total
 \newrobustcmd{\mkbibdesc}[1]{%
-  \number\numexpr\csuse{bbx@itemtotal}+#1\relax}
+    \number\numexpr\csuse{bbx@itemtotal}+#1\relax%
+}
 
 % Way to manual shift the numbering (undocumented)
-\newcommand*\decreasebbxnumbering[1]{\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1}}
+\newcommand*\decreasebbxnumbering[1]{%
+    \csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1}%
+}
 
 
 %
 % New environment for (foreign) reviews
 %
 \defbibenvironment{reviews}
-  {\begin{enumerate}%
-   \small\setlength\itemsep{0pt}}
-  {\end{enumerate}}
-  {\item}
+    {%
+     \begin{enumerate}%
+     \small\setlength\itemsep{0pt}%
+    }
+    {\end{enumerate}}
+    {\item}
 
 
 %
@@ -346,45 +359,45 @@
 \DeclareBibliographyCategory{filtered}
 
 \DeclareIndexNameFormat{authorfiltered}{%
-   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
-   % Check if we are dealing with a plauthor
-   % First the plauthorname as set via option
-   \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
-      )
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-    {\addtocategory{filtered}{\thefield{entrykey}}}%
-    {}%
-    % Then the name(s) set via macro
-    \def\bpl@lsurname{}%
-    \def\bpl@lfirstname{}%
-    \def\bpl@lvonpart{}%
-    \renewcommand*{\do}[1]{%
-        \jsp@splitpllist{##1}%
-        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
-        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
-        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
-        \ifboolexpr{
-              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-              and
-              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-              )
-              and
-              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-            {\addtocategory{filtered}{\thefield{entrykey}}}%
-            {}%
-    }%
-   \dolistloop{\bpl@plauthors}%
+    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+    \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+    % Check if we are dealing with a plauthor
+    % First the plauthorname as set via option
+    \ifboolexpr{
+       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+       and
+       ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+       )
+       and
+       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+     {\addtocategory{filtered}{\thefield{entrykey}}}%
+     {}%
+     % Then the name(s) set via macro
+     \def\bpl@lsurname{}%
+     \def\bpl@lfirstname{}%
+     \def\bpl@lvonpart{}%
+     \renewcommand*{\do}[1]{%
+         \jsp@splitpllist{##1}%
+         \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+         \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+         \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+         \ifboolexpr{
+               test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+               and
+               ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                 or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+               )
+               and
+               ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+             {\addtocategory{filtered}{\thefield{entrykey}}}%
+             {}%
+     }%
+    \dolistloop{\bpl@plauthors}%
 }
 
 \DeclareIndexNameFormat{editorfiltered}{%
@@ -432,16 +445,16 @@
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
 
 \DeclareDelimFormat{bplfinalnamedelim}{%
-  \ifnumgreater{\value{nonplauthors}}{2}{\finalandcomma}{}%
-  \addspace\bibstring{and}\space}
+    \ifnumgreater{\value{nonplauthors}}{2}{\finalandcomma}{}%
+    \addspace\bibstring{and}\space}
 
 \DeclareDelimFormat{bplfinalnamedelimed}{%
-  \ifnumgreater{\value{nonpleditors}}{2}{\finalandcomma}{}%
-  \addspace\bibstring{and}\space}
+    \ifnumgreater{\value{nonpleditors}}{2}{\finalandcomma}{}%
+    \addspace\bibstring{and}\space}
     
 \AtDataInput{%
-  \indexnames[authorfiltered]{author}%
-  \indexnames[editorfiltered]{editor}%
+    \indexnames[authorfiltered]{author}%
+    \indexnames[editorfiltered]{editor}%
 }
 
 \defbibfilter{mine}{category=filtered}
@@ -454,73 +467,73 @@
 \newcounter{nonplauthors}
 
 \DeclareIndexNameFormat{nonplauthorcount}{%
-   \newtoggle{havenonplauthor}%
-   \toggletrue{havenonplauthor}%
-   \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-   \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-   \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
-   % Check if we are dealing with a plauthor
-   % First the plauthorname as set via option
-   \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
-      )
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-    {\togglefalse{havenonplauthor}}%
-    {}%
-    % Then the name(s) set via macro
-    \def\bpl@lsurname{}%
-    \def\bpl@lfirstname{}%
-    \def\bpl@lvonpart{}%
-    \renewcommand*{\do}[1]{%
-        \jsp@splitpllist{##1}%
-        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
-        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
-        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
-        \ifboolexpr{
-              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-              and
-              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-              )
-              and
-              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-            {\togglefalse{havenonplauthor}}%
-            {}%
-    }%
-   \dolistloop{\bpl@plauthors}%
-   \iftoggle{havenonplauthor}{\stepcounter{nonplauthors}}{}%
+    \newtoggle{havenonplauthor}%
+    \toggletrue{havenonplauthor}%
+    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+    \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+    % Check if we are dealing with a plauthor
+    % First the plauthorname as set via option
+    \ifboolexpr{
+       test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+       and
+       ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+         or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+       )
+       and
+       ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+     {\togglefalse{havenonplauthor}}%
+     {}%
+     % Then the name(s) set via macro
+     \def\bpl@lsurname{}%
+     \def\bpl@lfirstname{}%
+     \def\bpl@lvonpart{}%
+     \renewcommand*{\do}[1]{%
+         \jsp@splitpllist{##1}%
+         \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+         \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+         \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+         \ifboolexpr{
+               test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+               and
+               ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+                 or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+               )
+               and
+               ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+             {\togglefalse{havenonplauthor}}%
+             {}%
+     }%
+    \dolistloop{\bpl@plauthors}%
+    \iftoggle{havenonplauthor}{\stepcounter{nonplauthors}}{}%
 }
 
 \newcounter{nonpleditors}
 
 \DeclareIndexNameFormat{nonpleditorcount}{%
-   \newtoggle{havenonplauthor}%
-   \toggletrue{havenonplauthor}%
-   \edef\bpl@tsurname{\namepartfamily}%
-   \edef\bpl@tfirstname{\namepartgiven}%
-   \edef\bpl@tvonpart{\namepartprefix}%
-   \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-   \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-   \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
-   % Check if we are dealing with a plauthor
-   % First the plauthorname as set via option
-   \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
-      )
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-    {\togglefalse{havenonplauthor}}%
-    {}%
+    \newtoggle{havenonplauthor}%
+    \toggletrue{havenonplauthor}%
+    \edef\bpl@tsurname{\namepartfamily}%
+    \edef\bpl@tfirstname{\namepartgiven}%
+    \edef\bpl@tvonpart{\namepartprefix}%
+    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+    % Check if we are dealing with a plauthor
+    % First the plauthorname as set via option
+    \ifboolexpr{
+        test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+        and
+        ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+          or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } ) 
+        )
+        and
+        ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+        {\togglefalse{havenonplauthor}}%
+        {}%
     % Then the name(s) set via macro
     \def\bpl@lsurname{}%
     \def\bpl@lfirstname{}%
@@ -531,29 +544,29 @@
         \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
         \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
         \ifboolexpr{
-              test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-              and
-              ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-                or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-              )
-              and
-              ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+            test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+            and
+            ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+              or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+            )
+            and
+            ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
             {\togglefalse{havenonplauthor}}%
             {}%
     }%
-   \dolistloop{\bpl@plauthors}%
-   \iftoggle{havenonplauthor}{\stepcounter{nonpleditors}}{}%
+    \dolistloop{\bpl@plauthors}%
+    \iftoggle{havenonplauthor}{\stepcounter{nonpleditors}}{}%
 }
 
 \newcounter{nonplauthor}
 \newcounter{nonpleditor}
 \AtEveryBibitem{%
-  \setcounter{nonplauthors}{0}%
-  \setcounter{nonpleditors}{0}%
-  \setcounter{nonplauthor}{0}%
-  \setcounter{nonpleditor}{0}%
-  \indexnames[nonplauthorcount]{author}%
-  \indexnames[nonpleditorcount]{editor}%
+    \setcounter{nonplauthors}{0}%
+    \setcounter{nonpleditors}{0}%
+    \setcounter{nonplauthor}{0}%
+    \setcounter{nonpleditor}{0}%
+    \indexnames[nonplauthorcount]{author}%
+    \indexnames[nonpleditorcount]{editor}%
 }
 
 %
@@ -565,285 +578,290 @@
 
 
 \DeclareNameFormat{author}{%
-  \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-  \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-  \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
-  \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-  \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-  \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
-  % Check if we are dealing with a plauthor
-  % First the plauthorname as set via option
-  \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
-      )
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-      {\global\toggletrue{isplauthor}}{\global\togglefalse{isplauthor}}%
-  % Then the name(s) set via macro
-  \def\bpl@lsurname{}%
-  \def\bpl@lfirstname{}%
-  \def\bpl@lvonpart{}%
-  \renewcommand*{\do}[1]{%
-     \jsp@splitpllist{##1}%
-     \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
-     \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
-     \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
-     \ifboolexpr{
-           test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-           and
-           ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-             or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-           )
-           and
-           ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-          {\global\toggletrue{isplauthor}}{}%
-  }%
-  \dolistloop{\bpl@plauthors}%
-  %
-  % First case: plauthorhandling=highlight
-  \if@hlauthor%
-      % Highlight plauthor(s)
-      \ifthenelse{\value{listcount}=1}{}{%
-          \ifnumless{\value{listcount}}{\value{liststop}}%
-             {\multinamedelim}%
-             {\finalnamedelim}%
-      }%
-      \iftoggle{isplauthor}{%
-          \plauthorhl{%
-              \if@givenfirst% given name first
-                  \ifgiveninits
-                      {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                      {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-                  \ifdefvoid{\namepartprefix}%
+    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+    \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+    % Check if we are dealing with a plauthor
+    % First the plauthorname as set via option
+    \ifboolexpr{
+        test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+        and
+        ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+          or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
+        )
+        and
+        ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+        {\global\toggletrue{isplauthor}}{\global\togglefalse{isplauthor}}%
+    % Then the name(s) set via macro
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+            test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+            and
+            ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+              or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+            )
+            and
+            ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+            {\global\toggletrue{isplauthor}}{}%
+    }%
+    \dolistloop{\bpl@plauthors}%
+    %
+    % First case: plauthorhandling=highlight
+    \if@hlauthor%
+        % Highlight plauthor(s)
+        \ifthenelse{\value{listcount}=1}{}{%
+            \ifnumless{\value{listcount}}{\value{liststop}}%
+                {\multinamedelim}%
+                {\finalnamedelim}%
+        }%
+        \iftoggle{isplauthor}{%
+            \plauthorhl{%
+                \if@givenfirst% given name first
+                    \ifgiveninits
+                        {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                    \ifdefvoid{\namepartprefix}%
+                        {}%
+                        {\namepartprefix\addspace}%
+                    \namepartfamily%
+                \else% family name first
+                    \ifdefvoid{\namepartprefix}%
+                        {}%
+                        {\namepartprefix\addspace}%
+                    \namepartfamily%
+                    \ifgiveninits
+                        {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+                \fi
+            }%
+        }{%
+            \if@givenfirst% given name first
+                \ifgiveninits
+                    {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                \ifdefvoid{\namepartprefix}%
+                    {}%
+                    {\namepartprefix\addspace}%
+                \namepartfamily%
+            \else% family name first
+                \ifdefvoid{\namepartprefix}%
                       {}%
                       {\namepartprefix\addspace}%
-                  \namepartfamily%
-              \else% family name first
-                  \ifdefvoid{\namepartprefix}%
-                      {}%
-                      {\namepartprefix\addspace}%
-                  \namepartfamily%
-                  \ifgiveninits
-                      {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                      {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-              \fi
-          }%
-      }{%
-          \if@givenfirst% given name first
+                \namepartfamily%
+                \ifgiveninits
+                   {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                   {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+            \fi
+        }%
+        \usebibmacro{name:andothers}%
+    %
+    % Second case: plauthorhandling=omit
+    \else% \if@hlauthor false
+        \ifthenelse{\value{listcount}=1}%
+            {\ifthenelse{\value{nonplauthors}>0}%
+                 {\bibopenparen\bibstring{with}\addspace}%
+                 {}%
+             \iftoggle{isplauthor}%
+                 {\global\toggletrue{plauthorprecedes}}%
+                 {\global\togglefalse{plauthorprecedes}}%
+            }%
+            {}%
+        % Exclude omitted author
+        \iftoggle{isplauthor}%
+            {% <- TRUE condition
+              \global\toggletrue{hadplauthor}%
+            }% <- end TRUE condition
+            {% <- FALSE condition
+              \stepcounter{nonplauthor}%
+              \ifthenelse{\value{listcount}=1}%
+                   {\global\togglefalse{hadplauthor}}%
+                   {%
+                     \iftoggle{plauthorprecedes}%
+                         {}%
+                         {%
+                           \ifnumless{\value{nonplauthor}}{\value{nonplauthors}}%
+                              {\multinamedelim}%
+                              {\bplfinalnamedelim}%
+                         }%
+                   }%
               \ifgiveninits
                   {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
                   {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-              \ifdefvoid{\namepartprefix}%
-                  {}%
-                  {\namepartprefix\addspace}%
+              \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+              \global\togglefalse{plauthorprecedes}%
               \namepartfamily%
-          \else% family name first
-              \ifdefvoid{\namepartprefix}%
-                    {}%
-                    {\namepartprefix\addspace}%
-              \namepartfamily%
-              \ifgiveninits
-                 {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                 {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-          \fi
-      }%
-      \usebibmacro{name:andothers}%
-  %
-  % Second case: plauthorhandling=omit
-  \else% \if@hlauthor false
-      \ifthenelse{\value{listcount}=1}%
-          {\ifthenelse{\value{nonplauthors}>0}%
-               {\bibopenparen\bibstring{with}\addspace}%
-               {}%
-           \iftoggle{isplauthor}%
-               {\global\toggletrue{plauthorprecedes}}%
-               {\global\togglefalse{plauthorprecedes}}%
-          }%
-          {}%
-      % Exclude omitted author
-      \iftoggle{isplauthor}%
-          {% <- TRUE condition
-            \global\toggletrue{hadplauthor}%
-          }% <- end TRUE condition
-          {% <- FALSE condition
-            \stepcounter{nonplauthor}%
-            \ifthenelse{\value{listcount}=1}%
-                 {\global\togglefalse{hadplauthor}}%
-                 {%
-                   \iftoggle{plauthorprecedes}%
-                   {}%
-                   {%
-                     \ifnumless{\value{nonplauthor}}{\value{nonplauthors}}%
-                        {\multinamedelim}%
-                        {\bplfinalnamedelim}%
-                   }%
-                 }%
-            \ifgiveninits
-               {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-               {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-            \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-            \global\togglefalse{plauthorprecedes}%
-            \namepartfamily%
-          }% <- end FALSE condition
-      %
-      \usebibmacro{name:andothers}%
-      \ifthenelse{\value{nonplauthors}>0\AND\value{listcount}=\value{liststop}}{\unspace\bibcloseparen}{}%
-  \fi% end of \if@hlauthor else condition
+            }% <- end FALSE condition
+        %
+        \usebibmacro{name:andothers}%
+        \ifthenelse{\value{nonplauthors}>0\AND\value{listcount}=\value{liststop}}%
+            {\unspace\bibcloseparen}%
+            {}%
+    \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{editor}{%
-  \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
-  \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
-  \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
-  \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
-  \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
-  \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
-  % Check if we are dealing with a plauthor
-  % First the plauthorname as set via option
-  \ifboolexpr{
-      test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
-      and
-      ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-        or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
-      )
-      and
-      ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
-      {\global\toggletrue{isplauthor}}{\global\togglefalse{isplauthor}}%
-  % Then the name(s) set via macro
-  \def\bpl@lsurname{}%
-  \def\bpl@lfirstname{}%
-  \def\bpl@lvonpart{}%
-  \renewcommand*{\do}[1]{%
-     \jsp@splitpllist{##1}%
-     \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
-     \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
-     \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
-     \ifboolexpr{
-           test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
-           and
-           ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-             or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
-           )
-           and
-           ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
-          {\global\toggletrue{isplauthor}}{}%
-  }%
-  \dolistloop{\bpl@plauthors}%
-  %
-  % First case: plauthorhandling=highlight
-  \if@hlauthor
-      % Highlight omitted editor
-      \ifthenelse{\value{listcount}=1}{}{%
-          \ifnumless{\value{listcount}}{\value{liststop}-1}%
-              {\multinamedelim}%
-              {\finalnamedelim}%
-      }%
-      \iftoggle{isplauthor}{%
-          \plauthorhl{%
-              \if@givenfirst% given name first
-                  \ifgiveninits
-                      {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                      {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-                  \ifdefvoid{\namepartprefix}%
-                      {}%
-                      {\namepartprefix\addspace}%
-                  \namepartfamily%
-              \else% family name first
-                  \ifdefvoid{\namepartprefix}%
-                      {}%
-                      {\namepartprefix\addspace}%
-                  \namepartfamily%
-                  \ifgiveninits
-                      {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                      {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-              \fi
-          }%
-      }{%
-          \if@givenfirst% given name first
+    \bpl@normalize{\namepartfamily}{\bpl@tsurname}%
+    \bpl@normalize{\namepartgiven}{\bpl@tfirstname}%
+    \bpl@normalize{\namepartprefix}{\bpl@tvonpart}%
+    \bpl@normalize{\bpl@osurname}{\bpl@esurname}%
+    \bpl@normalize{\bpl@ofirstname}{\bpl@efirstname}%
+    \bpl@normalize{\bpl@ovonpart}{\bpl@evonpart}%
+    % Check if we are dealing with a plauthor
+    % First the plauthorname as set via option
+    \ifboolexpr{
+        test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
+        and
+        ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
+          or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
+        )
+        and
+        ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
+        {\global\toggletrue{isplauthor}}{\global\togglefalse{isplauthor}}%
+    % Then the name(s) set via macro
+    \def\bpl@lsurname{}%
+    \def\bpl@lfirstname{}%
+    \def\bpl@lvonpart{}%
+    \renewcommand*{\do}[1]{%
+        \jsp@splitpllist{##1}%
+        \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
+        \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
+        \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
+        \ifboolexpr{
+            test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
+            and
+            ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
+              or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+            )
+            and
+            ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
+            {\global\toggletrue{isplauthor}}{}%
+    }%
+    \dolistloop{\bpl@plauthors}%
+    %
+    % First case: plauthorhandling=highlight
+    \if@hlauthor
+        % Highlight omitted editor
+        \ifthenelse{\value{listcount}=1}{}{%
+            \ifnumless{\value{listcount}}{\value{liststop}-1}%
+                {\multinamedelim}%
+                {\finalnamedelim}%
+        }%
+        \iftoggle{isplauthor}{%
+            \plauthorhl{%
+                \if@givenfirst% given name first
+                    \ifgiveninits
+                        {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                    \ifdefvoid{\namepartprefix}%
+                        {}%
+                        {\namepartprefix\addspace}%
+                    \namepartfamily%
+                \else% family name first
+                    \ifdefvoid{\namepartprefix}%
+                        {}%
+                        {\namepartprefix\addspace}%
+                    \namepartfamily%
+                    \ifgiveninits
+                        {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+                \fi
+            }%
+        }{%
+            \if@givenfirst% given name first
+                \ifgiveninits
+                    {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                \ifdefvoid{\namepartprefix}%
+                    {}%
+                    {\namepartprefix\addspace}%
+                \namepartfamily%
+            \else% family name first
+                \ifdefvoid{\namepartprefix}%
+                    {}%
+                    {\namepartprefix\addspace}%
+                \namepartfamily%
+                \ifgiveninits
+                    {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+            \fi
+        }%
+        \usebibmacro{name:andothers}%
+    %
+    % Second case: plauthorhandling=omit
+    \else% \if@hlauthor false
+        \ifthenelse{\value{listcount}=1}%
+            {\ifthenelse{\value{nonpleditors}>0}%
+                 {\bibopenparen\bibstring{with}\addspace}%
+                 {}%
+             \iftoggle{isplauthor}%
+                 {\global\toggletrue{plauthorprecedes}}%
+                 {\global\togglefalse{plauthorprecedes}}%
+            }%
+            {}%
+        % Exclude omitted editor
+        \iftoggle{isplauthor}%
+            {% <- TRUE condition
+              \global\toggletrue{hadplauthor}%
+            }% <- end TRUE condition
+            {% <- FALSE condition
+              \stepcounter{nonpleditor}%
+              \ifthenelse{\value{listcount}=1}%
+                  {\global\togglefalse{hadplauthor}}%
+                  {%
+                    \iftoggle{plauthorprecedes}%
+                        {}%
+                        {%
+                          \ifnumless{\value{nonpleditor}}{\value{nonpleditors}}%
+                             {\multinamedelim}%
+                             {\bplfinalnamedelimed}%
+                        }%
+                  }%
               \ifgiveninits
                   {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
                   {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-              \ifdefvoid{\namepartprefix}%
-                  {}%
-                  {\namepartprefix\addspace}%
+              \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+              \global\togglefalse{plauthorprecedes}%
               \namepartfamily%
-          \else% family name first
-              \ifdefvoid{\namepartprefix}%
-                  {}%
-                  {\namepartprefix\addspace}%
-              \namepartfamily%
-              \ifgiveninits
-                  {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                  {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-          \fi
-      }%
-      \usebibmacro{name:andothers}%
-  %
-  % Second case: plauthorhandling=omit
-  \else% \if@hlauthor false
-      \ifthenelse{\value{listcount}=1}%
-          {\ifthenelse{\value{nonpleditors}>0}%
-               {\bibopenparen\bibstring{with}\addspace}%
-               {}%
-           \iftoggle{isplauthor}%
-               {\global\toggletrue{plauthorprecedes}}%
-               {\global\togglefalse{plauthorprecedes}}%
-          }%
-          {}%
-      % Exclude omitted editor
-      \iftoggle{isplauthor}%
-          {% <- TRUE condition
-            \global\toggletrue{hadplauthor}%
-          }% <- end TRUE condition
-          {% <- FALSE condition
-            \stepcounter{nonpleditor}%
-            \ifthenelse{\value{listcount}=1}%
-                 {\global\togglefalse{hadplauthor}}%
-                 {%
-                   \iftoggle{plauthorprecedes}%
-                   {}%
-                   {%
-                     \ifnumless{\value{nonpleditor}}{\value{nonpleditors}}%
-                        {\multinamedelim}%
-                        {\bplfinalnamedelimed}%
-                   }%
-                 }%
-            \ifgiveninits
-               {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-               {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-            \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-            \global\togglefalse{plauthorprecedes}%
-            \namepartfamily%
-          }% <- end FALSE condition
-      %
-      \usebibmacro{name:andothers}%
-      \ifthenelse{\value{nonpleditors}>0\AND\value{listcount}=\value{liststop}}{\unspace\bibcloseparen}{}%
-  \fi% end of \if@hlauthor else condition
+            }% <- end FALSE condition
+        %
+        \usebibmacro{name:andothers}%
+        \ifthenelse{\value{nonpleditors}>0\AND\value{listcount}=\value{liststop}}%
+            {\unspace\bibcloseparen}%
+            {}%
+    \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{bookauthor}{%
-  \if@givenfirst% given name first
-      \ifgiveninits
-          {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-          {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-       \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-       \namepartfamily%
-  \else% family name first
-       \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-       \namepartfamily%
-       \ifgiveninits
-          {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-          {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-  \fi
-  \ifthenelse{\value{listcount}<\value{liststop}}
-    {\ifnumless{\value{listcount}}{\value{liststop}-1}%
-         {\multinamedelim}%
-         {\finalnamedelim}}%
-    {}%
-  \usebibmacro{name:andothers}}
+    \if@givenfirst% given name first
+        \ifgiveninits
+            {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+            {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+         \namepartfamily%
+    \else% family name first
+         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+         \namepartfamily%
+         \ifgiveninits
+             {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+    \fi
+    \ifthenelse{\value{listcount}<\value{liststop}}
+        {\ifnumless{\value{listcount}}{\value{liststop}-1}%
+            {\multinamedelim}%
+            {\finalnamedelim}}%
+        {}%
+    \usebibmacro{name:andothers}%
+}
 
 
 %
@@ -851,191 +869,231 @@
 %
 
 \renewbibmacro*{author}{%
- \if@hlauthor
-  \ifnameundef{author}
-    {}
-    {\usebibmacro{bpl:marginyear}%
-     \printnames{author}%
-     \setunit{\addspace}%
-      \iffieldundef{nameaddon}
-      {}
-      {\mkbibbrackets{\bibstring{alias}%
-       \addspace\printfield{nameaddon}}}}
-       \adddot\addspace\usebibmacro{bpl:year+labelyear}%
- \else% \if@hlauthor false
-  \ifnameundef{author}
-    {}
-    {\usebibmacro{bpl:marginyear}%
-     \usebibmacro{bpl:year+labelyear}\addspace%
-     \printnames{author}%
-     \setunit{\addspace}%
-      \iffieldundef{nameaddon}
-      {}
-      {\mkbibbrackets{\bibstring{alias}%
-       \addspace\printfield{nameaddon}}}}
- \fi% end of \if@hlauthor else condition
+    \if@hlauthor
+        \ifnameundef{author}
+            {}
+            {%
+             \usebibmacro{bpl:marginyear}%
+             \printnames{author}%
+             \setunit{\addspace}%
+             \iffieldundef{nameaddon}
+                 {}
+                 {%
+                  \mkbibbrackets{%
+                      \bibstring{alias}%
+                      \addspace\printfield{nameaddon}%
+                  }%
+                 }%
+            }%
+        \adddot\addspace\usebibmacro{bpl:year+labelyear}%
+    \else% \if@hlauthor false
+        \ifnameundef{author}
+            {}
+            {%
+             \usebibmacro{bpl:marginyear}%
+             \usebibmacro{bpl:year+labelyear}\addspace%
+             \printnames{author}%
+             \setunit{\addspace}%
+             \iffieldundef{nameaddon}
+                 {}
+                 {%
+                  \mkbibbrackets{%
+                      \bibstring{alias}%
+                      \addspace\printfield{nameaddon}%
+                  }%
+                 }%
+            }%
+    \fi% end of \if@hlauthor else condition
 }
 
 \renewbibmacro*{editor}{%
- \if@hlauthor
-  \ifnameundef{editor}
-    {}
-    {\usebibmacro{bpl:marginyear}%
-     \printnames{editor}%
-     \setunit{\addspace}%
-     \usebibmacro{editorstrg}}
-     \adddot\addspace%
-     \usebibmacro{bpl:year+labelyear}%
- \else% \if@hlauthor false
-  \ifnameundef{editor}
-    {}
-    {\usebibmacro{bpl:marginyear}%
-     \usebibmacro{bpl:year+labelyear}%
-      \addspace%
-      \printnames{editor}%
-     \setunit{\addspace}%
-     \usebibmacro{editorstrg}}
- \fi% end of \if@hlauthor else condition
+    \if@hlauthor
+        \ifnameundef{editor}
+            {}
+            {%
+             \usebibmacro{bpl:marginyear}%
+             \printnames{editor}%
+             \setunit{\addspace}%
+             \usebibmacro{editorstrg}%
+            }%
+            \adddot\addspace%
+            \usebibmacro{bpl:year+labelyear}%
+    \else% \if@hlauthor false
+        \ifnameundef{editor}
+            {}
+            {%
+             \usebibmacro{bpl:marginyear}%
+             \usebibmacro{bpl:year+labelyear}%
+             \addspace%
+             \printnames{editor}%
+             \setunit{\addspace}%
+             \usebibmacro{editorstrg}%
+            }%
+    \fi% end of \if@hlauthor else condition
 }
 
 \renewbibmacro*{editor+others}{%
-\if@hlauthor
-  \ifboolexpr{
-    test \ifuseeditor
-    and
-    not test {\ifnameundef{editor}}
-  }
-    {\usebibmacro{bpl:marginyear}%
-     \printnames{editor}%
-     \setunit{\addcomma\space}%
-     \usebibmacro{editor+othersstrg}%
-     \adddot\addspace%
-     \usebibmacro{bpl:year+labelyear}%
-     \clearname{editor}}
-    {}%
-\else% \if@hlauthor false
-  \ifboolexpr{
-    test \ifuseeditor
-    and
-    not test {\ifnameundef{editor}}
-  }
-    {\usebibmacro{bpl:marginyear}%
-     \usebibmacro{bpl:year+labelyear}%
-     \addspace%
-     \printnames{editor}%
-     \setunit{\addcomma\space}%
-     \usebibmacro{editor+othersstrg}%
-     \clearname{editor}}
-    {}%
-\fi% end of \if@hlauthor else condition
+    \if@hlauthor
+        \ifboolexpr{
+            test \ifuseeditor
+            and
+            not test {\ifnameundef{editor}}
+        }
+            {\usebibmacro{bpl:marginyear}%
+             \printnames{editor}%
+             \setunit{\addcomma\space}%
+             \usebibmacro{editor+othersstrg}%
+             \adddot\addspace%
+             \usebibmacro{bpl:year+labelyear}%
+             \clearname{editor}%
+            }
+            {}%
+    \else% \if@hlauthor false
+        \ifboolexpr{
+            test \ifuseeditor
+            and
+            not test {\ifnameundef{editor}}
+        }
+            {\usebibmacro{bpl:marginyear}%
+             \usebibmacro{bpl:year+labelyear}%
+             \addspace%
+             \printnames{editor}%
+             \setunit{\addcomma\space}%
+             \usebibmacro{editor+othersstrg}%
+             \clearname{editor}%
+            }
+            {}%
+    \fi% end of \if@hlauthor else condition
 }
 
 \renewbibmacro*{name:andothers}{%
-  \ifthenelse{\value{listcount}=\value{liststop}\AND
-              \ifmorenames}
-    {\ifnum\value{liststop}>1 \finalandcomma\fi
-     \andothersdelim\biblcstring{andothers}}
-    {}}
+    \ifthenelse{\value{listcount}=\value{liststop}\AND\ifmorenames}
+        {%
+         \ifnum\value{liststop}>1 \finalandcomma\fi
+         \andothersdelim\biblcstring{andothers}%
+        }
+        {}%
+}
 
 
 \ifbpl@standardbasestyle
-% Work around issue in authoryear.bbx:
-% test for empty year before printing parens
-\renewbibmacro*{issue+date}{%
-  \ifboolexpr{test {\iffieldundef{year}}
-              and test {\iffieldundef{issue}}}
-    {}
-    {\printtext[parens]{%
-       \printfield{issue}%
-       \setunit*{\addspace}%
-       \usebibmacro{date}}}%
-  \newunit}
+    % Work around issue in authoryear.bbx:
+    % test for empty year before printing parens
+    \renewbibmacro*{issue+date}{%
+        \ifboolexpr{test {\iffieldundef{year}}
+                    and test {\iffieldundef{issue}}}
+            {}
+            {%
+             \printtext[parens]{%
+             \printfield{issue}%
+             \setunit*{\addspace}%
+             \usebibmacro{date}}%
+            }%
+        \newunit%
+    }
 \fi
 
 
 \newbibmacro*{bpl:date:makedate}{%
-  \printtext{%
-     \iffieldundef{year}{%
-       \iffieldundef{pubstate}{}{%
-          \printfield{pubstate}%
+    \printtext{%
+        \iffieldundef{year}{%
+            \iffieldundef{pubstate}%
+                {}
+                {\printfield{pubstate}}%
+        }{%
+            \iffieldundef{month}%
+                {\printdateextra}%
+                {\printdate}%
         }%
-      }{%
-       \iffieldundef{month}{%
-         \printdateextra}%
-        {\printdate}%
-      }%
-     }%
+    }%
 }
 
 \newbibmacro*{bpl:date:labeldate+extradate}{%
-   \mkbibbold{\usebibmacro{bpl:date:makedate}}%
+    \mkbibbold{\usebibmacro{bpl:date:makedate}}%
 }
 
 \AtBeginDocument{%
-\if@unboldyear
-\renewbibmacro*{bpl:date:labeldate+extradate}{%
-   \usebibmacro{bpl:date:makedate}%
-}
-\fi
+    \if@unboldyear
+        \renewbibmacro*{bpl:date:labeldate+extradate}{%
+            \usebibmacro{bpl:date:makedate}%
+        }
+    \fi
 }
 
 \newbibmacro*{bpl:marginyear}{%
-\if@marginyear%
-  \iffieldundef{year}{%
-    \iffieldundef{pubstate}{}{%   
-     \iffieldequals{pubstate}{\bbx@lasthash}{}{%
-      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
-     }%
-      }%
-    }{%
-     \iffieldequals{year}{\bbx@lasthash}{}{%
-      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{year}}}}%
-     }%
-    }%
-\fi
+    \if@marginyear%
+        \iffieldundef{year}{%
+            \iffieldundef{pubstate}%
+                {}%
+                {\iffieldequals{pubstate}{\bbx@lasthash}%
+                     {}%
+                     {%
+                      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
+                     }%
+                }%
+        }{%
+            \iffieldequals{year}{\bbx@lasthash}%
+                {}%
+                {%
+                 \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{year}}}}%
+                }%
+        }%
+    \fi
 }
     
 \newbibmacro*{bpl:year+labelyear}{%
-  \iffieldundef{year}{%
-    \iffieldundef{pubstate}{\let\bbx@lasthash\undefined}{%
-     \usebibmacro{bpl:date:labeldate+extradate}%
-     \savefield{pubstate}{\bbx@lasthash}%
-     \clearfield{pubstate}%
-     }%
+    \iffieldundef{year}{%
+        \iffieldundef{pubstate}%
+            {\let\bbx@lasthash\undefined}%
+            {%
+             \usebibmacro{bpl:date:labeldate+extradate}%
+             \savefield{pubstate}{\bbx@lasthash}%
+             \clearfield{pubstate}%
+            }%
     }{%
-     \usebibmacro{bpl:date:labeldate+extradate}%
-     \savefield{year}{\bbx@lasthash}%
-     \clearfield{year}%
+         \usebibmacro{bpl:date:labeldate+extradate}%
+         \savefield{year}{\bbx@lasthash}%
+         \clearfield{year}%
     }%
 }
 
 \newbibmacro*{bpl:review:author/label}{%
-  \ifnameundef{author}
-    {\usebibmacro{label}}
-    {\usebibmacro{bpl:review:author}}
+    \ifnameundef{author}
+        {\usebibmacro{label}}
+        {\usebibmacro{bpl:review:author}}
 }
 
 \newbibmacro*{bpl:review:author}{%
-  \ifnameundef{author}
-    {\let\bbx@lasthash\undefined}
-    {\ifthenelse{\iffieldequals{namehash}{\bbx@lasthash}\AND\NOT
-                 \iffirstonpage}
-       {\bibnamedash}
-       {\savefield{namehash}{\bbx@lasthash}%
-        \printnames{author}%
-        \setunit{\addspace}}}%
+    \ifnameundef{author}
+        {\let\bbx@lasthash\undefined}
+        {%
+         \ifthenelse{\iffieldequals{namehash}{\bbx@lasthash}\AND\NOT\iffirstonpage}
+             {\bibnamedash}
+             {%
+              \savefield{namehash}{\bbx@lasthash}%
+              \printnames{author}%
+              \setunit{\addspace}%
+             }%
+        }%
     \iffieldundef{nameaddon}
-    {}
-    {\mkbibbrackets{\bibstring[\unspace]{alias}\addspace\printfield{nameaddon}}%
-     \addspace}%
-  \usebibmacro{bpl:review:year+labelyear}}
+        {}
+        {%
+         \mkbibbrackets{\bibstring[\unspace]{alias}\addspace\printfield{nameaddon}}%
+         \addspace%
+        }%
+    \usebibmacro{bpl:review:year+labelyear}%
+}
 
 \newbibmacro*{bpl:review:year+labelyear}{%
-  \iffieldundef{year}
-    {}
-    {\printtext[parens]{%
-      \printfield{labelyear}%
-      \printfield{extradate}}}}
+    \iffieldundef{year}
+        {}
+        {%
+         \printtext[parens]{%
+             \printfield{labelyear}%
+             \printfield{extradate}%
+         }%
+        }%
+}
 
 %
 % l7n
@@ -1043,16 +1101,16 @@
 \NewBibliographyString{with}
 \NewBibliographyString{parttranslationof}
 \DefineBibliographyStrings{english}{%
-  parttranslationof   = {partial translation of},
-  with                = {with}
+    parttranslationof   = {partial translation of},
+    with                = {with}
 }
 \DefineBibliographyStrings{french}{%
-  parttranslationof   = {traduction partielle de},
-  with                = {avec}
+    parttranslationof   = {traduction partielle de},
+    with                = {avec}
 }
 \DefineBibliographyStrings{german}{%
-  parttranslationof   = {Teil\"ubersetzung von},
-  with                = {mit}
+    parttranslationof   = {Teil\"ubersetzung von},
+    with                = {mit}
 }
 
 
@@ -1061,29 +1119,30 @@
 %
 
 \DeclareBibliographyDriver{review}{%
-  \usebibmacro{bpl:review:author/label}%
-  \setunit*{\addcolon\space}%
-  \usebibmacro{title}%
-  \newunit\newblock
-  \usebibmacro{in:}%
-  \usebibmacro{journal+issuetitle}%
-  \newunit\newblock
-  \printfield{note}%
-  \setunit{\addcomma\space}%
-  \printfield{pages}
-  \newunit\newblock
-  \printfield{issn}%
-  \newunit\newblock
-  \printfield{doi}%
-  \setunit{\addspace}
-  \usebibmacro{addendum+pubstate}%
-  \newunit\newblock
-  \usebibmacro{url+urldate}%
-  \newunit\newblock
-  \usebibmacro{pageref}%
-  \newunit\newblock
-  \usebibmacro{related}%
-  \usebibmacro{finentry}}
+    \usebibmacro{bpl:review:author/label}%
+    \setunit*{\addcolon\space}%
+    \usebibmacro{title}%
+    \newunit\newblock
+    \usebibmacro{in:}%
+    \usebibmacro{journal+issuetitle}%
+    \newunit\newblock
+    \printfield{note}%
+    \setunit{\addcomma\space}%
+    \printfield{pages}
+    \newunit\newblock
+    \printfield{issn}%
+    \newunit\newblock
+    \printfield{doi}%
+    \setunit{\addspace}
+    \usebibmacro{addendum+pubstate}%
+    \newunit\newblock
+    \usebibmacro{url+urldate}%
+    \newunit\newblock
+    \usebibmacro{pageref}%
+    \newunit\newblock
+    \usebibmacro{related}%
+    \usebibmacro{finentry}%
+}
 
 %
 % Sorting schemes
@@ -1092,210 +1151,210 @@
 % Consider the whole date (year-month-day)
 % Sorting date (descending), name, title
 \DeclareSortingTemplate{ddnt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort[direction=descending]{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{00}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{00}
-  }
-  \sort{
-    \field{sortname}
-    \field{author}
-    \field{editor}
-    \field{translator}
-    \field{sorttitle}
-    \field{title}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort[direction=descending]{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort[direction=descending]{
+        \field[padside=left,padwidth=2,padchar=0]{month}
+        \literal{00}
+    }
+    \sort[direction=descending]{
+        \field[padside=left,padwidth=2,padchar=0]{day}
+        \literal{00}
+    }
+    \sort{
+        \field{sortname}
+        \field{author}
+        \field{editor}
+        \field{translator}
+        \field{sorttitle}
+        \field{title}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 % Sorting year (descending), month, day, name, title
 \DeclareSortingTemplate{ydmdnt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort[direction=descending]{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{00}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{00}
-  }
-  \sort{
-    \field{sortname}
-    \field{author}
-    \field{editor}
-    \field{translator}
-    \field{sorttitle}
-    \field{title}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort[direction=descending]{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{month}
+        \literal{00}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{day}
+        \literal{00}
+    }
+    \sort{
+        \field{sortname}
+        \field{author}
+        \field{editor}
+        \field{translator}
+        \field{sorttitle}
+        \field{title}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 % Sorting date (ascending), name, title
 \DeclareSortingTemplate{dnt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{00}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{00}
-  }
-  \sort{
-    \field{sortname}
-    \field{author}
-    \field{editor}
-    \field{translator}
-    \field{sorttitle}
-    \field{title}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{month}
+        \literal{00}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{day}
+        \literal{00}
+    }
+    \sort{
+        \field{sortname}
+        \field{author}
+        \field{editor}
+        \field{translator}
+        \field{sorttitle}
+        \field{title}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 % Sorting schemes without name
 
 % Sorting year (descending), title
 \DeclareSortingTemplate{ydt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort[direction=descending]{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort[direction=descending]{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 % Consider the whole date (year-month-day)
 % Sorting date (descending), title
 \DeclareSortingTemplate{ddt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort[direction=descending]{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{00}
-  }
-  \sort[direction=descending]{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{00}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort[direction=descending]{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort[direction=descending]{
+        \field[padside=left,padwidth=2,padchar=0]{month}
+        \literal{00}
+    }
+    \sort[direction=descending]{
+        \field[padside=left,padwidth=2,padchar=0]{day}
+        \literal{00}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 % Sorting year (descending), month, day, title
 \DeclareSortingTemplate{ydmdt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort[direction=descending]{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{00}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{00}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort[direction=descending]{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{month}
+        \literal{00}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{day}
+        \literal{00}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 % Sorting date (ascending), title
 \DeclareSortingTemplate{dt}{
-  \sort{
-    \field{presort}
-  }
-  \sort[final]{
-    \field{sortkey}
-  }
-  \sort{
-    \field[strside=left,strwidth=4]{sortyear}
-    \field[strside=left,strwidth=4]{year}
-    \literal{9999}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{month}
-    \literal{00}
-  }
-  \sort{
-    \field[padside=left,padwidth=2,padchar=0]{day}
-    \literal{00}
-  }
-  \sort{
-    \field{sorttitle}
-    \field{title}
-  }
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort{
+        \field[strside=left,strwidth=4]{sortyear}
+        \field[strside=left,strwidth=4]{year}
+        \literal{9999}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{month}
+        \literal{00}
+    }
+    \sort{
+        \field[padside=left,padwidth=2,padchar=0]{day}
+        \literal{00}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
 }
 
 
@@ -1307,39 +1366,39 @@
 % ignore author constellation on extralabel assignment.
 \if@hlauthor
 \else
-\DeclareStyleSourcemap{
-  \maps[datatype=bibtex]{
-    \map[overwrite]{
-       \step[fieldset=shortauthor, fieldvalue={1111}]
-    }
-  }
+    \DeclareStyleSourcemap{
+        \maps[datatype=bibtex]{
+            \map[overwrite]{
+                \step[fieldset=shortauthor, fieldvalue={1111}]
+            }
+        }
 }
 \fi
 
 % Correctly sort pubstates.
 \DeclareStyleSourcemap{
-  \maps[datatype=bibtex]{
-    \map{
-       \step[fieldsource=year, final]
-       \step[fieldset=sortyear, origfieldval]
+    \maps[datatype=bibtex]{
+        \map{
+            \step[fieldsource=year, final]
+            \step[fieldset=sortyear, origfieldval]
+        }
+        \map{
+           \step[fieldsource=pubstate, match=\regexp{forthcoming}, final]
+           \step[fieldset=sortyear, fieldvalue={2222}]
+        }
+        \map{
+           \step[fieldsource=pubstate, match=\regexp{inpress}, final]
+           \step[fieldset=sortyear, fieldvalue={3333}]
+        }
+        \map{
+           \step[fieldsource=pubstate, match=\regexp{submitted}, final]
+           \step[fieldset=sortyear, fieldvalue={4444}]
+        }
+        \map{
+           \step[fieldsource=pubstate, match=\regexp{inpreparation}, final]
+           \step[fieldset=sortyear, fieldvalue={5555}]
+        }
     }
-    \map{
-       \step[fieldsource=pubstate, match=\regexp{forthcoming}, final]
-       \step[fieldset=sortyear, fieldvalue={2222}]
-    }
-    \map{
-       \step[fieldsource=pubstate, match=\regexp{inpress}, final]
-       \step[fieldset=sortyear, fieldvalue={3333}]
-    }
-    \map{
-       \step[fieldsource=pubstate, match=\regexp{submitted}, final]
-       \step[fieldset=sortyear, fieldvalue={4444}]
-    }
-    \map{
-       \step[fieldsource=pubstate, match=\regexp{inpreparation}, final]
-       \step[fieldset=sortyear, fieldvalue={5555}]
-    }
-  }
 }
 
 
@@ -1351,17 +1410,18 @@
 % Issue a warning if used.
 \newtoggle{bpl:omitname}
 \def\omitname{%
-   \toggletrue{bpl:omitname}%
-   \@ifnextchar[%
-     {\plauthorname@i}
-     {\plauthorname@i[]}%
+    \toggletrue{bpl:omitname}%
+    \@ifnextchar[%
+        {\plauthorname@i}
+        {\plauthorname@i[]}%
 }
 
 \AtEndPreamble{%
-  \iftoggle{bpl:omitname}{
-    \PackageWarning{biblatex-publist}{The \protect\omitname\space macro is deprecated!\MessageBreak
-                                  Please use \protect\plauthorname\space instead.}{}%
-  }
+    \iftoggle{bpl:omitname}{%
+        \PackageWarning{biblatex-publist}%
+            {The \protect\omitname\space macro is deprecated!\MessageBreak
+             Please use \protect\plauthorname\space instead.}{}%
+    }%
 }
 
 
