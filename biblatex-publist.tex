@@ -87,6 +87,8 @@
 % Conditional page breaks
 \def\condbreak#1{%
 	\vskip 0pt plus #1\pagebreak[3]\vskip 0pt plus -#1\relax}
+% \condbr{<number of lines>}
+\newcommand*\condbr[1]{\condbreak{#1\baselineskip}}
 
 \renewcommand{\lstlistingname}{Example}
 
@@ -100,7 +102,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.15, 2019/02/22}
+\date{Version 1.16dev, 2019/02/23}
 \maketitle
 
 \begin{abstract}
@@ -244,7 +246,7 @@ Of course, the solution does not help if there is an entry with same surname and
 \end{description}
 
 
-\subsection{Multiple authors and\slash or name variants}\label{sec:multiauthors}
+\subsection{Handling multiple authors and\slash or name variants}\label{sec:multiauthors}
 
 If multiple \jcsmacro{plauthorname} specifications have been entered (or a \jcsmacro{plauthorname} specification
 in addition to a specification via the options \joption{plauthorname}, \joption{plauthorname} and
@@ -254,9 +256,9 @@ Thus it is possible to highlight multiple authors in the publication
 list (for instance to mark contributions of a research team):
 \begin{lstlisting}[moretexcs={[2]{plauthorname}}]
 \usepackage[style=publist,plauthorhandling=highlight]{biblatex}
-\plauthorname[John]{Doe}
-\plauthorname[Mary][van]{Smith}
-\plauthorname{Wittgenstein}
+\plauthorname[Cristiano]{Ronaldo}
+\plauthorname[\'Angel][Di]{Mar\'ia}
+\plauthorname{Neymar}
 \end{lstlisting}
 %
 Multiple specifications can also be used to deal with name variants:
@@ -532,11 +534,16 @@ or
 \endrefcontext
 \end{lstlisting}
 
-\clearpage
+\condbr{4}
 
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 1.16 (forthcoming):}]~
+	\begin{itemize}
+		\item Major code cleanup.
+	\end{itemize}
+
 	\item [{V. 1.15 (2019-02-22):}]~
 	\begin{itemize}
 		\item Add support for omitting multiple authors. See sec.~\ref{sec:multiauthors}.
@@ -588,7 +595,7 @@ or
 		      of the publication list items
 		\item Documentation improvements.
 	\end{itemize}
-\clearpage
+\condbr{3}
 	\item [{V.~1.8 (2017-11-14):}]~
 	\begin{itemize}
 		\item Adapt to \bibltx\ 3.8. This version is now required.
@@ -632,7 +639,7 @@ or
 		\item Assure the margin text always starts uppercased (relevant for pubstates).
 		\item Minor corrections to the manual.
 	\end{itemize}
-\clearpage
+\condbr{3}
    \item [{V.~1.3 (2016-08-06):}]~
 
    \begin{itemize}

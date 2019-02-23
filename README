@@ -46,7 +46,7 @@ instructions.
 == CHANGES ==
 
 * V. 1.16 (forthcoming):
-	- Code cleanup.
+	- Major code cleanup.
 
 * V. 1.15 (2019-02-22):
 	- Add support for omitting multiple authors.
