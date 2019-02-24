@@ -418,11 +418,11 @@
 
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
 
-\DeclareDelimFormat{bplfinalnamedelim}{%
+\DeclareDelimFormat[author]{bplfinalnamedelim}{%
     \ifnumgreater{\value{nonplauthors}}{2}{\finalandcomma}{}%
     \addspace\bibstring{and}\space}
 
-\DeclareDelimFormat{bplfinalnamedelimed}{%
+\DeclareDelimFormat[editor]{bplfinalnamedelim}{%
     \ifnumgreater{\value{nonpleditors}}{2}{\finalandcomma}{}%
     \addspace\bibstring{and}\space}
     
@@ -441,23 +441,17 @@
 \newcounter{nonplauthors}
 
 \DeclareIndexNameFormat{nonplauthorcount}{%
-    \newtoggle{havenonplauthor}%
-    \toggletrue{havenonplauthor}%
     \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {\togglefalse{havenonplauthor}}%
        {}%
-    \iftoggle{havenonplauthor}{\stepcounter{nonplauthors}}{}%
+       {\stepcounter{nonplauthors}}%
 }
 
 \newcounter{nonpleditors}
 
 \DeclareIndexNameFormat{nonpleditorcount}{%
-    \newtoggle{havenonplauthor}%
-    \toggletrue{havenonplauthor}%
     \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {\togglefalse{havenonplauthor}}%
        {}%
-    \iftoggle{havenonplauthor}{\stepcounter{nonpleditors}}{}%
+       {\stepcounter{nonpleditors}}%
 }
 
 \newcounter{nonplauthor}
@@ -480,16 +474,11 @@
 
 % Omission/highlighting routine
 % (common code for authors and editors)
-\newcounter{plname}
-\newcounter{plnames}
-\newbibmacro{bpl:handlenames}[1][]{%
-    \ifstrequal{#1}{editor}{%
-        \setcounter{plname}{\value{nonpleditor}}%
-        \setcounter{plnames}{\value{nonpleditors}}%
-    }{%
-        \setcounter{plname}{\value{nonplauthor}}%
-        \setcounter{plnames}{\value{nonplauthors}}%
-    }%
+% \usebibmacro{bpl:handlenames}[author|editor]
+\newbibmacro{bpl:handlenames}[1][author]{%
+    \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
+       {\global\toggletrue{isplauthor}}%
+       {\global\togglefalse{isplauthor}}%
     %
     % First case: plauthorhandling=highlight
     \if@hlauthor%
@@ -543,7 +532,7 @@
     % Second case: plauthorhandling=omit
     \else% \if@hlauthor false
         \ifthenelse{\value{listcount}=1}%
-            {\ifthenelse{\value{plnames}>0}%
+            {\ifthenelse{\value{nonpl#1s}>0}%
                  {\bibopenparen\bibstring{with}\addspace}%
                  {}%
              \iftoggle{isplauthor}%
@@ -557,21 +546,16 @@
               \global\toggletrue{hadplauthor}%
             }% <- end TRUE condition
             {% <- FALSE condition
-              \ifstrequal{#1}{editor}{%
-                  \stepcounter{nonpleditor}%
-              }{%
-                  \stepcounter{nonplauthor}%
-              }%
-              \stepcounter{plname}%
+              \stepcounter{nonpl#1}%
               \ifthenelse{\value{listcount}=1}%
                    {\global\togglefalse{hadplauthor}}%
                    {%
                      \iftoggle{plauthorprecedes}%
                          {}%
                          {%
-                           \ifnumless{\value{plname}}{\value{plnames}}%
+                           \ifnumless{\value{nonpl#1}}{\value{nonpl#1s}}%
                               {\multinamedelim}%
-                              {\bplfinalnamedelim}%
+                              {\printdelim[#1]{bplfinalnamedelim}}%
                          }%
                    }%
               \ifgiveninits
@@ -583,23 +567,17 @@
             }% <- end FALSE condition
         %
         \usebibmacro{name:andothers}%
-        \ifthenelse{\value{plnames}>0\AND\value{listcount}=\value{liststop}}%
+        \ifthenelse{\value{nonpl#1s}>0\AND\value{listcount}=\value{liststop}}%
             {\unspace\bibcloseparen}%
             {}%
     \fi% end of \if@hlauthor else condition
 }
 
 \DeclareNameFormat{author}{%
-    \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {\global\toggletrue{isplauthor}}%
-       {\global\togglefalse{isplauthor}}%
     \usebibmacro{bpl:handlenames}%
 }
 
 \DeclareNameFormat{editor}{%
-    \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {\global\toggletrue{isplauthor}}%
-       {\global\togglefalse{isplauthor}}%
     \usebibmacro{bpl:handlenames}[editor]%
 }
 
