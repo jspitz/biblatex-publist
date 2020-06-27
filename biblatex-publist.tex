@@ -365,10 +365,11 @@ use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 With the options \joption{linktitledoi}, \joption{linktitleurl}, \joption{linktitleisbn}, \joption{linktitleissn}
 or the combining option \joption{linktitleall}, titles and subtitles are turned into clickable hyperlinks if
 the \textsf{hyperref} package is loaded, and the respective data is there, i.\,e., if either the DOI field,
-the URL field, the ISBN field or the ISSN field (checked in this order) is defined for the given entry.
+the URL field, the ISBN field or the ISSN field is defined for the given entry (checked in this order if multiple
+of these options or \joption{linktitleall} are used).
 
-With URL and DOI, direct links are used. With ISBN or ISSN, a link to a search provider is used instead (\textsf{worldcat}
-by default). The search provider can be customized by redefining the following macros:
+With URL and DOI, direct links are created. With ISBN or ISSN, a link to a search provider is created instead
+(\textsf{worldcat} by default). The search provider can be customized by redefining the following macros:
 \begin{lstlisting}[moretexcs={[2]{bplbookurlisbn,bplbookurlissn}}]
 \newcommand*\bplbookurlisbn[1]{%
     https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
@@ -376,8 +377,9 @@ by default). The search provider can be customized by redefining the following m
     https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
 \end{lstlisting}
 %
-Note that the output of URLs, DOIs, ISBNs and ISSNs is not affected by the \joption{linktitle} options.
-To control them, use the \joption{url}, \joption{doi} and \joption{isbn} biblatex options. 
+Note that the output of URLs, DOIs, ISBNs and ISSNs is not affected by the \joption{linktitle} options,
+so you might get redundant output. To control (e.\,g., omit) them, use the \joption{url}, \joption{doi}
+and \joption{isbn} biblatex options. 
 
 \section{Localization}
 
