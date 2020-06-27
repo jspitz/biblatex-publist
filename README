@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.17 (forthcoming):
+	- Add options to get clickable titles.
+
 * V. 1.16 (2019-04-16):
 	- Major code cleanup.
 

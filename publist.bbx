@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.16}
-\def\bpl@rdate{2019/04/16}
+\def\bpl@version{1.17dev}
+\def\bpl@rdate{2020/06/27}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -125,6 +125,59 @@
              }{% else: "true" (default: nothing to do here)
           }% end of clause
 	}
+}
+
+\newtoggle{bpl@linktitle}
+\newtoggle{bpl@linktitleisbn}
+\newtoggle{bpl@linktitleissn}
+\newtoggle{bpl@linktitleurl}
+\newtoggle{bpl@linktitledoi}
+\DeclareBibliographyOption{linktitleall}[true]{%
+    \ifstrequal{#1}{true}{
+       \toggletrue{bpl@linktitleisbn}
+       \toggletrue{bpl@linktitleissn}
+       \toggletrue{bpl@linktitleurl}
+       \toggletrue{bpl@linktitledoi}
+       \toggletrue{bpl@linktitle}
+    }{%
+       \togglefalse{bpl@linktitleisbn}
+       \togglefalse{bpl@linktitleissn}
+       \togglefalse{bpl@linktitleurl}
+       \togglefalse{bpl@linktitledoi}
+       \togglefalse{bpl@linktitle}
+    }%
+}
+\DeclareBibliographyOption{linktitleurl}[true]{%
+    \ifstrequal{#1}{true}{%
+       \toggletrue{bpl@linktitleurl}
+       \toggletrue{bpl@linktitle}
+    }{%
+       \togglefalse{bpl@linktitleurl}
+    }%
+}
+\DeclareBibliographyOption{linktitledoi}[true]{%
+    \ifstrequal{#1}{true}{%
+       \toggletrue{bpl@linktitledoi}
+       \toggletrue{bpl@linktitle}
+    }{%
+       \togglefalse{bpl@linktitledoi}
+    }%
+}
+\DeclareBibliographyOption{linktitleisbn}[true]{%
+    \ifstrequal{#1}{true}{%
+       \toggletrue{bpl@linktitleisbn}
+       \toggletrue{bpl@linktitle}
+    }{%
+       \togglefalse{bpl@linktitleisbn}
+    }%
+}
+\DeclareBibliographyOption{linktitleissn}[true]{%
+    \ifstrequal{#1}{true}{%
+       \toggletrue{bpl@linktitleissn}
+       \toggletrue{bpl@linktitle}
+    }{%
+       \togglefalse{bpl@linktitleissn}
+    }%
 }
 
 % Check if users have defined different base styles
@@ -1096,6 +1149,27 @@
 }
 
 
+% Define bibmacro that applies a hypertext reference
+% Inspired by https://tex.stackexchange.com/a/48506/19291
+\newbibmacro*{bpl:linked}[1]{%
+  \ifboolexpr{ test {\ifhyperref} and not test {\ifentrytype{online}} }
+    {\iffieldundef{doi}
+       {\iffieldundef{url}
+          {\iffieldundef{isbn}
+             {\iffieldundef{issn}
+                {#1}
+                {\iftoggle{bpl@linktitleissn}{\href{\bplbookurlissn{\thefield{issn}}}{#1}}{#1}}}
+             {\iftoggle{bpl@linktitleisbn}{\href{\bplbookurlisbn{\thefield{isbn}}}{#1}}{#1}}}
+          {\iftoggle{bpl@linktitleurl}{\href{\thefield{url}}{#1}}{#1}}}
+       {\iftoggle{bpl@linktitledoi}{\href{https://doi.org/\thefield{doi}}{#1}}{#1}}}
+    {#1}%
+}
+
+% URL for ISBN/ISSN queries
+\newcommand*\bplbookurlisbn[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+\newcommand*\bplbookurlissn[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+
+
 %
 % Mappings (biber)
 %
@@ -1137,6 +1211,28 @@
            \step[fieldset=sortyear, fieldvalue={5555}]
         }
     }
+}
+
+% Link titles if so requested
+\AtBeginDocument{%
+\iftoggle{bpl@linktitle}{%
+  \DeclareStyleSourcemap{
+     \maps[datatype=bibtex]{
+        \map[overwrite=true]{
+            \step[fieldsource=title,
+                  match=\regexp{(.*)},
+                  replace=\regexp{\\usebibmacro{bpl:linked}{$1}},
+                  final=true]
+        }
+        \map[overwrite=true]{
+            \step[fieldsource=subtitle,
+                  match=\regexp{(.*)},
+                  replace=\regexp{\\usebibmacro{bpl:linked}{$1}},
+                  final=true]
+        }
+     }
+  }
+}{}
 }
 
 
