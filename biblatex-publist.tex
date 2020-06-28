@@ -159,7 +159,7 @@ It informs the style file which name(s) it should suppress or highlight in the
 author\slash editor list (usually yours). 
 
 With the default settings, the author\slash editor name(s) will be omitted completely
-for all of publications which are authored or edited only by the specified person(s), as in:
+for all publications which are authored or edited only by the specified person(s), as in:
 \begin{quote}
 \textbf{2012.} Some recent trends in gardening. In: \emph{Gardening
 Practice} 56, pp.~34--86.
@@ -370,13 +370,13 @@ of these options or \joption{linktitleall} are used).
 
 With URL and DOI, direct links are created. With ISBN or ISSN, a link to a search provider is created instead
 (\textsf{worldcat} by default). The search provider can be customized by redefining the following macros:
-\begin{lstlisting}[moretexcs={[2]{bplbookurlisbn,bplbookurlissn}}]
-\newcommand*\bplbookurlisbn[1]{%
-    https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
-\newcommand*\bplbookurlissn[1]{%
-    https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+\begin{lstlisting}[moretexcs={[2]{plisbnlink,plissnlink}}]
+\newcommand*\plisbnlink[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+\newcommand*\plissnlink[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
 \end{lstlisting}
 %
+where \verb|#1| is a placeholder for the ISBN or ISSN, respectively.
+
 Note that the output of URLs, DOIs, ISBNs and ISSNs is not affected by the \joption{linktitle} options,
 so you might get redundant output. To control (e.\,g., omit) them, use the \joption{url}, \joption{doi}
 and \joption{isbn} biblatex options. 

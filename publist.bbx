@@ -1158,16 +1158,16 @@
           {\iffieldundef{isbn}
              {\iffieldundef{issn}
                 {#1}
-                {\iftoggle{bpl@linktitleissn}{\href{\bplbookurlissn{\thefield{issn}}}{#1}}{#1}}}
-             {\iftoggle{bpl@linktitleisbn}{\href{\bplbookurlisbn{\thefield{isbn}}}{#1}}{#1}}}
+                {\iftoggle{bpl@linktitleissn}{\href{\plissnlink{\thefield{issn}}}{#1}}{#1}}}
+             {\iftoggle{bpl@linktitleisbn}{\href{\plisbnlink{\thefield{isbn}}}{#1}}{#1}}}
           {\iftoggle{bpl@linktitleurl}{\href{\thefield{url}}{#1}}{#1}}}
        {\iftoggle{bpl@linktitledoi}{\href{https://doi.org/\thefield{doi}}{#1}}{#1}}}
     {#1}%
 }
 
 % URL for ISBN/ISSN queries
-\newcommand*\bplbookurlisbn[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
-\newcommand*\bplbookurlissn[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+\newcommand*\plisbnlink[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+\newcommand*\plissnlink[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
 
 
 %
