@@ -48,6 +48,7 @@ instructions.
 * V. 1.18 (forthcoming)
 	- Fix double editor with periodical type.
 	- Use editortypedelim.
+	- Fix mine filter with author lists longer than maxnames.
 
 * V. 1.17 (2020-07-10):
 	- Add options to get clickable titles.

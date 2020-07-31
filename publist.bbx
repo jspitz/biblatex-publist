@@ -480,8 +480,8 @@
     \addspace\bibstring{and}\space}
     
 \AtDataInput{%
-    \indexnames[authorfiltered]{author}%
-    \indexnames[editorfiltered]{editor}%
+    \indexnames[authorfiltered][-\value{listtotal}]{author}%
+    \indexnames[editorfiltered][-\value{listtotal}]{editor}%
 }
 
 \defbibfilter{mine}{category=filtered}
