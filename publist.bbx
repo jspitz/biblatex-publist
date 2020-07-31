@@ -378,6 +378,12 @@
 \DeclareFieldFormat{shorthandwidth}{\mkbibbrackets{#1}}
 \DeclareFieldFormat{related:parttranslationof}{\mkbibbrackets{#1}}
 
+%
+% Delimiters
+%
+% Omission of names in truncated autor list
+\newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
+
 
 %
 % Deal with numbering (resume numbers in refsections)
@@ -492,30 +498,39 @@
 %
 
 \newcounter{nonplauthors}
+\newcounter{nonpleditors}
+\newcounter{plauthor}
+\newcounter{pleditor}
+\newcounter{plauthors}
+\newcounter{pleditors}
+\newcounter{realliststop}
+\newcounter{nonplauthor}
+\newcounter{nonpleditor}
 
 \DeclareIndexNameFormat{nonplauthorcount}{%
     \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {}%
+       {\stepcounter{plauthors}}
        {\stepcounter{nonplauthors}}%
 }
 
-\newcounter{nonpleditors}
-
 \DeclareIndexNameFormat{nonpleditorcount}{%
     \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {}%
+       {\stepcounter{pleditors}}%
        {\stepcounter{nonpleditors}}%
 }
 
-\newcounter{nonplauthor}
-\newcounter{nonpleditor}
 \AtEveryBibitem{%
     \setcounter{nonplauthors}{0}%
     \setcounter{nonpleditors}{0}%
+    \setcounter{plauthor}{0}%
+    \setcounter{pleditor}{0}%
+    \setcounter{plauthors}{0}%
+    \setcounter{pleditors}{0}%
     \setcounter{nonplauthor}{0}%
     \setcounter{nonpleditor}{0}%
-    \indexnames[nonplauthorcount]{author}%
-    \indexnames[nonpleditorcount]{editor}%
+    \setcounter{realliststop}{0}%
+    \indexnames[nonplauthorcount][-\value{listtotal}]{author}%
+    \indexnames[nonpleditorcount][-\value{listtotal}]{editor}%
 }
 
 %
@@ -524,23 +539,66 @@
 \newtoggle{plauthorprecedes}
 \newtoggle{hadplauthor}
 \newtoggle{isplauthor}
+\newtoggle{plnameomitted}
+\newtoggle{plnameafteromission}
+
+\newbibmacro*{bpl:omissiondelim}[1][author]
+{%
+    \ifthenelse{\value{listcount}=1}{\global\togglefalse{plnameafteromission}}{%
+        \ifnumless{\value{listcount}}{\value{liststop}}%
+            {%
+              \ifnumgreater{\value{listcount}}{\value{realliststop}}{%
+                \iftoggle{plnameomitted}{%
+                  \multinamedelim\iftoggle{isplauthor}{\plnameomission\global\togglefalse{plnameomitted}%
+                                                       \global\toggletrue{plnameafteromission}}{}%
+                }{%
+                  \ifnumless{\value{pl#1}}{\value{pl#1s}}{%
+                    \iftoggle{isplauthor}
+                        {\multinamedelim\plnameomission\global\togglefalse{plnameomitted}}
+                        {\global\toggletrue{plnameomitted}}%
+                  }{}%
+                }%
+              }{%
+                \multinamedelim\global\togglefalse{plnameomitted}%
+              }%
+            }{%
+              \ifnumgreater{\value{listcount}}{\value{realliststop}}{%
+                \iftoggle{isplauthor}{\iftoggle{plnameomitted}{\multinamedelim\plnameomission}{}%
+                                      \finalnamedelim\global\togglefalse{plnameomitted}}{}%
+              }{%
+                \iftoggle{plnameomitted}{%
+                     \ifnumequal{\value{listcount}}{\value{liststop}}%
+                            {\finalnamedelim}
+                            {\multinamedelim\iftoggle{isplauthor}{\global\togglefalse{plnameomitted}}{}}%                  
+                }{%
+                 \ifnumgreater{\value{listcount}}{\value{realliststop}}{%
+                   \ifnumgreater{\value{pl#1}}{\value{pl#1s}}{%
+                     \iftoggle{isplauthor}{\plnameomission\global\toggletrue{plnameomitted}}%
+                   }{}%
+                 }{\finalnamedelim}%
+                }%
+              }%
+            }%
+    }%
+}
 
 % Omission/highlighting routine
 % (common code for authors and editors)
 % \usebibmacro{bpl:handlenames}[author|editor]
 \newbibmacro{bpl:handlenames}[1][author]{%
     \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {\global\toggletrue{isplauthor}}%
+       {\global\toggletrue{isplauthor}\stepcounter{pl#1}}%
        {\global\togglefalse{isplauthor}}%
+    %
+    % Calculate real list stop
+    \ifnumless{\value{liststop}}{\value{maxnames}}
+         {\setcounter{realliststop}{\theliststop}}
+         {\setcounter{realliststop}{\value{minnames}}}%
     %
     % First case: plauthorhandling=highlight
     \if@hlauthor%
         % Highlight plauthor(s)
-        \ifthenelse{\value{listcount}=1}{}{%
-            \ifnumless{\value{listcount}}{\value{liststop}}%
-                {\multinamedelim}%
-                {\finalnamedelim}%
-        }%
+        \usebibmacro{bpl:omissiondelim}[#1]%
         \iftoggle{isplauthor}{%
             \plauthorhl{%
                 \if@givenfirst% given name first
@@ -561,26 +619,29 @@
                         {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
                 \fi
             }%
+            \ifnumequal{\value{listcount}}{\value{liststop}}{}{\usebibmacro{name:andothers}}%
         }{%
-            \if@givenfirst% given name first
-                \ifgiveninits
-                    {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                    {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-                \ifdefvoid{\namepartprefix}%
-                    {}%
-                    {\namepartprefix\addspace}%
-                \namepartfamily%
-            \else% family name first
-                \ifdefvoid{\namepartprefix}%
-                      {}%
-                      {\namepartprefix\addspace}%
-                \namepartfamily%
-                \ifgiveninits
-                   {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                   {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
-            \fi
+           \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
+             \if@givenfirst% given name first
+                 \ifgiveninits
+                     {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
+                     {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                 \ifdefvoid{\namepartprefix}%
+                     {}%
+                     {\namepartprefix\addspace}%
+                 \namepartfamily%
+             \else% family name first
+                 \ifdefvoid{\namepartprefix}%
+                       {}%
+                       {\namepartprefix\addspace}%
+                 \namepartfamily%
+                 \ifgiveninits
+                    {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+             \fi
+           }%
+           \usebibmacro{name:andothers}%
         }%
-        \usebibmacro{name:andothers}%
     %
     % Second case: plauthorhandling=omit
     \else% \if@hlauthor false
@@ -606,17 +667,21 @@
                      \iftoggle{plauthorprecedes}%
                          {}%
                          {%
-                           \ifnumless{\value{nonpl#1}}{\value{nonpl#1s}}%
-                              {\multinamedelim}%
-                              {\printdelim[#1]{bplfinalnamedelim}}%
+                           \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
+                              \ifnumless{\value{nonpl#1}}{\value{nonpl#1s}}%
+                                 {\multinamedelim}%
+                                 {\printdelim[#1]{bplfinalnamedelim}}%
+                            }%
                          }%
                    }%
+             \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
               \ifgiveninits
                   {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
                   {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
               \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
               \global\togglefalse{plauthorprecedes}%
               \namepartfamily%
+             }%
             }% <- end FALSE condition
         %
         \usebibmacro{name:andothers}%
@@ -667,7 +732,7 @@
             {}
             {%
              \usebibmacro{bpl:marginyear}%
-             \printnames{author}%
+             \printnames[][-\value{listtotal}]{author}%
              \setunit{\addspace}%
              \iffieldundef{nameaddon}
                  {}
@@ -685,7 +750,7 @@
             {%
              \usebibmacro{bpl:marginyear}%
              \usebibmacro{bpl:year+labelyear}\addspace%
-             \printnames{author}%
+             \printnames[][-\value{listtotal}]{author}%
              \setunit{\addspace}%
              \iffieldundef{nameaddon}
                  {}
@@ -705,7 +770,7 @@
             {}
             {%
              \usebibmacro{bpl:marginyear}%
-             \printnames{editor}%
+             \printnames[][-\value{listtotal}]{editor}%
              \setunit{\printdelim{editortypedelim}}%
              \usebibmacro{editorstrg}%
             }%
@@ -719,7 +784,7 @@
              \usebibmacro{bpl:marginyear}%
              \usebibmacro{bpl:year+labelyear}%
              \addspace%
-             \printnames{editor}%
+             \printnames[][-\value{listtotal}]{editor}%
              \setunit{\printdelim{editortypedelim}}%
              \usebibmacro{editorstrg}%
              \clearname{editor}%
@@ -734,7 +799,7 @@
             and not test {\ifnameundef{editor}}}
             {%
              \usebibmacro{bpl:marginyear}%
-             \printnames{editor}%
+             \printnames[][-\value{listtotal}]{editor}%
              \setunit{\printdelim{editortypedelim}}%
              \usebibmacro{editor+othersstrg}%
              \adddot\addspace%
@@ -750,7 +815,7 @@
              \usebibmacro{bpl:marginyear}%
              \usebibmacro{bpl:year+labelyear}%
              \addspace%
-             \printnames{editor}%
+             \printnames[][-\value{listtotal}]{editor}%
              \setunit{\printdelim{editortypedelim}}%
              \usebibmacro{editor+othersstrg}%
              \clearname{editor}%
@@ -760,9 +825,13 @@
 }
 
 \renewbibmacro*{name:andothers}{%
-    \ifthenelse{\value{listcount}=\value{liststop}\AND\ifmorenames}
+    \ifthenelse{\value{listcount}=\value{liststop}\AND\value{liststop}>\value{realliststop}}
         {%
-         \ifnum\value{liststop}>1 \finalandcomma\fi
+         \ifboolexpr{
+            test {\ifnumgreater{\value{realliststop}}{1}}
+            or
+            test {\iftoggle{plnameafteromission}}
+         }{\finalandcomma}{}%
          \andothersdelim\biblcstring{andothers}%
         }
         {}%

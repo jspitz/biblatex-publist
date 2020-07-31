@@ -46,6 +46,7 @@ instructions.
 == CHANGES ==
 
 * V. 1.18 (forthcoming)
+	- Support name truncation via maxnames.
 	- Fix double editor with periodical type.
 	- Use editortypedelim.
 	- Fix mine filter with author lists longer than maxnames.

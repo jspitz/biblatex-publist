@@ -311,6 +311,30 @@ Note that multiple specifications also affect filtering (see sec.~\ref{sec:filte
 entries authored or edited by any and all specified persons.
 
 
+\subsection{Truncation of name lists}\label{sec:trunc}
+
+Truncation of name lists via the \jfoption{maxnames} and \jfoption{minnames} \bibltx\ options is supported.
+However, it works a bit differently than normal truncation, since the publication list author(s) has\slash have to be taken care of specifically.
+
+With \joption{plauthorhandling=omit}, the \jfoption{maxnames} value specifies how many co-authors are added in parenthesis (the omitted
+author name is not counted here). If the treshold is reached, \emph{et al.} (or the localized string) is appended (and the list truncated
+to the \jfoption{minnames} value, \jfoption{1} by default). So you get something like:
+\begin{quote}
+	\textbf{2020} (with John Doe et al.). What's up in gardening? In: \emph{Gardening Practice} 44, pp.~1--7.
+\end{quote}
+%
+With \joption{plauthorhandling=highlight}, \bpl\ outputs all publist authors, even if the \jfoption{maxnames} treshold has been reached.
+However, other authors (beyond \jfoption{minnames}) are omitted. If they come before a publist author, this is indicated by [\ldots\unkern],
+if authors follow after all publication list authors, \emph{et al.} is appended, as in:
+\begin{quote}
+	Doe, John, [\ldots\unkern], \textbf{Myself, Me}, et al., \textbf{2020}. What's up in gardening? In: \emph{Gardening Practice} 44, pp.~1--7.
+\end{quote}
+%
+The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The default definition is:
+\begin{lstlisting}[moretexcs={[4]{plnameomission,bibellipsis,addcomma,addspace}}]
+\newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
+\end{lstlisting}
+
 \section{Customization}
 
 \subsection{Auxiliary macros and lengths}\label{sec:auxmacros}
@@ -594,6 +618,7 @@ or
 \begin{description}
 	\item [{V. 1.18 (forthcoming):}]~
 	\begin{itemize}
+		\item Support name truncation via \jfoption{maxnames}. See sec.~\ref{sec:trunc}.
 		\item Fix double editor with periodical type.
 		\item Use \jfcsmacro{editortypedelim}.
 		\item Fix \joption{filter=mine} with author lists longer than \jfoption{maxnames}.
