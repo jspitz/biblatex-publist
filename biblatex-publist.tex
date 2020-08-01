@@ -102,13 +102,13 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.18dev, 2020/07/31}
+\date{Version 1.18, 2020/07/31}
 \maketitle
 
 \begin{abstract}
-\noindent The \bpl\ package provides a \emph{biblatex bibliography style file}
-({*}.bbx) for publication lists, i.\,e.\ a bibliography containing one's own
-publications. The style file draws on \bibltx's \emph{authoryear} style per default
+\noindent The \bpl\ package provides a \bibltx\ style file
+for publication lists, i.\,e.\ a bibliography containing one's own
+publications. It draws on \bibltx's \emph{authoryear} style by default
 (which can be changed), but provides some extra features needed for publication lists,
 such as the omission or highlighting of the own name from\slash in author or editor data.
 The package requires at least version 3.8 of the \bibltx\ package\footnote{For \bibltx, see
@@ -314,10 +314,11 @@ entries authored or edited by any and all specified persons.
 \subsection{Truncation of name lists}\label{sec:trunc}
 
 Truncation of name lists via the \jfoption{maxnames} and \jfoption{minnames} \bibltx\ options is supported.
-However, it works a bit differently than normal truncation, since the publication list author(s) has\slash have to be taken care of specifically.
+However, it works a bit differently than normal truncation, since the publication list authors have to be
+taken care of specifically.
 
 With \joption{plauthorhandling=omit}, the \jfoption{maxnames} value specifies how many co-authors are added in parenthesis (the omitted
-author name is not counted here). If the treshold is reached, \emph{et al.} (or the localized string) is appended (and the list truncated
+author name is not counted here). If the treshold is reached, \emph{et al.}\ (or the corresponding localized string) is appended (and the list truncated
 to the \jfoption{minnames} value, \jfoption{1} by default). So you get something like:
 \begin{quote}
 	\textbf{2020} (with John Doe et al.). What's up in gardening? In: \emph{Gardening Practice} 44, pp.~1--7.
@@ -616,12 +617,12 @@ or
 \section{Revision Log}
 
 \begin{description}
-	\item [{V. 1.18 (forthcoming):}]~
+	\item [{V. 1.18 (2020-07-31):}]~
 	\begin{itemize}
 		\item Support name truncation via \jfoption{maxnames}. See sec.~\ref{sec:trunc}.
-		\item Fix double editor with periodical type.
-		\item Use \jfcsmacro{editortypedelim}.
 		\item Fix \joption{filter=mine} with author lists longer than \jfoption{maxnames}.
+		\item Fix double editor with \texttt{@periodical} type.
+		\item Use \jfcsmacro{editortypedelim}.
 	\end{itemize}
 
 	\item [{V. 1.17 (2020-07-10):}]~
