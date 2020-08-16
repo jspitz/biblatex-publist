@@ -47,6 +47,7 @@ instructions.
 
 * V 1.19 (forthcoming)
 	- Fix parsing of name with initials (#24).
+	- Fix output of et al. in byeditor lists.
 
 * V. 1.18 (2020-07-31)
 	- Support name truncation via maxnames.

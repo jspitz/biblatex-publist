@@ -618,7 +618,7 @@
                         {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
                 \fi
             }%
-            \ifnumequal{\value{listcount}}{\value{liststop}}{}{\usebibmacro{name:andothers}}%
+            \ifnumequal{\value{listcount}}{\value{liststop}}{}{\usebibmacro{bpl:name:andothers}}%
         }{%
            \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
              \if@givenfirst% given name first
@@ -639,7 +639,7 @@
                     {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
              \fi
            }%
-           \usebibmacro{name:andothers}%
+           \usebibmacro{bpl:name:andothers}%
         }%
     %
     % Second case: plauthorhandling=omit
@@ -683,7 +683,7 @@
              }%
             }% <- end FALSE condition
         %
-        \usebibmacro{name:andothers}%
+        \usebibmacro{bpl:name:andothers}%
         \ifthenelse{\value{nonpl#1s}>0\AND\value{listcount}=\value{liststop}}%
             {\unspace\bibcloseparen}%
             {}%
@@ -823,7 +823,7 @@
     \fi% end of \if@hlauthor else condition
 }
 
-\renewbibmacro*{name:andothers}{%
+\newbibmacro*{bpl:name:andothers}{%
     \ifthenelse{\value{listcount}=\value{liststop}\AND\value{liststop}>\value{realliststop}}
         {%
          \ifboolexpr{
