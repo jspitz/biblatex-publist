@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.19dev}
-\def\bpl@rdate{2020/08/08}
+\def\bpl@version{1.19}
+\def\bpl@rdate{2020/08/21}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -476,6 +476,12 @@
 
 \DeclareIndexNameFormat[inbook,inproceedings,incollection]{editorfiltered}{}%
 
+\DeclareDelimFormat{bpl:unfiltered:finalnamedelim}{%
+   \ifnumless{\value{listcount}}{\value{liststop}}%
+            {\multinamedelim}%
+            {\finalnamedelim}%
+}%
+
 \DeclareDelimFormat[author]{bplfinalnamedelim}{%
     \ifnumgreater{\value{nonplauthors}}{2}{\finalandcomma}{}%
     \addspace\bibstring{and}\space}
@@ -581,12 +587,21 @@
     }%
 }
 
+% Add hook to check whether we are in a related entry.
+% This is to prevent author omission in such cases.
+\newtoggle{isinrelated}
+\apptocmd{\abx@macro@begrelated}{\global\toggletrue{isinrelated}}{}%
+         {\PackageWarning{biblatex-publist}{Patching begrelated failed!}}
+\apptocmd{\abx@macro@endrelated}{\global\toggletrue{isinrelated}}{}%
+         {\PackageWarning{biblatex-publist}{Patching endrelated failed!}}
+
 % Omission/highlighting routine
 % (common code for authors and editors)
 % \usebibmacro{bpl:handlenames}[author|editor]
 \newbibmacro{bpl:handlenames}[1][author]{%
     \bpl@ifplauthor{\namepartgiven}{\namepartprefix}{\namepartfamily}%
-       {\global\toggletrue{isplauthor}\stepcounter{pl#1}}%
+       {\iftoggle{isinrelated}{\togglefalse{isplauthor}}%
+                              {\global\toggletrue{isplauthor}\stepcounter{pl#1}}}%
        {\global\togglefalse{isplauthor}}%
     %
     % Calculate real list stop
@@ -669,7 +684,8 @@
                            \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
                               \ifnumless{\value{nonpl#1}}{\value{nonpl#1s}}%
                                  {\multinamedelim}%
-                                 {\printdelim[#1]{bplfinalnamedelim}}%
+                                 {\iftoggle{isinrelated}{\printdelim{bpl:unfiltered:finalnamedelim}}%
+                                                        {\printdelim[#1]{bplfinalnamedelim}}}%
                             }%
                          }%
                    }%

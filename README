@@ -45,9 +45,10 @@ instructions.
 
 == CHANGES ==
 
-* V 1.19 (forthcoming)
+* V 1.19 (2020-08-21)
 	- Fix parsing of name with initials (#24).
 	- Fix output of et al. in byeditor lists.
+	- Do not omit names in related entries.
 
 * V. 1.18 (2020-07-31)
 	- Support name truncation via maxnames.
