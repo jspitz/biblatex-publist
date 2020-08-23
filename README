@@ -45,7 +45,10 @@ instructions.
 
 == CHANGES ==
 
-* V 1.19 (2020-08-21)
+* V. 1.20 (forthcoming)
+	- Do not output "(with <authors>)" if no plauthor is among the authors.
+
+* V. 1.19 (2020-08-21)
 	- Fix parsing of name with initials (#24).
 	- Fix output of et al. in byeditor lists.
 	- Do not omit names in related entries.
