@@ -102,7 +102,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.19, 2020/08/21}
+\date{Version 1.20dev, 2020/08/23}
 \maketitle
 
 \begin{abstract}
@@ -618,6 +618,12 @@ or
 
 \begin{description}
 
+	\item [{V. 1.20 (forthcoming):}]~
+	\begin{itemize}
+		\item Do not output \emph{(with <authors>)} if no publist author
+		      is among the authors.
+	\end{itemize}
+
 	\item [{V. 1.19 (2020-08-21):}]~
 	\begin{itemize}
 		\item Fix parsing of names with initials.
@@ -830,10 +836,11 @@ Gregorio.%
 Thanks go to Enrico Gregorio (egreg on \emph{tex.stackexchange.com})
 for helping me with correct name parsing (actually, the code the package
 uses is completely his), user gusbrs on \emph{tex.stackexchange.com},
-Marko Budi¨i\'{c}, Clea F. Rees, Yannick Kalff and many other users for
-testing and bug reports, Nicolas Markey for \emph{publist.bst} and of
-course Philipp Lehman and the current \bibltx\ team (Philipp Kime,
-Moritz Wemheuer, Audrey Boruvka and Joseph Wright) for \bibltx.
+Marko Budi¨i\'{c}, Clea F. Rees, Yannick Kalff, Moritz Wemheuer and many
+other users for testing, bug reports and suggestions, Nicolas Markey for
+\emph{publist.bst} and of course Philipp Lehman and the current
+\bibltx\ team (Philipp Kime, Moritz Wemheuer, Audrey Boruvka and
+Joseph Wright) for \bibltx.
 
 \begin{thebibliography}{1}
 \bibitem{bibltx}Lehman, Philipp (with Audrey Boruvka, Philip Kime
