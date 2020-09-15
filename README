@@ -45,7 +45,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.20 (forthcoming)
+* V. 1.20 (2020-09-15)
 	- Do not output "(with <authors>)" if no plauthor is among the authors.
 
 * V. 1.19 (2020-08-21)
