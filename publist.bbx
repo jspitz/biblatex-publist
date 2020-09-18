@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.20}
-\def\bpl@rdate{2020/09/15}
+\def\bpl@version{1.21dev}
+\def\bpl@rdate{2020/09/18}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -1281,20 +1281,24 @@
             \step[fieldset=sortyear, origfieldval]
         }
         \map{
-           \step[fieldsource=pubstate, match=\regexp{forthcoming}, final]
+           \step[fieldsource=pubstate, match=\regexp{prepublished}, final]
            \step[fieldset=sortyear, fieldvalue={2222}]
         }
         \map{
-           \step[fieldsource=pubstate, match=\regexp{inpress}, final]
+           \step[fieldsource=pubstate, match=\regexp{forthcoming}, final]
            \step[fieldset=sortyear, fieldvalue={3333}]
         }
         \map{
-           \step[fieldsource=pubstate, match=\regexp{submitted}, final]
+           \step[fieldsource=pubstate, match=\regexp{inpress}, final]
            \step[fieldset=sortyear, fieldvalue={4444}]
         }
         \map{
-           \step[fieldsource=pubstate, match=\regexp{inpreparation}, final]
+           \step[fieldsource=pubstate, match=\regexp{submitted}, final]
            \step[fieldset=sortyear, fieldvalue={5555}]
+        }
+        \map{
+           \step[fieldsource=pubstate, match=\regexp{inpreparation}, final]
+           \step[fieldset=sortyear, fieldvalue={6666}]
         }
     }
 }
