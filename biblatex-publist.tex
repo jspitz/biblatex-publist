@@ -232,9 +232,16 @@ If you prefer the numbering to start from 1 at each section instead, set this op
 
 If you do not want to have any numbers at all, set this option to \joption{false}.
 
+
+\item [{\joption{reversenumbering{[}=true|false{]}}}] default: \emph{false}.
+
+If this option is \joption{true}, the entries will be numbered in descending order, starting from the total
+number of entries back to 1. This works with \joption{plnumbered=reset} as well.
+Note, however, that the numbering might go wrong with complex filtering and nested bibliography sections.
+
 \item [{\joption{plauthorfirstinit{[}=true|false{]}}}] default: \emph{false}.
 
-If you set this option to true, you can (and are supposed to) pass only an initial character as first name value of
+If you set this option to \joption{true}, you can (and are supposed to) pass only an initial character as first name value of
 \jcsmacro{plauthorname} (e.\,g., \jcsmacro{plauthorname[J]\{Doe\}} or \jcsmacro{plauthorname[J][van]\{Doe\}}).
 In consequence, \bpl\ will consider all entries of the specified given name (and prefix, if specified)
 whose prename starts with the specified character. This allows you to deal with databases that record entries of your work
@@ -620,6 +627,7 @@ or
 
 	\item [{V. 1.20 (2020-09-15):}]~
 	\begin{itemize}
+		\item Add option \jfoption{reversenumbering}.
 		\item Do not output \emph{(with <authors>)} if no publist author
 		      is among the authors.
 	\end{itemize}

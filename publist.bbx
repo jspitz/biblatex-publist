@@ -92,7 +92,8 @@
     \ifstrequal{#1}{false}{\togglefalse{firstinit}}{\toggletrue{firstinit}}
 }
 
-\newif\if@bplnumbered\@bplnumberedtrue
+\newif\if@bpl@numbered\@bpl@numberedtrue
+\newif\if@bpl@numberreset\@bpl@numberresetfalse
 \DeclareBibliographyOption{plnumbered}[true]{%
     \ifstrequal{#1}{false}{% 1. "false"
 	\defbibenvironment{bibliography}
@@ -106,6 +107,7 @@
 	  {\endlist}
 	  {\item}}{% else: 2. "reset"
 	     \ifstrequal{#1}{reset}{%
+	       \@bpl@numberresettrue%
 	       \defbibenvironment{bibliography}
 		  {\addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
 		   \list
@@ -178,6 +180,11 @@
     }{%
        \togglefalse{bpl@linktitleissn}
     }%
+}
+
+\newif\if@bpl@reversenum\@bpl@reversenumfalse
+\DeclareBibliographyOption{reversenumbering}[true]{%
+    \ifstrequal{#1}{true}{\@bpl@reversenumtrue}{\@bpl@reversenumfalse}
 }
 
 % Check if users have defined different base styles
@@ -387,9 +394,12 @@
 %
 % Deal with numbering (resume numbers in refsections)
 %
-\csnumgdef{bbx@itemtotal}{0}
-\csnumgdef{bbx@currentitem}{0}
-\csnumgdef{bbx@saverefsection}{0}
+\csnumgdef{bpl@itemtotal}{0}
+\csnumgdef{bpl@currentitem}{0}
+\csnumgdef{bpl@saverefsection}{0}
+\csnumgdef{bpl@currentitem}{0}
+\csnumgdef{bpl@all@entrycount}{0}
+\csnumgdef{bpl@comp@entrycount:0}{0}
 \newbool{newsection}
 
 \preto\blx@refsection{\global\setbool{newsection}{true}}
@@ -416,31 +426,82 @@
           \renewcommand*{\makelabel}[1]{\hss##1}%
     }%
     {\endlist
-     \ifnumgreater{\c@refsection}{\bbx@saverefsection}%
-     {\csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}+\csuse{bbx@currentitem}}}{}%
-      \csnumgdef{bbx@saverefsection}{\c@refsection}%
+     \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
+     {\if@bpl@reversenum
+         \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}}%
+      \else
+         \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@currentitem}}%
+      \fi}{}%
+      \csnumgdef{bpl@saverefsection}{\c@refsection}%
     }
     {\item}
 
 \DeclareFieldFormat{labelnumber}{%
     \ifbool{newsection}{%
        % Fix start counter value
-       \csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1+1}%
+       \mkbibsecstart{#1}%
        \global\setbool{newsection}{false}%
     }{}%
     \mkbibdesc{#1}%
-    \csnumgdef{bbx@currentitem}{#1}%
+    \csnumgdef{bpl@currentitem}{#1}%
 }
 
-% Print labelnumber as actual number, plus item total
 \newrobustcmd{\mkbibdesc}[1]{%
-    \number\numexpr\csuse{bbx@itemtotal}+#1\relax%
+    % Print labelnumber as actual number, plus item total
+    \number\numexpr\csuse{bpl@itemtotal}+#1\relax%
+}%
+
+\newrobustcmd{\mkbibsecstart}[1]{%
+   \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}-#1+1}%
 }
 
 % Way to manual shift the numbering (undocumented)
+\csnumgdef{bpl@dec@itemtotal}{0}
 \newcommand*\decreasebbxnumbering[1]{%
-    \csnumgdef{bbx@itemtotal}{\csuse{bbx@itemtotal}-#1}%
+    \csnumgdef{bpl@dec@itemtotal}{#1}%
 }
+
+%
+% Reverse numbering
+% Inspired by moewew's approach at
+% https://tex.stackexchange.com/a/563328/19291
+%
+\AtEndOfPackage{%
+\newcounter{prevrefsection}%
+\if@bpl@reversenum
+  % Count total number of entries in each refsection
+  \AtDataInput{%
+    \csnumgdef{bpl@entrycount:\therefsection}{%
+       \csuse{bpl@entrycount:\therefsection}+1%
+    }%
+    \setcounter{prevrefsection}{\therefsection}%
+    \addtocounter{prevrefsection}{-1}%
+    \csnumgdef{bpl@comp@entrycount:\therefsection}{%
+       \csuse{bpl@comp@entrycount:\theprevrefsection}+\csuse{bpl@entrycount:\therefsection}%
+    }%
+    \csnumgdef{bpl@all@entrycount}{%
+       \csuse{bpl@all@entrycount}+1%
+    }%
+  }%
+  \renewrobustcmd{\mkbibdesc}[1]{%
+     % Print the labelnumber as the total number of entries in the
+     % current refsection, minus the actual labelnumber, plus one
+     \number\numexpr\csuse{bpl@entrycount:\therefsection}+\csuse{bpl@itemtotal}-#1+1\relax%
+  }%
+  \renewrobustcmd{\mkbibsecstart}[1]{%
+   \setcounter{prevrefsection}{\therefsection}%
+   \addtocounter{prevrefsection}{-1}%
+   \if@bpl@numberreset
+       \csnumgdef{bpl@itemtotal}{#1-1-\csuse{bpl@dec@itemtotal}}%
+   \else
+       \csnumgdef{bpl@itemtotal}{\csuse{bpl@all@entrycount}%
+                                 -\csuse{bpl@comp@entrycount:\theprevrefsection}%
+                                 -\csuse{bpl@entrycount:\therefsection}-#1+1%
+                                 -\csuse{bpl@dec@itemtotal}}%
+   \fi%
+  }%
+\fi
+}%
 
 
 %

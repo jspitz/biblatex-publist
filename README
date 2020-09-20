@@ -46,6 +46,7 @@ instructions.
 == CHANGES ==
 
 * V. 1.21 (forthcoming)
+	- Add option "reversenumbering".
 	- Properly sort "prepublished" pubstate type.
 
 * V. 1.20 (2020-09-15)
