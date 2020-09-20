@@ -455,10 +455,10 @@
    \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}-#1+1}%
 }
 
-% Way to manual shift the numbering (undocumented)
-\csnumgdef{bpl@dec@itemtotal}{0}
-\newcommand*\decreasebbxnumbering[1]{%
-    \csnumgdef{bpl@dec@itemtotal}{#1}%
+% Way to manually shift the numbering
+\csnumgdef{bpl@shift@itemtotal}{0}
+\newcommand*\shiftbplnum[1]{%
+    \csnumgdef{bpl@shift@itemtotal}{#1}%
 }
 
 %
@@ -494,12 +494,12 @@
    \setcounter{prevrefsection}{\therefsection}%
    \addtocounter{prevrefsection}{-1}%
    \if@bpl@numberreset
-       \csnumgdef{bpl@itemtotal}{#1-1-\csuse{bpl@dec@itemtotal}}%
+       \csnumgdef{bpl@itemtotal}{#1-1+\csuse{bpl@shift@itemtotal}}%
    \else
        \csnumgdef{bpl@itemtotal}{\csuse{bpl@all@entrycount}%
                                  -\csuse{bpl@comp@entrycount:\theprevrefsection}%
                                  -\csuse{bpl@entrycount:\therefsection}-#1+1%
-                                 -\csuse{bpl@dec@itemtotal}}%
+                                 +\csuse{bpl@shift@itemtotal}}%
    \fi%
   }%
 \fi
