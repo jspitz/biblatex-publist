@@ -471,17 +471,19 @@
 \if@bpl@reversenum
   % Count total number of entries in each refsection
   \AtDataInput{%
-    \csnumgdef{bpl@entrycount:\therefsection}{%
-       \csuse{bpl@entrycount:\therefsection}+1%
-    }%
-    \setcounter{prevrefsection}{\therefsection}%
-    \addtocounter{prevrefsection}{-1}%
-    \csnumgdef{bpl@comp@entrycount:\therefsection}{%
-       \csuse{bpl@comp@entrycount:\theprevrefsection}+\csuse{bpl@entrycount:\therefsection}%
-    }%
-    \csnumgdef{bpl@all@entrycount}{%
-       \csuse{bpl@all@entrycount}+1%
-    }%
+    \ifcategory{filtered}{%
+      \csnumgdef{bpl@entrycount:\therefsection}{%
+         \csuse{bpl@entrycount:\therefsection}+1%
+      }%
+      \setcounter{prevrefsection}{\therefsection}%
+      \addtocounter{prevrefsection}{-1}%
+      \csnumgdef{bpl@comp@entrycount:\therefsection}{%
+         \csuse{bpl@comp@entrycount:\theprevrefsection}+\csuse{bpl@entrycount:\therefsection}%
+      }%
+      \csnumgdef{bpl@all@entrycount}{%
+         \csuse{bpl@all@entrycount}+1%
+      }%
+    }{}%
   }%
   \renewrobustcmd{\mkbibdesc}[1]{%
      % Print the labelnumber as the total number of entries in the
