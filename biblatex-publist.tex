@@ -374,11 +374,11 @@ This might be needed for long bibliographies (> 99 entries) in order to adjust t
 space the item number needs.
 
 If you need to adjust the numbering of items manually, you can do so with the macro \jcsmacro*{shiftbplnum}.
-It takes a positive or negative integer value that determines the shifting
-(e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftbplnum{-1}|). This can be used anywhere and applies
+It takes a positive or negative integer value that determines how much and in which direction it is shifted
+(e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftbplnum{-1}|). This can be used repeatedly, anywhere, and applies
 to all subsequent items.
-For the numbering output by \jfmacro{citeitem}, shifting can be done, analogously. by
-\jcsmacro*{citeitemshift}.
+For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done by
+\jcsmacro*{shiftciteitem}.
 
 
 \subsection{Using a different base style}\label{sec:basestyle}
@@ -638,7 +638,7 @@ or
 	\begin{itemize}
 		\item Add option \jfoption{reversenumbering}. See sec.~\ref{sec:addopts}.
 		\item Add \jcsmacro{citeitem} command. See sec.~\ref{sec:standard-usage}.
-		\item Add \jcsmacro{shiftbplnum} and \jcsmacro{citeitemshift} helper macros
+		\item Add \jcsmacro{shiftbplnum} and \jcsmacro{shiftciteitem} helper macros
 		      for manual adjustment of numbering.
 		      See sec.~\ref{sec:auxmacros}.
 		\item Properly sort \jfoption{prepublished} pubstate type.

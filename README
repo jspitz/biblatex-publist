@@ -48,7 +48,7 @@ instructions.
 * V. 1.21 (forthcoming)
 	- Add option "reversenumbering".
 	- Add \citeitem command.
-	- Add \shiftbplnum and \citeitemshift helper macros for manual
+	- Add \shiftbplnum and \shiftciteitem helper macros for manual
 	  adjustment of numbering.
 	- Properly sort "prepublished" pubstate type.
 
