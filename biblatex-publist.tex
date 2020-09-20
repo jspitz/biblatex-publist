@@ -373,10 +373,12 @@ The indendation of the bibliographic entries (lines > 1) can be adjusted by sett
 This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
 space the item number needs.
 
-If you need to adjust the numbering manually, you can do so with the macro \jcsmacro*{shiftbplnum}.
+If you need to adjust the numbering of items manually, you can do so with the macro \jcsmacro*{shiftbplnum}.
 It takes a positive or negative integer value that determines the shifting
 (e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftbplnum{-1}|). This can be used anywhere and applies
 to all subsequent items.
+For the numbering output by \jfmacro{citeitem}, shifting can be done, analogously. by
+\jcsmacro*{citeitemshift}.
 
 
 \subsection{Using a different base style}\label{sec:basestyle}
@@ -636,7 +638,9 @@ or
 	\begin{itemize}
 		\item Add option \jfoption{reversenumbering}. See sec.~\ref{sec:addopts}.
 		\item Add \jcsmacro{citeitem} command. See sec.~\ref{sec:standard-usage}.
-		\item Add \jcsmacro{shiftbplnum} helper macro. See sec.~\ref{sec:auxmacros}.
+		\item Add \jcsmacro{shiftbplnum} and \jcsmacro{citeitemshift} helper macros
+		      for manual adjustment of numbering.
+		      See sec.~\ref{sec:auxmacros}.
 		\item Properly sort \jfoption{prepublished} pubstate type.
 	\end{itemize}
 
