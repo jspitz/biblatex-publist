@@ -181,6 +181,9 @@ Note that \jcsmacro{plauthorname} expects the name constituents as they are reco
 database (special characters will be expanded). The option \joption{plauthorfirstinit} (see next section),
 however, allows you to pass only an initial character instead of a first name.
 
+If you want to refer to an item number, use \jcsmacro*{citeitem}\jmacro{\{<key>\}}. This will consider
+all numbering tweaks you make via the \bpl\ options.
+
 
 \subsection{Additional options}\label{sec:addopts}
 
@@ -623,10 +626,16 @@ or
 \section{Revision Log}
 
 \begin{description}
+	
+	\item [{V. 1.21 (forthcoming):}]~
+	\begin{itemize}
+		\item Add option \jfoption{reversenumbering}. See sec.~\ref{sec:addopts}.
+		\item Add \jcsmacro{citeitem} command. See sec.~\ref{sec:standard-usage}.
+		\item Properly sort \jfoption{prepublished} pubstate type.
+	\end{itemize}
 
 	\item [{V. 1.20 (2020-09-15):}]~
 	\begin{itemize}
-		\item Add option \jfoption{reversenumbering}.
 		\item Do not output \emph{(with <authors>)} if no publist author
 		      is among the authors.
 	\end{itemize}

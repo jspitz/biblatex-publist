@@ -34,4 +34,48 @@
 
 \RequireCitationStyle{numeric}
 
+\DeclareCiteCommand{\citeitem}
+  {\defcounter{maxnames}{999}%
+   \boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{cite:extern}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\newbibmacro*{cite:extern}{%
+  \printtext[bibhyperref]{%
+    \printfield{labelprefix}%
+    \usebibmacro{cite:labelnumber}%
+    \ifbool{bbx:subentry}
+      {\printfield{entrysetcount}}
+      {}}}
+
+\newbibmacro*{cite:labelnumber}{%
+    \printtext[labelnumberwidth]{\mkrefdesc{\thefield{labelnumber}}}%
+}
+
+% Manual way to adjust numbering
+\csdef{bpl@secstartshift}{0}
+\newcommand\citeitemshift[1]{\csdef{bpl@secstartshift}{#1}}
+
+% Print labelnumber as actual number, plus item total
+% and probably a manual shift value
+\newrobustcmd{\mkrefdesc}[1]{%
+  \number\numexpr#1+\csuse{bpl@itemtotal}+\csuse{bpl@secstartshift}\relax}
+
+\providebool{@bpl@reversenum}
+
+\AtEndOfPackage{%
+\if@bpl@reversenum
+  \renewrobustcmd{\mkrefdesc}[1]{%
+     % Print the labelnumber as the total number of entries in the
+     % current refsection, minus the actual labelnumber, plus one
+     \number\numexpr\csuse{bpl@itemtotal}-#1+1%
+                           +\csuse{bpl@secstartshift}\relax%
+  }%
+\fi
+}
+
+%%
 \endinput

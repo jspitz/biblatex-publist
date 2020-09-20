@@ -47,6 +47,7 @@ instructions.
 
 * V. 1.21 (forthcoming)
 	- Add option "reversenumbering".
+	- Add \citeitem command.
 	- Properly sort "prepublished" pubstate type.
 
 * V. 1.20 (2020-09-15)
