@@ -45,7 +45,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.21 (forthcoming)
+* V. 1.21 (2020-09-21)
 	- Add option "reversenumbering".
 	- Add \citeitem command.
 	- Add \shiftbplnum and \shiftciteitem helper macros for manual

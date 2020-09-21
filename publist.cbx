@@ -26,8 +26,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.21dev}
-\def\bpl@rdate{2020/09/20}
+\def\bpl@version{1.21}
+\def\bpl@rdate{2020/09/21}
 
 \ProvidesFile{publist.cbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex citation style (JSP)]
@@ -39,19 +39,19 @@
    \boolfalse{citetracker}%
    \boolfalse{pagetracker}%
    \usebibmacro{prenote}}
-  {\usebibmacro{cite:extern}}
+  {\usebibmacro{bpl:cite:extern}}
   {\multicitedelim}
   {\usebibmacro{postnote}}
 
-\newbibmacro*{cite:extern}{%
+\newbibmacro*{bpl:cite:extern}{%
   \printtext[bibhyperref]{%
     \printfield{labelprefix}%
-    \usebibmacro{cite:labelnumber}%
+    \usebibmacro{bpl:cite:labelnumber}%
     \ifbool{bbx:subentry}
       {\printfield{entrysetcount}}
       {}}}
 
-\newbibmacro*{cite:labelnumber}{%
+\newbibmacro*{bpl:cite:labelnumber}{%
     \printtext[labelnumberwidth]{\mkrefdesc{\thefield{labelnumber}}}%
 }
 
@@ -62,7 +62,8 @@
 % Print labelnumber as actual number, plus item total
 % and probably a manual shift value
 \newrobustcmd{\mkrefdesc}[1]{%
-  \number\numexpr#1+\csuse{bpl@itemtotal}+\csuse{bpl@secstartshift}\relax}
+  \number\numexpr#1+\csuse{bpl@itemtotal}+\csuse{bpl@secstartshift}\relax%
+}
 
 \providebool{@bpl@reversenum}
 
@@ -74,7 +75,7 @@
      \number\numexpr\csuse{bpl@itemtotal}-#1+1%
                            +\csuse{bpl@secstartshift}\relax%
   }%
-\fi
+\fi%
 }
 
 %%
