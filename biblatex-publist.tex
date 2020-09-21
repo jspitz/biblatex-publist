@@ -107,7 +107,7 @@
 
 \begin{abstract}
 \noindent The \bpl\ package provides a \bibltx\ style file
-for publication lists, i.\,e.\ a bibliography containing one's own
+for publication lists, i.\,e., a bibliography containing one's own
 publications. It draws on \bibltx's \emph{authoryear} style by default
 (which can be changed), but provides some extra features needed for publication lists,
 such as the omission or highlighting of the own name from\slash in author or editor data.
@@ -119,8 +119,8 @@ The package requires at least version 3.8 of the \bibltx\ package\footnote{For \
 
 \section{Aim of the package}
 
-The \bpl\ package ships a \emph{biblatex bibliography style file} ({*}.bbx)
-for a specific task: academic publication lists. Such lists, which are a central
+The \bpl\ package provides a \bibltx\ bibliography style for a specific task:
+academic publication lists. Such lists, which are a central
 part of the academic CV, contain all or selected publications of a specific
 author, usually sorted by genre and year. Even though publication lists are actually
 nothing else than (specific) bibliographies, they diverge from those in some
@@ -133,17 +133,38 @@ produce the desired result.
 Given the fact that maintaining a publication list is a routine task
 in an academian's life, it is surprising how few specified solutions
 exist to generate such lists (particularly from Bib\TeX\ data). For
-traditional Bib\TeX, Nicolas Markey provided a specific Bib\TeX\
-style file, \emph{publist.bst}%
+classic Bib\TeX, Nicolas Markey provides (off CTAN) a Bib\TeX\ style file
+dedicated to that task, \emph{publist.bst}%
 \footnote{See \url{http://www.lsv.fr/~markey/BibTeX/publist/publist.bst}
 	for the style file, \url{http://www.lsv.fr/~markey/BibTeX/publist/doc.ps.gz}
-	for documentation; see also \cite{ttb}.},
-which helps to produce a publication list with Bib\TeX.
-The \bpl\ package started off as the attempt of emulating the features of
+	for documentation; see also \cite{ttb}.}.
+The \bpl\ package started off as the attempt to emulate the features of
 \emph{publist.bst} with \bibltx's means; it thus partly draws on
-Markey's conceptual ideas. Meanwhile, however, it has significantly exceeded
+its conceptual ideas. Meanwhile, however, it has significantly exceeded
 that initial goal and provides many more features than \emph{publist.bst}.
-Bug reports, comments and suggestions are welcome.
+
+The list of features includes:
+
+\begin{itemize}
+	\setlength\itemsep{0pt}
+	\item Omit or hide selected author names, with a specific indication of co-authors in the former case
+	\item Filter publications of specific authors from heterogeneous bibliography databases
+	\item Date-centric sorting (as typical for publication lists)
+	\item Number items in ascending or descending order, globally or sectional
+	\item Highlight year of publication
+	\item Indicate year of publication (sets) in the margin
+	\item Clickable titles, linking to the URL, DOI, or a web catalog
+	\item List reviews of specific titles
+	\item Adjustable base bibliography style
+\end{itemize}
+%
+Many features have been suggested by users of the package.
+If you miss a specific feature, feel free to suggest it via
+\url{https://github.com/jspitz/biblatex-publist/issues}.
+
+Note that \bpl\ relies on rather advanced features of \bibltx\ for some of its own features.
+These are only available with the \texttt{biber} backend of \bibltx. Hence \bpl\ requires
+the use of \texttt{biber} as well -- the \texttt{bibtex} backend won't work!
 
 
 \section{Usage}
@@ -185,9 +206,11 @@ Note that \jcsmacro{plauthorname} expects the name constituents as they are reco
 database (special characters will be expanded). The option \joption{plauthorfirstinit} (see next section),
 however, allows you to pass only an initial character instead of a first name.
 
-If you want to refer to an item number, use \jcsmacro*{citeitem}\jmacro{\{<key>\}}. This will consider
-all numbering tweaks you make via the \bpl\ options.
+If you want to refer to an item number, use \jcsmacro*{citeitem}\jmacro{\{<key>\}} within your publication list.
+This will print the item number in square brackets (like the \jfcsmacro{cite} command in numeric citation styles),
+but as opposed to normal \jfcsmacro{cite} it also considers all numbering tweaks you make via the \bpl\ options.
 
+\condbr{4}
 
 \subsection{Additional options}\label{sec:addopts}
 
@@ -348,6 +371,8 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 \begin{lstlisting}[moretexcs={[4]{plnameomission,bibellipsis,addcomma,addspace}}]
 \newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
 \end{lstlisting}
+
+\condbr{4}
 
 \section{Customization}
 
@@ -522,8 +547,7 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 
 \end{document}
 \end{lstlisting}
-
-
+%
 If you want to add other people's reviews of your work, add a section
 such as the following:
 \begin{lstlisting}[caption={Adding foreign reviews},
