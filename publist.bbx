@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.21}
-\def\bpl@rdate{2020/09/21}
+\def\bpl@version{1.22dev}
+\def\bpl@rdate{2020/09/25}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -75,6 +75,11 @@
 \newif\if@unboldyear\@unboldyearfalse
 \DeclareBibliographyOption{boldyear}[true]{%
     \ifstrequal{#1}{false}{\@unboldyeartrue}{\@unboldyearfalse}
+}
+
+\newif\if@pubstateextra\@pubstateextrafalse
+\DeclareBibliographyOption{pubstateextra}[true]{%
+    \ifstrequal{#1}{true}{\@pubstateextratrue}{\@pubstateextrafalse}
 }
 
 \newif\if@hlauthor\@hlauthorfalse
@@ -933,13 +938,17 @@
     }
 \fi
 
-
 \newbibmacro*{bpl:date:makedate}{%
     \printtext{%
         \iffieldundef{year}{%
             \iffieldundef{pubstate}%
                 {}
-                {\printfield{pubstate}}%
+                {%
+                 \printfield{pubstate}%
+                 \if@pubstateextra
+                   \printfield{extradate}%
+                 \fi%
+                }%
         }{%
             \iffieldundef{month}%
                 {\printdateextra}%

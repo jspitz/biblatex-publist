@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.22 (forthcoming)
+	- Add option "pubstateextra".
+
 * V. 1.21 (2020-09-21)
 	- Add option "reversenumbering".
 	- Add \citeitem command.

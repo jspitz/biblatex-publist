@@ -102,7 +102,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.21, 2020/09/21}
+\date{Version 1.22dev, 2020/09/25}
 \maketitle
 
 \begin{abstract}
@@ -245,6 +245,11 @@ To change the order to ``Given Names Lastname'', pass the option \joption{nameor
 By default, the year (or pubstate, if no year is given) is printed in bold face.
 To prevent this, pass the
 option \joption{boldyear=false} to \bibltx.
+
+\item [{\joption{pubstateextra{[}=true|false{]}}}] default: \emph{false}.
+
+If this is \texttt{true}, the extradate marker (a, b etc.) is also appended to pubstates if there are multiple
+indentical pubstates (e.\,g., \emph{Forthcoming(a)}, \emph{Forthcoming(b)})
 
 \item [{\joption{marginyear{[}=true|false{]}}}] default: \emph{false}.
 
@@ -661,6 +666,11 @@ or
 \section{Revision Log}
 
 \begin{description}
+	
+	\item [{V. 1.22 (forthcoming):}]~
+	\begin{itemize}
+		\item Add option \jfoption{pubstateextra}. See sec.~\ref{sec:addopts}.
+    \end{itemize}
 	
 	\item [{V. 1.21 (2020-09-21):}]~
 	\begin{itemize}
