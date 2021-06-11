@@ -26,7 +26,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\bpl@version{1.22dev}
-\def\bpl@rdate{2020/09/25}
+\def\bpl@rdate{2021/06/11}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -697,8 +697,8 @@
                         {\namepartprefix\addspace}%
                     \namepartfamily%
                     \ifgiveninits
-                        {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                        {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+                        {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\namepartgiveni\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\namepartgiven\isdot\addspace}}%
                 \fi
             }%
             \ifnumequal{\value{listcount}}{\value{liststop}}{}{\usebibmacro{bpl:name:andothers}}%
@@ -718,8 +718,8 @@
                        {\namepartprefix\addspace}%
                  \namepartfamily%
                  \ifgiveninits
-                    {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-                    {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+                    {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\namepartgiveni\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\namepartgiven\isdot\addspace}}%
              \fi
            }%
            \usebibmacro{bpl:name:andothers}%
@@ -793,8 +793,8 @@
          \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
          \namepartfamily%
          \ifgiveninits
-             {\ifdefvoid{\namepartgiveni}{}{\addcomma\addspace\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\addcomma\addspace\namepartgiven\isdot\addspace}}%
+             {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\namepartgiveni\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\namepartgiven\isdot\addspace}}%
     \fi
     \ifthenelse{\value{listcount}<\value{liststop}}
         {\ifnumless{\value{listcount}}{\value{liststop}-1}%

@@ -47,6 +47,7 @@ instructions.
 
 * V. 1.22 (forthcoming)
 	- Add option "pubstateextra".
+	- Use \revsdnamepunct rather than hardcoded comma.
 
 * V. 1.21 (2020-09-21)
 	- Add option "reversenumbering".
