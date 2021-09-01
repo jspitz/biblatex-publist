@@ -660,7 +660,7 @@
 \newtoggle{isinrelated}
 \apptocmd{\abx@macro@begrelated}{\global\toggletrue{isinrelated}}{}%
          {\PackageWarning{biblatex-publist}{Patching begrelated failed!}}
-\apptocmd{\abx@macro@endrelated}{\global\toggletrue{isinrelated}}{}%
+\apptocmd{\abx@macro@endrelated}{\global\togglefalse{isinrelated}}{}%
          {\PackageWarning{biblatex-publist}{Patching endrelated failed!}}
 
 % Omission/highlighting routine

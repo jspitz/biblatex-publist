@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.23 (forthcoming):
+	- Fix omission of plauthor after related field (#34).
+
 * V. 1.22 (2021-06-14)
 	- Add option "pubstateextra".
 	- Use \revsdnamepunct rather than hardcoded comma.
