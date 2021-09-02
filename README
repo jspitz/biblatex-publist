@@ -45,7 +45,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.23 (forthcoming):
+* V. 1.23 (2021-09-01):
 	- Fix omission of plauthor after related field (#34).
 
 * V. 1.22 (2021-06-14)
