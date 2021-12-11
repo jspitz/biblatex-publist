@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.24 (2021-12-11):
+	- Robustify handling of names with non-ASCII chars (#35).
+
 * V. 1.23 (2021-09-01):
 	- Fix omission of plauthor after related field (#34).
 
