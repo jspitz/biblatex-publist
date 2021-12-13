@@ -271,9 +271,15 @@
 \cs_generate_variant:Nn \str_head:n { f }
 
 \NewExpandableDocumentCommand{\iffirstinitialsequal}{ m m m m }
- {
+{
   \bpl_firstletterequal:nnTF { #1 } { #2 } { #3 } { #4 }
- }
+}
+
+% Fully expanded comparison
+\NewExpandableDocumentCommand{\bpl@ifstreq}{ m m m m }
+{
+  \str_if_eq:eeTF { #1 } { #2 } { #3 } { #4 }
+}
 
 \ExplSyntaxOff
 %
@@ -291,17 +297,6 @@
    \global\def\bpl@lfirstname{#1}%
    \global\def\bpl@lvonpart{#2}%
    \global\def\bpl@lsurname{#3}%
-}
-%
-% Fully expanded comparison
-% (adapted from scrbase.sty)
-\newcommand\bpl@ifstreq[2]{%
-    \begingroup\protected@edef\@tempa{#1}\protected@edef\@tempb{#2}%
-    \ifx\@tempa\@tempb
-        \endgroup\expandafter\@firstoftwo
-    \else
-        \endgroup\expandafter\@secondoftwo
-    \fi
 }
 %
 % Check if we have an entry in plauthors
