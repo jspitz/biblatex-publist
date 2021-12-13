@@ -47,7 +47,7 @@ instructions.
 
 * V. 1.25 (forthcoming):
 	- More robustification with names with non-ASCII chars.
-	- With "pubstateextra", consider different pubstates.
+	- With "pubstateextra", differentiate pubstates.
 
 * V. 1.24 (2021-12-11):
 	- Robustify handling of names with non-ASCII chars (#35).
