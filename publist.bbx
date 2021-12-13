@@ -253,10 +253,11 @@
     \fi
 }
 %
-% Check first token of macro. We use l3 here since this is more robust.
-% Based on code by egreg on https://tex.stackexchange.com/a/405005
+% String comparison methods. We use l3 here since this is more robust.
 \ExplSyntaxOn
 
+% 1. Check first token of macro.
+%    Based on code by egreg on https://tex.stackexchange.com/a/405005
 \prg_new_conditional:Nnn \bpl_firstletterequal:nn { T,F,TF,p }
  {
   % compare the two strings after full expansion:
@@ -270,12 +271,12 @@
  }
 \cs_generate_variant:Nn \str_head:n { f }
 
-\NewExpandableDocumentCommand{\iffirstinitialsequal}{ m m m m }
+\NewExpandableDocumentCommand{\bpl@iffirstcharequal}{ m m m m }
 {
   \bpl_firstletterequal:nnTF { #1 } { #2 } { #3 } { #4 }
 }
 
-% Fully expanded comparison
+% 2. Fully expanded macro content comparison
 \NewExpandableDocumentCommand{\bpl@ifstreq}{ m m m m }
 {
   \str_if_eq:eeTF { #1 } { #2 } { #3 } { #4 }
@@ -315,7 +316,7 @@
         test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
         and
         ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-          or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@efirstname}{\bpl@tfirstname} } )
+          or ( test { \iftoggle{firstinit} } and test{ \bpl@iffirstcharequal{\bpl@efirstname}{\bpl@tfirstname} } )
         )
         and
         ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
@@ -333,7 +334,7 @@
             test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
             and
             ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-              or ( test { \iftoggle{firstinit} } and test{ \iffirstinitialsequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              or ( test { \iftoggle{firstinit} } and test{ \bpl@iffirstcharequal{\bpl@lfirstname}{\bpl@tfirstname} } )
             )
             and
             ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
