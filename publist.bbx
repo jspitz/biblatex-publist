@@ -253,18 +253,29 @@
     \fi
 }
 %
-% Check first token of macro
-% (based on a suggestion by Qrrbrbirlbel at
-% https://tex.stackexchange.com/a/132254)
-\newcommand*{\iffirstinitialsequal}{%
-    \@expandtwoargs\if@startswith}
-\newcommand*{\if@startswith}[2]{%
-    \if\@car#1.\@nil\@car#2.\@nil
-        \expandafter\@firstoftwo
-    \else
-        \expandafter\@secondoftwo
-    \fi
-}
+% Check first token of macro. We use l3 here since this is more robust.
+% Based on code by egreg on https://tex.stackexchange.com/a/405005
+\ExplSyntaxOn
+
+\prg_new_conditional:Nnn \bpl_firstletterequal:nn { T,F,TF,p }
+ {
+  % compare the two strings after full expansion:
+  % f expansion is used so using explicit
+  % strings or macros is the same
+  \str_if_eq:eeTF
+   { \str_head:f { #1 } }
+   { \str_head:f { #2 } }
+   { \prg_return_true: }
+   { \prg_return_false: }
+ }
+\cs_generate_variant:Nn \str_head:n { f }
+
+\NewExpandableDocumentCommand{\iffirstinitialsequal}{ m m m m }
+ {
+  \bpl_firstletterequal:nnTF { #1 } { #2 } { #3 } { #4 }
+ }
+
+\ExplSyntaxOff
 %
 % Split plauthors list item
 \def\bpl@lsurname{}
