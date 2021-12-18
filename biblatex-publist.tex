@@ -102,7 +102,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.25, 2021/12/14}
+\date{Version 1.26dev, 2021/12/18}
 \maketitle
 
 \begin{abstract}
@@ -162,9 +162,17 @@ Many features have been suggested by users of the package.
 If you miss a specific feature, feel free to suggest it via
 \url{https://github.com/jspitz/biblatex-publist/issues}.
 
+\subsection*{Caveats}
+
 Note that \bpl\ relies on rather advanced features of \bibltx\ for some of its own features.
 These are only available with the \texttt{biber} backend of \bibltx. Hence \bpl\ requires
 the use of \texttt{biber} as well -- the \texttt{bibtex} backend won't work!
+
+Also note that the aim of \bpl\ is to generate publication lists, so it is not suitable
+for normal bibliographies. Specifically, while basic citing works, more advanced
+forms of citing may break or not produce the expected result. The reason is that
+\bpl\ needs to do perform internal tweaks (e.\,g., to \textsf{shortauthor} and
+\textsf{labelname}) which might bite you with customized cite formats.
 
 
 \section{Usage}

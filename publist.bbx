@@ -25,7 +25,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.25}
+\def\bpl@version{1.26dev}
 \def\bpl@rdate{2021/12/14}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
@@ -1354,15 +1354,38 @@
 
 % Add a dummy constant shortauthor in order to
 % ignore author constellation on extralabel assignment.
+% Original entries are stored in namea.
 \if@hlauthor
 \else
     \DeclareStyleSourcemap{
         \maps[datatype=bibtex]{
+          \map{
+             \step[fieldsource=shortauthor]
+             \step[fieldset=namea, origfieldval]
+            }
             \map[overwrite]{
                 \step[fieldset=shortauthor, fieldvalue={1111}]
             }
         }
     }
+    % For proper labelname (e.g., \textcite), write back original
+    % shortauthor, author or editor after the extradate has been
+    % constructed.
+    \AtDataInput{%
+       \csgappto\blx@bbl@data{%
+           \let\c@shortauthor\c@namea
+           \let\abx@name@shortauthor\abx@name@namea
+           \ifdefstring\abx@field@labelnamesource{shortauthor}
+              {\ifundef\abx@name@shortauthor
+	          {\ifundef\abx@name@author
+		      {\def\abx@field@labelnamesource{editor}}
+		      {\def\abx@field@labelnamesource{author}}%
+                  }%
+		  {}%
+	      }%
+              {}%
+        }%
+     }%
 \fi
 
 % Correctly sort pubstates.

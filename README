@@ -45,6 +45,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.26 (fothcoming):
+	- Fix \textcite output at least for the standard cases (#36).
+
 * V. 1.25 (2021-12-14):
 	- More robustification with names consisting of non-ASCII chars.
 	- With "pubstateextra", differentiate between pubstates.
