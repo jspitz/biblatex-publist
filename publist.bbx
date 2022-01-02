@@ -834,7 +834,7 @@
 }
 
 
-\renewbibmacro*{bpl:author}{%
+\newbibmacro*{bpl:author}{%
     \if@hlauthor
         \ifnameundef{author}
             {}
@@ -872,7 +872,7 @@
     \fi% end of \if@hlauthor else condition
 }
 
-\renewbibmacro*{bpl:editor}{%
+\newbibmacro*{bpl:editor}{%
     \if@hlauthor
         \ifnameundef{editor}
             {}
@@ -1071,7 +1071,7 @@
     \usebibmacro{bpl:plain:year+labelyear}%
 }
 
-\renewbibmacro*{bpl:plain:editor}{%
+\newbibmacro*{bpl:plain:editor}{%
    \ifnameundef{editor}
        {}
        {%
