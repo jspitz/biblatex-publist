@@ -1026,13 +1026,13 @@
     }%
 }
 
-\newbibmacro*{bpl:review:author/label}{%
+\newbibmacro*{bpl:plain:author/label}{%
     \ifnameundef{author}
         {\usebibmacro{label}}
-        {\usebibmacro{bpl:review:author}}
+        {\usebibmacro{bpl:plain:author}}
 }
 
-\newbibmacro*{bpl:review:author}{%
+\newbibmacro*{bpl:plain:author}{%
     \ifnameundef{author}
         {\let\bbx@lasthash\undefined}
         {%
@@ -1050,10 +1050,23 @@
          \mkbibbrackets{\bibstring[\unspace]{alias}\addspace\printfield{nameaddon}}%
          \addspace%
         }%
-    \usebibmacro{bpl:review:year+labelyear}%
+    \usebibmacro{bpl:plain:year+labelyear}%
 }
 
-\newbibmacro*{bpl:review:year+labelyear}{%
+\renewbibmacro*{bpl:plain:editor}{%
+   \ifnameundef{editor}
+       {}
+       {%
+        \printnames{editor}%
+        \setunit{\printdelim{editortypedelim}}%
+        \usebibmacro{editorstrg}%
+       }%
+       \adddot\addspace%
+       \usebibmacro{bpl:plain:year+labelyear}%
+       \clearname{editor}%
+}
+
+\newbibmacro*{bpl:plain:year+labelyear}{%
     \iffieldundef{year}
         {}
         {%
@@ -1088,7 +1101,7 @@
 %
 
 \DeclareBibliographyDriver{review}{%
-    \usebibmacro{bpl:review:author/label}%
+    \usebibmacro{bpl:plain:author/label}%
     \setunit*{\addcolon\space}%
     \usebibmacro{title}%
     \newunit\newblock
