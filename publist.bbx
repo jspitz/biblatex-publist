@@ -187,6 +187,12 @@
     }%
 }
 
+\newtoggle{bpl@prinfo}
+\toggletrue{bpl@prinfo}
+\DeclareBibliographyOption{prinfo}[true]{%
+    \ifstrequal{#1}{true}{\toggletrue{bpl@prinfo}}{\togglefalse{bpl@prinfo}}
+}
+
 \newif\if@bpl@reversenum\@bpl@reversenumfalse
 \DeclareBibliographyOption{reversenumbering}[true]{%
     \ifstrequal{#1}{true}{\@bpl@reversenumtrue}{\@bpl@reversenumfalse}
@@ -529,6 +535,19 @@
     {\end{enumerate}}
     {\item}
 
+
+%
+% Peer-review type
+%
+\newcommand\printprinfo[1]{%
+    \ifbibstring{peerreview:#1}%
+       {\bibstring{peerreview:#1}}%
+       {#1}%
+}
+
+\DeclareFieldFormat{peerreview}{%
+    \printtext[brackets]{\printprinfo{#1}}%
+}
 
 %
 % Bibliography filter
@@ -1095,22 +1114,64 @@
         }%
 }
 
+\renewbibmacro*{addendum+pubstate}{%
+  \printfield{addendum}%
+  \newunit\newblock
+  \printfield{pubstate}%
+  \iftoggle{bpl@prinfo}{%
+    \newunit\newblock
+    \printfield{peerreview}%
+  }{}%
+}
+
 %
 % l7n
 %
 \NewBibliographyString{with}
 \NewBibliographyString{parttranslationof}
+\NewBibliographyString{peerreview:sb}
+\NewBibliographyString{peerreview:db}
+\NewBibliographyString{peerreview:op}
+\NewBibliographyString{peerreview:co}
+\NewBibliographyString{peerreview:cc}
+\NewBibliographyString{peerreview:tp}
+\NewBibliographyString{peerreview:pp}
+\NewBibliographyString{peerreview:none}
 \DefineBibliographyStrings{english}{%
     parttranslationof   = {partial translation of},
-    with                = {with}
+    with                = {with},
+    peerreview:sb       = {single blind peer review},
+    peerreview:db       = {double blind peer review},
+    peerreview:op       = {open peer review},
+    peerreview:co       = {collaborative peer review},
+    peerreview:cc       = {cascading peer review},
+    peerreview:tp       = {third-party peer review},
+    peerreview:pp       = {post-publication peer review},
+    peerreview:none     = {no peer review}
 }
 \DefineBibliographyStrings{french}{%
     parttranslationof   = {traduction partielle de},
-    with                = {avec}
+    with                = {avec},
+    peerreview:sb       = {\'{e}valuation par des pairs anonymis\'{e}s},
+    peerreview:db       = {\'{e}valuation par les pairs en double aveugle},
+    peerreview:op       = {\'{e}valuation par les pairs ouverte},
+    peerreview:co       = {\'{e}valuation par les pairs collaborative},
+    peerreview:cc       = {\'{e}valuation par les pairs en cascade},
+    peerreview:tp       = {\'{e}valuation par des pairs ext\'{e}rieurs},
+    peerreview:pp       = {\'{e}valuation par les pairs apr\`{e}s publication},
+    peerreview:none     = {pas d'\'{e}valuation par les pairs}
 }
 \DefineBibliographyStrings{german}{%
     parttranslationof   = {Teil\"ubersetzung von},
-    with                = {mit}
+    with                = {mit},
+    peerreview:sb       = {Blindbegutachtung},
+    peerreview:db       = {Doppelblindbegutachtung},
+    peerreview:op       = {Offene Begutachtung},
+    peerreview:co       = {Kollaborative Begutachtung},
+    peerreview:cc       = {Cascading-Begutachtung},
+    peerreview:tp       = {Begutachtung durch Dritte},
+    peerreview:pp       = {Post-Publication-Begutachtung},
+    peerreview:none     = {keine Begutachtung}
 }
 
 

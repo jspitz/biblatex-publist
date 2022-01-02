@@ -153,6 +153,7 @@ The list of features includes:
 	\item Highlight year of publication
 	\item Indicate year of publication (sets) in the margin
 	\item Clickable titles, linking to the URL, DOI, or a web catalog
+	\item Add information about peer review process
 	\item List reviews of specific titles
 	\item Adjustable base bibliography style
 \end{itemize}
@@ -274,7 +275,6 @@ If you prefer the numbering to start from 1 at each section instead, set this op
 
 If you do not want to have any numbers at all, set this option to \joption{false}.
 
-
 \item [{\joption{reversenumbering{[}=true|false{]}}}] default: \emph{false}.
 
 If this option is \joption{true}, the entries will be numbered in descending order, starting from the total
@@ -289,6 +289,12 @@ whose prename starts with the specified character. This allows you to deal with 
 with abbreviated and full first name (\textsc{J. Doe} and well as \textsc{John Doe} and \textsc{John Robert Doe}) \emph{as well as}
 works of colleagues with the same surname (maybe your family members), which you will not want to mark as your own's.
 Of course, the solution does not help if there is an entry with same surname and same first name initial (such as \textsc{Jane Doe}).
+
+
+\item [{\joption{prinfo{[}=true|false{]}}}] default: \emph{true}.
+
+If this option is \joption{true}, peer review information, as specified via the \texttt{peerreview} field
+(see section~\ref{sec:peerreview}), will be appended to the entries.
 
 \end{description}
 %
@@ -384,7 +390,25 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 \newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
 \end{lstlisting}
 
-\condbr{4}
+\subsection{Adding Peer Review Information}\label{sec:peerreview}
+
+It is common, and sometimes mandatory, to add information to publication list entries about if
+and how work has been subject to peer review.
+To this end, \bpl\ provides a specific database field, \texttt{peerreview}, which can have the following values:
+
+\begin{description}\setlength{\itemsep}{0pt}
+	\item{\texttt{sb}} (single blind peer review)
+	\item{\texttt{db}} (double blind peer review)
+	\item{\texttt{op}} (open peer review)
+	\item{\texttt{co}} (collaborative peer review)
+	\item{\texttt{cc}} (cascading peer review)
+	\item{\texttt{tp}} (third-party peer review)
+	\item{\texttt{pp}} (post-publication peer review)
+	\item{\texttt{none}} (no peer review)
+\end{description}
+%
+If the option \joption{prinfo} is true, then \bpl\ will append the respective information to the entries.
+A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}).
 
 \section{Customization}
 
@@ -463,17 +487,25 @@ Note that the output of URLs, DOIs, ISBNs and ISSNs is not affected by the \jopt
 so you might get redundant output. To control (e.\,g., omit) them, use the \joption{url}, \joption{doi}
 and \joption{isbn} biblatex options. 
 
-\section{Localization}
+\section{Localization}\label{sec:localization}
 
 Since the package draws on \bibltx, it supports localization. 
 The following additional localization keys (\jfcsmacro{bibstrings})
 are added by the package:
 \begin{itemize}
 \item \emph{with}: the preposition ``with'' that precedes the list of
-co-authors by default (i.\,e., with \joption{plauthorhandling=omit}).
+                   co-authors by default (i.\,e., with \joption{plauthorhandling=omit}).
 \item \emph{parttranslationof}: the expression ``partial translation of''
-for entries referring to partially translated work via \bibltx's
-``related entries'' feature (see sec.~\ref{sec:partial-translations}).
+                   for entries referring to partially translated work via \bibltx's
+       ``related entries'' feature (see sec.~\ref{sec:partial-translations}).
+\item \emph{peerreview:sb}: the phrase ``single blind peer review''.
+\item \emph{peerreview:db}: the phrase ``double blind peer review''.
+\item \emph{peerreview:op}: the phrase ``open peer review''.
+\item \emph{peerreview:co}: the phrase ``collaborative peer review''.
+\item \emph{peerreview:cc}: the phrase ``cascading peer review''.
+\item \emph{peerreview:tp}: the phrase ``third-party peer review''.
+\item \emph{peerreview:pp}: the phrase ``post-publication peer review''.
+\item \emph{peerreview:none}: the phrase ``no peer review''.
 \end{itemize}
 Currently, these additional localization keys are available in the following
 languages: English, French and German.%
@@ -676,6 +708,7 @@ or
 	
 	\item [{V. 1.26 (forthcoming):}]~
 	\begin{itemize}
+		\item Provide meands to add peer review information (see section~\ref{sec:peerreview}).
 		\item Fix \jcsmacro{textcite} output at least for the standard cases.
 		\item Do not highlight/omit author/editor names in related entries.
 		\item Rename \texttt{bpl:review:*} macros to \texttt{bpl:plain:*} and
