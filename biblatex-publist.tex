@@ -106,13 +106,13 @@
 \maketitle
 
 \begin{abstract}
-\noindent The \bpl\ package provides a \bibltx\ style file
+\noindent The \bpl\ package provides a \bibltx\ \cite{bibltx} style file
 for publication lists, i.\,e., a bibliography containing one's own
 publications. It draws on \bibltx's \emph{authoryear} style by default
 (which can be changed), but provides some extra features needed for publication lists,
 such as the omission or highlighting of the own name from\slash in author or editor data.
-The package requires at least version 3.8 of the \bibltx\ package\footnote{For \bibltx, see
-\url{http://www.ctan.org/pkg/biblatex}.} and \texttt{biber} (the respective version as required by \bibltx).
+The package requires at least version 3.8 of \bibltx\ and \texttt{biber}
+(the respective version as required by \bibltx).
 \end{abstract}
 
 \tableofcontents
@@ -153,7 +153,7 @@ The list of features includes:
 	\item Highlight year of publication
 	\item Indicate year of publication (sets) in the margin
 	\item Clickable titles, linking to the URL, DOI, or a web catalog
-	\item Add information about peer review process
+	\item Indicate if/how a title has been peer-reviewed
 	\item List reviews of specific titles
 	\item Adjustable base bibliography style
 \end{itemize}
@@ -392,11 +392,11 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 
 \subsection{Adding Peer Review Information}\label{sec:peerreview}
 
-It is common, and sometimes mandatory, to add information to publication list entries about if
-and how work has been subject to peer review.
+It is common, and sometimes mandatory, to add information to publication list entries indicating if
+and how listed work has been subject to peer review.
 To this end, \bpl\ provides a specific database field, \texttt{peerreview}, which can have the following values:
 
-\begin{description}\setlength{\itemsep}{0pt}
+\begin{itemize}\setlength{\itemsep}{0pt}
 	\item{\texttt{sb}} (single blind peer review)
 	\item{\texttt{db}} (double blind peer review)
 	\item{\texttt{op}} (open peer review)
@@ -404,8 +404,8 @@ To this end, \bpl\ provides a specific database field, \texttt{peerreview}, whic
 	\item{\texttt{cc}} (cascading peer review)
 	\item{\texttt{tp}} (third-party peer review)
 	\item{\texttt{pp}} (post-publication peer review)
-	\item{\texttt{none}} (no peer review)
-\end{description}
+	\item{\texttt{no}} (no peer review)
+\end{itemize}
 %
 If the option \joption{prinfo} is true, then \bpl\ will append the respective information to the entries.
 A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}).
@@ -505,7 +505,7 @@ are added by the package:
 \item \emph{peerreview:cc}: the phrase ``cascading peer review''.
 \item \emph{peerreview:tp}: the phrase ``third-party peer review''.
 \item \emph{peerreview:pp}: the phrase ``post-publication peer review''.
-\item \emph{peerreview:none}: the phrase ``no peer review''.
+\item \emph{peerreview:no}: the phrase ``no peer review''.
 \end{itemize}
 Currently, these additional localization keys are available in the following
 languages: English, French and German.%
