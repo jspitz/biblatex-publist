@@ -32,6 +32,7 @@ The package consists of the following files:
 
 * publist.bbx (biblatex bibliography style file)
 * publist.cbx (biblatex citation style file)
+* publist.dbx (biblatex database model file)
 * biblatex-publist.pdf (package documentation)
 * biblatex-publist.tex (documentation source)
 * README (this very file)
@@ -45,8 +46,9 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.26 (forthcoming):
+* V. 1.26 (2022-01-05):
 	- Provide means to add peer review information.
+	- Add a data model (*.dbx) file.
 	- Fix \textcite output at least for the standard cases (#36).
 	- Do not highlight/omit author/editor names in related entries.
 	- Rename bpl:review:* macros to bpl:plain:* and add bpl:plain:editor.

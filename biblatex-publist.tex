@@ -102,7 +102,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.26dev, 2021/12/18}
+\date{Version 1.26 2022/01/05}
 \maketitle
 
 \begin{abstract}
@@ -394,21 +394,24 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 
 It is common, and sometimes mandatory, to add information to publication list entries indicating if
 and how listed work has been subject to peer review.
-To this end, \bpl\ provides a specific database field, \texttt{peerreview}, which can have the following values:
+To this end, \bpl\ provides a specific database field, \texttt{peerreview}, in which you can use
+the following shorthands:
 
 \begin{itemize}\setlength{\itemsep}{0pt}
-	\item{\texttt{sb}} (single blind peer review)
-	\item{\texttt{db}} (double blind peer review)
-	\item{\texttt{op}} (open peer review)
-	\item{\texttt{co}} (collaborative peer review)
-	\item{\texttt{cc}} (cascading peer review)
-	\item{\texttt{tp}} (third-party peer review)
-	\item{\texttt{pp}} (post-publication peer review)
-	\item{\texttt{no}} (no peer review)
+	\item{\texttt{sb}} (=~single blind peer review)
+	\item{\texttt{db}} (=~double blind peer review)
+	\item{\texttt{op}} (=~open peer review)
+	\item{\texttt{co}} (=~collaborative peer review)
+	\item{\texttt{cc}} (=~cascading peer review)
+	\item{\texttt{tp}} (=~third-party peer review)
+	\item{\texttt{pp}} (=~post-publication peer review)
+	\item{\texttt{no}} (=~no peer review)
 \end{itemize}
 %
 If the option \joption{prinfo} is true, then \bpl\ will append the respective information to the entries.
-A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}).
+A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}). Instead of
+the shorthands, you can also enter arbitrary text to the \texttt{peerreview} field, which is then output
+as is (and not localized).
 
 \section{Customization}
 
@@ -706,9 +709,10 @@ or
 
 \begin{description}
 	
-	\item [{V. 1.26 (forthcoming):}]~
+	\item [{V. 1.26 (2022-01-05):}]~
 	\begin{itemize}
 		\item Provide means to add peer review information (see section~\ref{sec:peerreview}).
+		\item Add a data model (\texttt{*.dbx}) file.
 		\item Fix \jcsmacro{textcite} output at least for the standard cases.
 		\item Do not highlight/omit author/editor names in related entries.
 		\item Rename \texttt{bpl:review:*} macros to \texttt{bpl:plain:*} and

@@ -1,5 +1,5 @@
-% publist.dbx, biblatex data model specification style by Juergen Spitzmueller
-% requires biblatex >= 3.4
+% publist.dbx, biblatex data model specification for the biblatex-publist
+% package, version 1.26 (2022-01-05). 
 %
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
@@ -13,13 +13,6 @@
 % 
 % This Current Maintainer of this work is Jürgen Spitzmüller.
 %
-% This work consists of the file publist.cbx and publist.bbx.
-%
-%
-% This is a simple portmanteau file that just loads the standard
-% "numeric" citation style. This file is provided to allow the loading
-% of biblatex-publist via the "style=" (alternatively to "bibstyle=")
-% option.
 %
 % Please send suggestions and bug reports to 
 % https://github.com/jspitz/biblatex-publist
@@ -27,6 +20,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+% Add peerreview (literal) field
 \DeclareDatamodelFields[type=field, datatype=literal]{
   peerreview}
 
