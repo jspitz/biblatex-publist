@@ -1512,24 +1512,10 @@
 
 % Link titles if so requested
 \AtBeginDocument{%
-\iftoggle{bpl@linktitle}{%
-  \DeclareStyleSourcemap{
-     \maps[datatype=bibtex]{
-        \map[overwrite=true]{
-            \step[fieldsource=title,
-                  match=\regexp{(.*)},
-                  replace=\regexp{\\usebibmacro{bpl:linked}{$1}},
-                  final=true]
-        }
-        \map[overwrite=true]{
-            \step[fieldsource=subtitle,
-                  match=\regexp{(.*)},
-                  replace=\regexp{\\usebibmacro{bpl:linked}{$1}},
-                  final=true]
-        }
-     }
-  }
-}{}
+  \iftoggle{bpl@linktitle}{%
+    \DeclareFieldInputHandler{title}{\def\NewValue{\usebibmacro{bpl:linked}{#1}}}
+    \DeclareFieldInputHandler{subtitle}{\def\NewValue{\usebibmacro{bpl:linked}{#1}}}
+  }{}
 }
 
 
