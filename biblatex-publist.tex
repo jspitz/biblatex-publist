@@ -625,15 +625,22 @@ which has to be passed to \jfcsmacro{printbibliography}, as in:
 This will effectively print only publications which have been authored or edited by the
 person(s) specified as via \jcsmacro{plauthorname} (or the corresponding option).
 
-Of course, you can also use other filter possibilities provided by
-\bibltx, such as filtering by type or by keyword. So if you want
-to extract all of your articles from a larger database with entries
+If you do not use reverse numbering (see below), you can also use other filter
+possibilities provided by \bibltx, such as filtering by type or by keyword.
+So if you want to extract all of your articles from a larger database with entries
 of diverse type and authors, specify:
 \begin{lstlisting}[moretexcs={[1]{printbibliography}}]
 \printbibliography[heading=none,filter=mine,type=article]
 \end{lstlisting}
 %
-Note that several reruns of \texttt{latex} might be required to fix the numbering.
+Note that this method sometimes requires several reruns of \texttt{latex}
+to fix the numbering (with standard ascending numbers).
+
+With reverse (descending) numbering (\joption{reversenumbering=true}),
+the numbering does not correctly work if you filter by type or keyword.
+If you need descending numbering, please resort to separated bibliography databases
+(as advised in sec.~\ref{sec:example}) rather than to \joption{type} or
+\joption{keyword} filtering!
 
 
 \section{Sorting\label{sec:sorting}}
