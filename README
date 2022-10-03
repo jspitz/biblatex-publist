@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 1.27 (2022-10-03):
+	- Fix once more plauthor check with non-ASCII chars and macros.
+
 * V. 1.26 (2022-01-05):
 	- Provide means to add peer review information.
 	- Add a data model (*.dbx) file.

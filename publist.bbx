@@ -25,8 +25,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.26}
-\def\bpl@rdate{2022/01/05}
+\def\bpl@version{1.27}
+\def\bpl@rdate{2022/10/03}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
                            biblatex bibliography style (JSP)]
@@ -285,7 +285,7 @@
 % 2. Fully expanded macro content comparison
 \NewExpandableDocumentCommand{\bpl@ifstreq}{ m m m m }
 {
-  \str_if_eq:eeTF { #1 } { #2 } { #3 } { #4 }
+  \str_if_eq:eeTF { \text_purify:n { #1 } } { \text_purify:n { #2 } } { #3 } { #4 }
 }
 
 \ExplSyntaxOff
