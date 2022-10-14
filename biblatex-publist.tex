@@ -102,7 +102,7 @@
 \thanks{Please report issues via \protect\url{https://github.com/jspitz/biblatex-publist}.}%
 }
 
-\date{Version 1.27 2022/10/03}
+\date{Version 1.28dev 2022/10/14}
 \maketitle
 
 \begin{abstract}
@@ -448,6 +448,11 @@ to all subsequent items.
 For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done by
 \jcsmacro*{shiftciteitem}.
 
+The macro \jcsmacro*{setbplnum} allows you to set the first label number of the next bibliography
+section that follows to a specific value, which is passed as argument. All following numbers (across bibliography
+sections) ascend from the new value. Note that this command does not make sense, and thus is disabled,
+with \joption{reversenumbering=true}.
+
 
 \subsection{Using a different base style}\label{sec:basestyle}
 
@@ -716,6 +721,12 @@ or
 
 \begin{description}
 	
+	\item [{V. 1.28 (forthcoming):}]~
+	\begin{itemize}
+		\item Add new macro\jcsmacro{setbplnum} (see sec.~\ref{sec:auxmacros}).
+		\item Fix macro \jcsmacro{shiftbplnum} with \joption{reversenum=false}.
+	\end{itemize}
+	
 	\item [{V. 1.27 (2022-10-03):}]~
 	\begin{itemize}
 		\item Fix once more plauthor check with non-ASCII chars and macros.
@@ -723,7 +734,7 @@ or
 	
 	\item [{V. 1.26 (2022-01-05):}]~
 	\begin{itemize}
-		\item Provide means to add peer review information (see section~\ref{sec:peerreview}).
+		\item Provide means to add peer review information (see sec.~\ref{sec:peerreview}).
 		\item Add a data model (\texttt{*.dbx}) file.
 		\item Fix \jcsmacro{textcite} output at least for the standard cases.
 		\item Do not highlight/omit author/editor names in related entries.

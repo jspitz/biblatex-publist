@@ -25,7 +25,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\bpl@version{1.27}
+\def\bpl@version{1.28dev}
 \def\bpl@rdate{2022/10/03}
 
 \ProvidesFile{publist.bbx}[\bpl@rdate\space v.\bpl@version\space
@@ -466,17 +466,35 @@
 
 \newrobustcmd{\mkbibdesc}[1]{%
     % Print labelnumber as actual number, plus item total
-    \number\numexpr\csuse{bpl@itemtotal}+#1\relax%
+    \number\numexpr\csuse{bpl@itemtotal}+#1+\csuse{bpl@shift@itemtotal}\relax%
 }%
-
-\newrobustcmd{\mkbibsecstart}[1]{%
-   \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}-#1+1}%
-}
 
 % Way to manually shift the numbering
 \csnumgdef{bpl@shift@itemtotal}{0}
 \newcommand*\shiftbplnum[1]{%
     \csnumgdef{bpl@shift@itemtotal}{#1}%
+}
+
+% Way to manually set the numbering
+\newbool{manitemset}
+\csnumgdef{bpl@set@itemtotal}{0}
+\newcommand*\setbplnum[1]{%
+  \if@bpl@reversenum
+     \PackageWarning{biblatex-publist}
+        {The macro \protect\setbplnum\space is not functional with reversenum=true}
+  \else
+     \csnumgdef{bpl@set@itemtotal}{#1-1}%
+     \global\setbool{manitemset}{true}%
+  \fi
+}
+
+\newrobustcmd{\mkbibsecstart}[1]{%
+ \ifbool{manitemset}{%
+   \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
+   \global\setbool{manitemset}{false}%
+ }{%
+   \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}-#1+1}%
+ }
 }
 
 %
@@ -514,10 +532,12 @@
    \if@bpl@numberreset
        \csnumgdef{bpl@itemtotal}{#1-1+\csuse{bpl@shift@itemtotal}}%
    \else
-       \csnumgdef{bpl@itemtotal}{\csuse{bpl@all@entrycount}%
+       \csnumgdef{bpl@itemtotal}{%
+            \csuse{bpl@all@entrycount}%
                                  -\csuse{bpl@comp@entrycount:\theprevrefsection}%
                                  -\csuse{bpl@entrycount:\therefsection}-#1+1%
-                                 +\csuse{bpl@shift@itemtotal}}%
+                                 +\csuse{bpl@shift@itemtotal}%
+       }%
    \fi%
   }%
 \fi
