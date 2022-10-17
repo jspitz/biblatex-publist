@@ -280,6 +280,11 @@ If you do not want to have any numbers at all, set this option to \joption{false
 If this option is \joption{true}, the entries will be numbered in descending order, starting from the total
 number of entries back to 1. Also works with \joption{plnumbered=reset}.
 
+Note that if you use this option, \bpl\ will have to do a full counting of all printed items first in order
+to calculate the numbering properly (considering any filtering you might have done).
+For this calculation, a specific auxiliary file, \emph{<filename>.bpx}, is used. The package will warn you if more
+\texttt{latex} runs are required.
+
 \item [{\joption{plauthorfirstinit{[}=true|false{]}}}] default: \emph{false}.
 
 If you set this option to \joption{true}, you can (and are supposed to) pass only an initial character as first name value of
@@ -630,23 +635,15 @@ which has to be passed to \jfcsmacro{printbibliography}, as in:
 This will effectively print only publications which have been authored or edited by the
 person(s) specified as via \jcsmacro{plauthorname} (or the corresponding option).
 
-If you do not use reverse numbering (see below), you can also use other filter
-possibilities provided by \bibltx, such as filtering by type or by keyword.
-So if you want to extract all of your articles from a larger database with entries
-of diverse type and authors, specify:
+You can also use other filter possibilities provided by \bibltx, such as filtering by type
+or by keyword. So if you want to extract all of your articles from a larger database with
+entries of diverse type and authors, specify:
 \begin{lstlisting}[moretexcs={[1]{printbibliography}}]
 \printbibliography[heading=none,filter=mine,type=article]
 \end{lstlisting}
 %
 Note that this method sometimes requires several reruns of \texttt{latex}
-to fix the numbering (with standard ascending numbers).
-
-With reverse (descending) numbering (\joption{reversenumbering=true}),
-the numbering does not correctly work if you filter by type or keyword.
-If you need descending numbering, please resort to separated bibliography databases
-(as advised in sec.~\ref{sec:example}) rather than to \joption{type} or
-\joption{keyword} filtering!
-
+to fix the numbering.
 
 \section{Sorting\label{sec:sorting}}
 
@@ -723,8 +720,9 @@ or
 	
 	\item [{V. 1.28 (forthcoming):}]~
 	\begin{itemize}
+		\item Properly support \joption{reversenumbering} even if filtering is done.
 		\item Add new macro\jcsmacro{setbplnum} (see sec.~\ref{sec:auxmacros}).
-		\item Fix macro \jcsmacro{shiftbplnum} with \joption{reversenum=false}.
+		\item Fix macro \jcsmacro{shiftbplnum} with \joption{reversenumbering=false}.
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~

@@ -110,28 +110,12 @@
 	     \setlength{\parsep}{\bibparsep}}%
 	  }
 	  {\endlist}
-	  {\item}}{% else: 2. "reset"
-	     \ifstrequal{#1}{reset}{%
+	  {\item}%
+    }{% 2. else: not "false", either
+	  \ifstrequal{#1}{reset}{% 2a. "reset"
 	       \@bpl@numberresettrue%
-	       \defbibenvironment{bibliography}
-		  {\addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
-		   \list
-		     {\printtext[labelnumberwidth]{%
-		      \printfield{labelprefix}%
-		      \printfield{labelnumber}}}
-		     {\setlength{\labelwidth}{\labelnumberwidth}%
-		      \setlength{\leftmargin}{\labelwidth}%
-		      \setlength{\labelsep}{\biblabelsep}%
-		      \addtolength{\leftmargin}{\labelsep}%
-		      \setlength{\itemsep}{\bibitemsep}%
-		      \setlength{\parsep}{\bibparsep}}}%
-		  {\endlist
-		   \csnumdef{blx@labelnumber@\the\c@refsection}{0}%
-		  }
-		  {\item}
-             }{% else: "true" (default: nothing to do here)
-          }% end of clause
-	}
+          }{}% 2b. "true" or everything else (default: nothing to do here)
+    }%
 }
 
 \newtoggle{bpl@linktitle}
@@ -415,10 +399,11 @@
 \csnumgdef{bpl@itemtotal}{0}
 \csnumgdef{bpl@currentitem}{0}
 \csnumgdef{bpl@saverefsection}{0}
-\csnumgdef{bpl@currentitem}{0}
-\csnumgdef{bpl@all@entrycount}{0}
-\csnumgdef{bpl@comp@entrycount:0}{0}
+\csnumgdef{bpl@secitems:0}{0}
+\newcounter{bplitems}
+\setcounter{bplitems}{0}
 \newbool{newsection}
+\newbool{needbpxrerun}
 
 \preto\blx@refsection{\global\setbool{newsection}{true}}
 
@@ -429,6 +414,8 @@
 \defbibenvironment{bibliography}
     {%
      \addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
+     \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
+         {\csnumgdef{bpl@@secitems:\therefsection}{0}}{}%
      \list
          {\printtext[labelnumberwidth]{%
           \printfield{labelprefix}%
@@ -444,15 +431,43 @@
           \renewcommand*{\makelabel}[1]{\hss##1}%
     }%
     {\endlist
-     \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
-     {\if@bpl@reversenum
-         \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}}%
-      \else
-         \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@currentitem}}%
-      \fi}{}%
+     \if@bpl@numberreset
+        \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
+           {\csnumdef{blx@labelnumber@\the\c@refsection}{0}}{}%
+     \else
+        \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
+           {\if@bpl@reversenum
+              \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}}%
+            \else
+              \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@currentitem}}%
+            \fi%
+           }{}%
+      \fi
       \csnumgdef{bpl@saverefsection}{\c@refsection}%
+      \if@bpl@reversenum%
+         % Write item count to the bpx file
+         \global\boolfalse{needbpxrerun}%
+         \if@filesw%
+           % Check if we have a changed value
+           \ifnumequal{\value{bplitems}}{\numexpr\csuse{bpl@items:\therefsection}\relax}{}{%
+                \global\booltrue{needbpxrerun}
+           }
+           \protected@write\bpl@bpxfile{}{%
+              \protect\csdef{bpl@items:\therefsection}{\thebplitems}%
+              \protect\csdef{bpl@items}{\thebplitems}%
+              \protect\csdef{bpl@secitems:\therefsection}{\csuse{bpl@@secitems:\therefsection}}%
+           }%
+         \fi
+      \fi
     }
-    {\item}
+    {%
+      \if@bpl@reversenum%
+         % We count all really output items for proper reverse numbering
+         \stepcounter{bplitems}%
+         \csnumgdef{bpl@@secitems:\therefsection}{\csuse{bpl@@secitems:\therefsection}+1}%
+      \fi% 
+      \item%
+    }
 
 \DeclareFieldFormat{labelnumber}{%
     \ifbool{newsection}{%
@@ -499,48 +514,70 @@
 
 %
 % Reverse numbering
-% Inspired by moewew's approach at
-% https://tex.stackexchange.com/a/563328/19291
 %
+\AtBeginDocument{%
+  \if@bpl@reversenum
+    \newread\bpl@read@bpxfile
+    \immediate\openin\bpl@read@bpxfile=\jobname.bpx
+    \loop\unless\ifeof\bpl@read@bpxfile
+        \read\bpl@read@bpxfile to\bpx@data
+        \ifeof\bpl@read@bpxfile%
+        \else
+            \bpx@data
+        \fi
+    \repeat
+    \immediate\closein\bpl@read@bpxfile
+    \newwrite\bpl@bpxfile
+    \immediate\openout\bpl@bpxfile=\jobname.bpx
+    \if@filesw%
+        \protected@write\bpl@bpxfile{}{\@percentchar\space biblatex-publist auxiliary file:
+                                       count of items for reverse numbering}%
+    \fi
+    \AtEndDocument{%
+       \ifbool{needbpxrerun}{%
+           \PackageWarning{biblatex-publist}{Please rerun LaTeX!\MessageBreak
+                                             Still counting items}%
+       }{}
+    }
+  \fi
+}
+
 \AtEndOfPackage{%
-\newcounter{prevrefsection}%
-\if@bpl@reversenum
-  % Count total number of entries in each refsection
-  \AtDataInput{%
-    \ifcategory{filtered}{%
-      \csnumgdef{bpl@entrycount:\therefsection}{%
-         \csuse{bpl@entrycount:\therefsection}+1%
-      }%
-      \setcounter{prevrefsection}{\therefsection}%
-      \addtocounter{prevrefsection}{-1}%
-      \csnumgdef{bpl@comp@entrycount:\therefsection}{%
-         \csuse{bpl@comp@entrycount:\theprevrefsection}+\csuse{bpl@entrycount:\therefsection}%
-      }%
-      \csnumgdef{bpl@all@entrycount}{%
-         \csuse{bpl@all@entrycount}+1%
-      }%
-    }{}%
-  }%
-  \renewrobustcmd{\mkbibdesc}[1]{%
-     % Print the labelnumber as the total number of entries in the
-     % current refsection, minus the actual labelnumber, plus one
-     \number\numexpr\csuse{bpl@entrycount:\therefsection}+\csuse{bpl@itemtotal}-#1+1\relax%
-  }%
-  \renewrobustcmd{\mkbibsecstart}[1]{%
-   \setcounter{prevrefsection}{\therefsection}%
-   \addtocounter{prevrefsection}{-1}%
-   \if@bpl@numberreset
-       \csnumgdef{bpl@itemtotal}{#1-1+\csuse{bpl@shift@itemtotal}}%
-   \else
-       \csnumgdef{bpl@itemtotal}{%
-            \csuse{bpl@all@entrycount}%
-                                 -\csuse{bpl@comp@entrycount:\theprevrefsection}%
-                                 -\csuse{bpl@entrycount:\therefsection}-#1+1%
-                                 +\csuse{bpl@shift@itemtotal}%
+  \newcounter{prevrefsection}%
+  \if@bpl@reversenum
+    \renewrobustcmd{\mkbibdesc}[1]{%
+       \ifbool{@bpl@numberreset}{%
+          % Print the labelnumber as the total number of entries in the
+          % current refsection, minus the actual labelnumber, plus one
+          \ifcsdef{bpl@secitems:\therefsection}{%
+             \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1\relax%
+          }{%
+             \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+          }%
+       }{%
+          % Use decreasing counter
+          \ifcsdef{bpl@items:\theprevrefsection}{%
+             \number\numexpr\csuse{bpl@itemtotal}-#1+1-\csuse{bpl@items:\theprevrefsection}\relax%
+          }{%
+             \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+          }%
        }%
-   \fi%
-  }%
-\fi
+    }%
+    \renewrobustcmd{\mkbibsecstart}[1]{%
+       \setcounter{prevrefsection}{\therefsection}%
+       \addtocounter{prevrefsection}{-1}%
+       \ifbool{@bpl@numberreset}{%
+          \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%
+       }{%
+           \ifcsundef{bpl@items}{%
+             \PackageWarning{biblatex-publist}{Please rerun LaTeX!\MessageBreak
+                                               Still counting items in ref section \therefsection}%
+           }{%
+             \csnumgdef{bpl@itemtotal}{\csuse{bpl@items}+\csuse{bpl@shift@itemtotal}}%
+           }%
+       }%
+    }%
+  \fi
 }%
 
 

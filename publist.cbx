@@ -66,14 +66,30 @@
 }
 
 \providebool{@bpl@reversenum}
+\providebool{@bpl@numberreset}
 
 \AtEndOfPackage{%
 \if@bpl@reversenum
+  \newcounter{prevcrefsection}%
   \renewrobustcmd{\mkrefdesc}[1]{%
-     % Print the labelnumber as the total number of entries in the
-     % current refsection, minus the actual labelnumber, plus one
-     \number\numexpr\csuse{bpl@itemtotal}-#1+1%
+     \ifbool{@bpl@numberreset}{%
+        % Print the labelnumber as the total number of entries in the
+        % current refsection, minus the actual labelnumber, plus one
+        \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1%
                            +\csuse{bpl@secstartshift}\relax%
+     }{%
+        % Use decreasing counter
+        \setcounter{prevcrefsection}{\therefsection}%
+        \addtocounter{prevcrefsection}{-1}%
+        \ifcsdef{bpl@items:\theprevcrefsection}{%
+           \number\numexpr\csuse{bpl@itemtotal}-#1+1%
+           -\csuse{bpl@items:\theprevcrefsection}%
+           +\csuse{bpl@secstartshift}\relax%
+        }{%
+           \number\numexpr\csuse{bpl@itemtotal}-#1+1%
+           +\csuse{bpl@secstartshift}\relax%
+        }%
+     }%
   }%
 \fi%
 }
