@@ -494,13 +494,8 @@
 \newbool{manitemset}
 \csnumgdef{bpl@set@itemtotal}{0}
 \newcommand*\setbplnum[1]{%
-  \if@bpl@reversenum
-     \PackageWarning{biblatex-publist}
-        {The macro \protect\setbplnum\space is not functional with reversenum=true}
-  \else
-     \csnumgdef{bpl@set@itemtotal}{#1-1}%
-     \global\setbool{manitemset}{true}%
-  \fi
+   \csnumgdef{bpl@set@itemtotal}{#1-1}%
+   \global\setbool{manitemset}{true}%
 }
 
 \newrobustcmd{\mkbibsecstart}[1]{%
@@ -567,16 +562,28 @@
        \setcounter{prevrefsection}{\therefsection}%
        \addtocounter{prevrefsection}{-1}%
        \ifbool{@bpl@numberreset}{%
-          \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%
+          \ifbool{manitemset}{%
+             % Start from manually set value and count down
+             \csnumgdef{bpl@secitems:\therefsection}{\csuse{bpl@set@itemtotal}+1}\relax%
+             \global\setbool{manitemset}{false}%
+          }{%
+            \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%
+          }%
        }{%
-           \ifcsundef{bpl@items}{%
-             \PackageWarning{biblatex-publist}{Please rerun LaTeX!\MessageBreak
-                                               Still counting items in ref section \therefsection}%
-           }{%
-             \csnumgdef{bpl@itemtotal}{\csuse{bpl@items}+\csuse{bpl@shift@itemtotal}}%
-           }%
-       }%
-    }%
+          \ifbool{manitemset}{%
+             % Start from manually set value and count down
+             \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}+1+\csuse{bpl@items:\theprevrefsection}}\relax%
+             \csnumgdef{bpl@set@itemtotal}{\csuse{bpl@set@itemtotal}-\csuse{bpl@secitems:\therefsection}}%
+          }{%
+             \ifcsundef{bpl@items}{%
+                 \PackageWarning{biblatex-publist}{Please rerun LaTeX!\MessageBreak
+                                                   Still counting items in ref section \therefsection}%
+             }{%
+                 \csnumgdef{bpl@itemtotal}{\csuse{bpl@items}+\csuse{bpl@shift@itemtotal}}%
+             }%
+         }%
+      }%
+   }%
   \fi
 }%
 

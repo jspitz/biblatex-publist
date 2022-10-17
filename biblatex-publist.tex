@@ -454,9 +454,9 @@ For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done
 \jcsmacro*{shiftciteitem}.
 
 The macro \jcsmacro*{setbplnum} allows you to set the first label number of the next bibliography
-section that follows to a specific value, which is passed as argument. All following numbers (across bibliography
-sections) ascend from the new value. Note that this command does not make sense, and thus is disabled,
-with \joption{reversenumbering=true}.
+section that follows to a specific value, which is passed as argument. All following numbers ascend or descend
+from the new value. This happens across bibliography sections with continuous numbering, i.\,e., if
+\joption{plnumber=reset} is not used.
 
 
 \subsection{Using a different base style}\label{sec:basestyle}
