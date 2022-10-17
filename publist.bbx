@@ -294,13 +294,13 @@
 \def\bpl@lsurname{}
 \def\bpl@lfirstname{}
 \def\bpl@lvonpart{}
-\def\jsp@splitpllist#1{%
+\def\bpl@splitpllist#1{%
     \begingroup
     \protected@edef\@tempa{#1}%
     \expandafter\endgroup
-    \expandafter\jsp@@splitpllist\@tempa\relax%
+    \expandafter\bpl@@splitpllist\@tempa\relax%
 }
-\def\jsp@@splitpllist#1,#2,#3\relax{%
+\def\bpl@@splitpllist#1,#2,#3\relax{%
    \global\def\bpl@lfirstname{#1}%
    \global\def\bpl@lvonpart{#2}%
    \global\def\bpl@lsurname{#3}%
@@ -332,7 +332,7 @@
     \def\bpl@lfirstname{}%
     \def\bpl@lvonpart{}%
     \renewcommand*{\do}[1]{%
-        \jsp@splitpllist{##1}%
+        \bpl@splitpllist{##1}%
         \bpl@normalize{\bpl@lsurname}{\bpl@elsurname}%
         \bpl@normalize{\bpl@lfirstname}{\bpl@elfirstname}%
         \bpl@normalize{\bpl@lvonpart}{\bpl@elvonpart}%
