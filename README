@@ -48,7 +48,7 @@ instructions.
 
 * V. 1.28 (forthcoming):
 	- Add new macro \setbplnum (#39).
-	- Fix macro \shiftbplnum with reversenum=false.
+	- Fix macro \shiftbplnum with reversenumbering=false.
 
 * V. 1.27 (2022-10-03):
 	- Fix once more plauthor check with non-ASCII chars and macros.
