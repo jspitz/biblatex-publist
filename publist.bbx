@@ -433,8 +433,14 @@
     }%
     {\endlist
      \if@bpl@numberreset
+        \ifbool{manitemreset}{%
+           % Set back start number after manually set section
+           \global\csnumgdef{bpl@set@itemtotal}{0}%
+           \global\boolfalse{manitemreset}%
+        }{}%
         \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
            {\csnumdef{blx@labelnumber@\the\c@refsection}{0}}{}%
+           \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
      \else
         \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
            {\if@bpl@reversenum
@@ -494,6 +500,7 @@
 
 % Way to manually set the numbering
 \newbool{manitemset}
+\newbool{manitemreset}
 \csnumgdef{bpl@set@itemtotal}{0}
 \newcommand*\setbplnum[1]{%
    \csnumgdef{bpl@set@itemtotal}{#1-1}%
@@ -504,6 +511,9 @@
  \ifbool{manitemset}{%
    \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
    \global\boolfalse{manitemset}%
+   \if@bpl@numberreset
+     \global\booltrue{manitemreset}%
+   \fi
  }{%
    \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}-#1+1}%
  }
