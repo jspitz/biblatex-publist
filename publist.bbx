@@ -402,6 +402,8 @@
 \csnumgdef{bpl@secitems:0}{0}
 \newcounter{bplitems}
 \setcounter{bplitems}{0}
+\newcounter{bplsecitems}
+\setcounter{bplsecitems}{0}
 \newbool{newsection}
 \newbool{needbpxrerun}
 
@@ -414,8 +416,7 @@
 \defbibenvironment{bibliography}
     {%
      \addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
-     \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
-         {\csnumgdef{bpl@@secitems:\therefsection}{0}}{}%
+     \setcounter{bplsecitems}{0}
      \list
          {\printtext[labelnumberwidth]{%
           \printfield{labelprefix}%
@@ -455,7 +456,7 @@
            \protected@write\bpl@bpxfile{}{%
               \protect\csdef{bpl@items:\therefsection}{\thebplitems}%
               \protect\csdef{bpl@items}{\thebplitems}%
-              \protect\csdef{bpl@secitems:\therefsection}{\csuse{bpl@@secitems:\therefsection}}%
+              \protect\csdef{bpl@secitems:\therefsection}{\thebplsecitems}%
            }%
          \fi
       \fi
@@ -463,8 +464,9 @@
     {%
       \if@bpl@reversenum%
          % We count all really output items for proper reverse numbering
+         % (global and per section)
          \stepcounter{bplitems}%
-         \csnumgdef{bpl@@secitems:\therefsection}{\csuse{bpl@@secitems:\therefsection}+1}%
+         \stepcounter{bplsecitems}%
       \fi% 
       \item%
     }
