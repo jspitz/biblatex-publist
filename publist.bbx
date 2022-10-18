@@ -407,7 +407,7 @@
 \newbool{newsection}
 \newbool{needbpxrerun}
 
-\preto\blx@refsection{\global\setbool{newsection}{true}}
+\preto\blx@refsection{\global\booltrue{newsection}}
 
 % Possibility to manually make the space occupied by the label wider
 \newlength\extralabelnumberwidth
@@ -475,7 +475,7 @@
     \ifbool{newsection}{%
        % Fix start counter value
        \mkbibsecstart{#1}%
-       \global\setbool{newsection}{false}%
+       \global\boolfalse{newsection}%
     }{}%
     \mkbibdesc{#1}%
     \csnumgdef{bpl@currentitem}{#1}%
@@ -497,13 +497,13 @@
 \csnumgdef{bpl@set@itemtotal}{0}
 \newcommand*\setbplnum[1]{%
    \csnumgdef{bpl@set@itemtotal}{#1-1}%
-   \global\setbool{manitemset}{true}%
+   \global\booltrue{manitemset}%
 }
 
 \newrobustcmd{\mkbibsecstart}[1]{%
  \ifbool{manitemset}{%
    \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
-   \global\setbool{manitemset}{false}%
+   \global\boolfalse{manitemset}%
  }{%
    \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}-#1+1}%
  }
@@ -567,7 +567,7 @@
           \ifbool{manitemset}{%
              % Start from manually set value and count down
              \csnumgdef{bpl@secitems:\therefsection}{\csuse{bpl@set@itemtotal}+1}\relax%
-             \global\setbool{manitemset}{false}%
+             \global\boolfalse{manitemset}%
           }{%
             \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%
           }%
