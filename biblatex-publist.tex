@@ -176,7 +176,7 @@ If you miss a specific feature, feel free to suggest it via
 Note that \bpl\ relies on rather advanced features of \bibltx\ for some of its own features.
 These are only available with the \texttt{biber} backend of \bibltx. Hence \bpl\ requires
 the use of \texttt{biber} as well -- the \texttt{bibtex} backend won't work!
-Furthermore, the package employs some newer \LaTeX and \texttt{latex3} features. So a quite
+Furthermore, the package employs some newer \LaTeXe\ and \texttt{latex3} features. So a quite
 recent \LaTeX\ distribution is required.
 
 Also note that the aim of \bpl\ is to generate publication lists, so it is \emph{not suitable}
@@ -416,11 +416,11 @@ The adjustment applies to all following bibliography sections with continuous nu
 With \joption{plnumbered=reset}, by contrast, following sections continue to be reset.
 In all cases, the macro can be used repeatedly for re-adjustments in forthcoming sections.
 
-So in the use case mentioned above, setting \verb|\setbplnum{1}| before the first section that lists
+So in the use case mentioned above, inserting \verb|\setbplnum{1}| before the first section that lists
 conference papers, together with \joption{plnumbered=true} (the default), will provide the desired result
-(provided that ascending numbering is wished for), as does embracing the conference paper in a
-\jenviron{bplnumgroup} environment when used together with \joption{plnumbered=reset} (here both for
-ascending and descending lists).
+(provided that ascending numbering is wished for). The desired result will also be achieved by embracing
+all publication-related sections in a \jenviron{bplnumgroup} environment and and all conference-paper-related
+sections in another one, while using \joption{plnumbered=reset} (here both for ascending and descending lists).
 
 The macro \jcsmacro*{shiftbplnum}, by contrast, provides a way to adjust the subsequent numbering in a
 \emph{relative} way.
