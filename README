@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 1.28 (forthcoming):
+* V. 2.0 (forthcoming):
 	- Properly support reversenumbering even if filtering is done (#38).
 	- Add bplnumgroup environment to temporarily suspend plnumbered=reset.
 	- Add new macro \setbplnum (#39).
