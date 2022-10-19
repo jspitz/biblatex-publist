@@ -80,6 +80,11 @@
 \newcommand*\jfoption[1]{\texttt{#1}}
 \newcommand*\jfmacro[1]{\texttt{#1}}
 \newcommand*\jfcsmacro[1]{\jfmacro{\textbackslash{#1}}}
+\def\jenviron{\@ifstar\@@jenviron\@jenviron}
+\newcommand*\@jenviron[1]{\textbf{\texttt{#1}}}
+\newcommand*\@@jenviron[1]{\marginpar{\small\texttt{#1}}%
+	\textbf{\texttt{\textbackslash begin\{#1\}$\ldots$\textbackslash end\{#1\}}}%
+}
 \newcommand*\bpl{\texttt{biblatex-publist}}
 \newcommand*\bibltx{\texttt{biblatex}}
 \makeatother
@@ -109,10 +114,11 @@
 
 \begin{abstract}
 \noindent The \bpl\ package provides a \bibltx\ \cite{bibltx} style file
-for publication lists, i.\,e., a bibliography containing one's own
-publications. It draws on \bibltx's \emph{authoryear} style by default
-(which can be changed), but provides some extra features needed for publication lists,
-such as the omission or highlighting of the own name from\slash in author or editor data.
+for publication lists -- a bibliography listing one's own
+publications. It employs \bibltx's \emph{author\-year} style by default
+(which can be changed), but provides extra features needed for publication lists,
+such as the omission or highlighting of the own name from\slash in author or editor data
+and specific numbering.
 The package requires at least version 3.8 of \bibltx\ and \texttt{biber}
 (the respective version as required by \bibltx).
 \end{abstract}
@@ -133,7 +139,7 @@ produce the desired result.
 
 Given the fact that maintaining a publication list is a routine task
 in an academian's life, it is surprising how few specified solutions
-exist to generate such lists (particularly from Bib\TeX\ data). For
+are at disposal to generate such lists (particularly from Bib\TeX\ data). For
 classic Bib\TeX, Nicolas Markey provides (off CTAN) a Bib\TeX\ style file
 dedicated to that task, \emph{publist.bst}%
 \footnote{See \url{http://www.lsv.fr/~markey/BibTeX/publist/publist.bst}
@@ -142,7 +148,8 @@ dedicated to that task, \emph{publist.bst}%
 The \bpl\ package started off as the attempt to emulate the features of
 \emph{publist.bst} with \bibltx's means; it thus partly draws on
 its conceptual ideas. Meanwhile, however, it has significantly exceeded
-that initial goal and provides many more features than \emph{publist.bst}.
+that initial goal and provides many more features than \emph{publist.bst},
+thereby account for my own needs and requests that reached me.
 
 The list of features includes:
 
@@ -152,8 +159,8 @@ The list of features includes:
 	\item Filter publications of specific authors from heterogeneous bibliography databases
 	\item Date-centric sorting (as typical for publication lists)
 	\item Number items in ascending or descending order, globally or sectional
-	\item Highlight year of publication
-	\item Indicate year of publication (sets) in the margin
+	\item Highlight the year of publication
+	\item Optionally indicate the year of publication (sets) in the margin
 	\item Clickable titles, linking to the URL, DOI, or a web catalog
 	\item Indicate if/how a title has been peer-reviewed
 	\item List reviews of specific titles
@@ -164,13 +171,15 @@ Many features have been suggested by users of the package.
 If you miss a specific feature, feel free to suggest it via
 \url{https://github.com/jspitz/biblatex-publist/issues}.
 
-\subsection*{Caveats}
+\subsection*{Requirements}
 
 Note that \bpl\ relies on rather advanced features of \bibltx\ for some of its own features.
 These are only available with the \texttt{biber} backend of \bibltx. Hence \bpl\ requires
 the use of \texttt{biber} as well -- the \texttt{bibtex} backend won't work!
+Furthermore, the package employs some newer \LaTeX and \texttt{latex3} features. So a quite
+recent \LaTeX\ distribution is required.
 
-Also note that the aim of \bpl\ is to generate publication lists, so it is not suitable
+Also note that the aim of \bpl\ is to generate publication lists, so it is \emph{not suitable}
 for normal bibliographies. Specifically, while basic citing works, more advanced
 forms of citing may break or not produce the expected result. The reason is that
 \bpl\ needs to perform internal tweaks (e.\,g., to \textsf{shortauthor} and
@@ -214,7 +223,7 @@ will be printed in bold face instead, as in:
 \end{quote}
 %
 Note that \jcsmacro{plauthorname} expects the name constituents as they are recorded in the
-database (special characters will be expanded). The option \joption{plauthorfirstinit} (see next section),
+database (special characters are handled). The option \joption{plauthorfirstinit} (see next section),
 however, allows you to pass only an initial character instead of a first name.
 
 If you want to refer to an item number, use \jcsmacro*{citeitem}\jmacro{\{<key>\}} within your publication list.
@@ -244,7 +253,7 @@ if your name does not consist of non-ASCII characters. Hence, the
 
 By default, the publist author (as defined with \jmacro{plauthor}) is omitted from
 the author or editor list. If you use the option \joption{plauthorhandling=highlight},
-it is highlighted instead (i.\,e., set in bold face by default; see sec.~\ref{sec:auxmacros} how to change that).
+it is highlighted instead (set in bold face by default; see sec.~\ref{sec:auxmacros} how to change that).
 
 \item [{\joption{nameorder{[}=family-given|given-family{]}}}] default: \emph{family-given}.
 
@@ -281,8 +290,8 @@ If you do not want to have any numbers at all, set this option to \joption{false
 \item [{\joption{reversenumbering{[}=true|false{]}}}] default: \emph{false}.
 
 If this option is \joption{true}, the entries will be numbered in descending order, starting from the total
-number of entries back to 1. This also works with descending order (\joption{plnumbered=reset});
-in this case, the numbers descend to 1 in each section. Obviously the option is nonfunctional with
+number of entries back to 1. This also works with sectional numbering (\joption{plnumbered=reset});
+in this case, the numbers descend to 1 in each section. Obviously, the option is nonfunctional with
 \joption{plnumbered=false}.
 
 Note that if you use this option, \bpl\ will have to do a full counting of all printed items first in order
@@ -341,21 +350,24 @@ See section~\ref{sec:clicktitles} for details.
 \end{description}
 
 
-\subsection{Tweaking the numbers}\label{sec:numbers}
+\subsection{Numbers games}\label{sec:numbers}
 
 Among the peculiarities of publication lists is the greater variety of numbering conventions, as compared
-with bibliographies in academic works. If a numeric citation style is used in the latter, the items are
+with normal bibliographies in academic works. If a numeric citation style is used in the latter, the items are
 as a rule numbered in ascending order, and each entry has a unique number. The main function of the
-number here is to provide fast access from a reference to the referred entry.
+number here is to provide fast access from a reference to the referred entry, and a continuous ascending
+enumeration fits this purpose best.
 
-In publication lists, this is only a secondary function of the number. The main function here is, in fact,
-metrical. In our increasingly metricalized academic cultures, and against the backdrop of the
-\enquote{publish or perish} imperative scholars find themselves confronted with, the number of publications
-a scholar has is, next to weighted references to them, social capital. The numbering of items in publication lists
-is thus, if you will, a sort of account balance. Since publication formats (e.\,g., journal papers vs. chapters)
-are usually valued differently, many people prefer to have a more differentiated balance in the sense that the
-publication lists swiftly tells you how many papers, monographs, chapters, etc., a person has published.
-Hence those people prefer to number their publications by section.
+In publication lists, this is only a secondary function of the number, as publication lists are not meant for citing.
+The main function here is, in fact, \emph{metrical}. In our increasingly metricalized academic cultures, and against the
+backdrop of the \enquote{publish or perish} imperative scholars find themselves confronted with, the sheer number
+of publications a scholar has is, next to weighted references to them, social capital. The numbering of items in
+publication lists is thus, if you will, a sort of account balance.
+
+Now since publication genres (e.\,g., journal papers vs. chapters)
+are usually valued differently (\enquote*{impact!}), many people prefer to have a more differentiated balance in
+the sense that the publication lists should swiftly tell the reader how many papers, monographs, chapters, etc.,
+a person has published. Hence those people prefer to number their publications by section rather than continuously.
 
 On the other hand, since publication lists are often ordered reversely chronological, many people also prefer
 to have a reversely ordered (descending) numbering, either globally over the whole list or, again, by section.
@@ -363,19 +375,20 @@ to have a reversely ordered (descending) numbering, either globally over the who
 The \bpl\ package accounts for these needs and provides, via the options \joption{plnumbered} and
 \joption{reversenumbering} five different numbering variants:
 \begin{enumerate}\setlength{\itemsep}{0pt}
-	\item Global ascending numbers (that continues across sections) [\emph{default}]
+	\item Global ascending numbers (that continue across sections) [\emph{default}]
 	\item Global descending numbers [\joption{reversenumbering=true}]
-	\item Local ascending numbers (that is reset in each section) [\joption{plnumbered=reset}]
+	\item Local ascending numbers (that are reset to 1 in each section) [\joption{plnumbered=reset}]
 	\item Local descending numbers [\joption{reversenumbering=true, plnumbered=reset}]
 	\item No numbers at all [\joption{plnumbered=false}]
 \end{enumerate} 
 %
-Particularly reverse numbering is, technically, a challenge; \bibltx, for reasons, does not provide this
+Particularly reverse numbering is, technically, a bit of a challenge; \bibltx, for reasons, does not provide this
 feature out of the box. In order to do descending numbering one has to know the number of entries in the
 publication list, or in individual sections, before the first number can get assigned. Since items can be
 filtered out, for instance via \bibltx's \joption{filter} or \joption{keyword} options, \bibltx\ itself
-only knows this number after all entries have been printed. Yet since it only provides for ascending numbers,
-\bibltx\ does not (need to) store this knowledge, and thus, it is not readily available to \bpl.
+only knows this number after all entries have been processed for output. Yet since it only provides for
+ascending numbers, \bibltx\ does not (need to) store this knowledge, and thus, it is not readily available
+to \bpl.
 
 Thus, with \joption{reversenumbering=true}, \bpl\ will first count all printed entries, globally and per section,
 write the results in an auxiliary file (\emph{<filename>.bpx}), and then do at least one additional pass in order
@@ -384,24 +397,36 @@ numbering is not yet fully resolved.
 
 Now in addition to these mentioned variants, some people still need a more fine-grained control over the numbering.
 For instance, some scholars want to list both their publications and their conference papers (talks) in the
-same document, but separately numbered. Both publications and talks might be divided into different sections
-which, however, should be numbered continuously. So \joption{plnumbered=reset} is not an option here.
+same document, but separately numbered. Both publications and talks might themselves be divided into different
+sections (\emph{monographs}, \emph{papers}, $\ldots$; \emph{keynotes}, \emph{invited talks}, $\ldots$) which, however,
+should be numbered continuously within their category. So \joption{plnumbered=reset} alone does not produce
+the desired result.
 
-In this case, the macro \jcsmacro*{setbplnum} is useful. It allows you to set the first label number of the
-next bibliography section that follows to a specific value. All following numbers ascend or descend
-from this new value.
+For this case, \bpl\ provides two alternative and slightly different features: First, an environment
+\jenviron*{bplnumgroup}.
+All sections you embrace by this in the context of \joption{plnumbered=reset} are numbered continuously,
+so resetting is suspended within this environment. This works both with ascending and descending enumeration.
+
+In the ascending case only, the macro \jcsmacro*{setbplnum} is useful as a (more flexible) alternative.
+It allows you to set the first label number of the next bibliography section that follows to a specific
+(arbitrary) value.
+All following numbers ascend or descend from this new value.
 The adjustment applies to all following bibliography sections with continuous numbering, i.\,e., if
 \joption{plnumbered=reset} is not used.
 With \joption{plnumbered=reset}, by contrast, following sections continue to be reset.
 In all cases, the macro can be used repeatedly for re-adjustments in forthcoming sections.
 
 So in the use case mentioned above, setting \verb|\setbplnum{1}| before the first section that lists
-conference papers will provide the desired result (provided that ascending numbering is wished for).
+conference papers, together with \joption{plnumbered=true} (the default), will provide the desired result
+(provided that ascending numbering is wished for), as does embracing the conference paper in a
+\jenviron{bplnumgroup} environment when used together with \joption{plnumbered=reset} (here both for
+ascending and descending lists).
 
 The macro \jcsmacro*{shiftbplnum}, by contrast, provides a way to adjust the subsequent numbering in a
 \emph{relative} way.
 It takes a positive or negative integer value that determines how much and in which direction the adjustment
-shall take place (e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftbplnum{-1}|). Again, this macro can be used
+shall take place (e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftbplnum{-1}|). This might be useful if you
+insert items in the list manually or in some very specific settings. Again, this macro can be used
 repeatedly  and applies to all subsequent items as of the next section that follows. As opposed to
 \jcsmacro{setbplnum}, the shifting also persists with \joption{plnumbered=reset}.
 
@@ -780,6 +805,8 @@ or
 	\item [{V. 1.28 (forthcoming):}]~
 	\begin{itemize}
 		\item Properly support \joption{reversenumbering} even if filtering is done.
+		\item Add \jenviron{bplnumgroup} environment to temporarily suspend 
+		      \joption{plnumbered=reset} (see sec.~\ref{sec:numbers}).
 		\item Add new macro\jcsmacro{setbplnum} (see sec.~\ref{sec:numbers}).
 		\item Fix macro \jcsmacro{shiftbplnum} with \joption{reversenumbering=false}.
 	\end{itemize}

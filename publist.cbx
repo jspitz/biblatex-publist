@@ -67,6 +67,7 @@
 
 \providebool{@bpl@reversenum}
 \providebool{@bpl@numberreset}
+\providebool{bplnumgroup}
 
 \AtEndOfPackage{%
 \if@bpl@reversenum
@@ -75,8 +76,18 @@
      \ifbool{@bpl@numberreset}{%
         % Print the labelnumber as the total number of entries in the
         % current refsection, minus the actual labelnumber, plus one
-        \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1%
+        \ifbool{bplnumgroup}{%
+             \number\numexpr\csuse{bpl@itemtotal}-#1+1%
+                            +\csuse{bpl@secstartshift}\relax%
+          }{%
+             \ifcsdef{bpl@secitems:\therefsection}{%
+                \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1%
                            +\csuse{bpl@secstartshift}\relax%
+             }{%
+                \number\numexpr\csuse{bpl@itemtotal}-#1+1%
+                           +\csuse{bpl@secstartshift}\relax%
+             }%
+          }%
      }{%
         % Use decreasing counter
         \setcounter{prevcrefsection}{\therefsection}%

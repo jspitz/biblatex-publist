@@ -221,6 +221,20 @@
 % Helper functions
 %
 
+% Not (yet) provided by biblatex, so we roll our own
+\@ifundefined{AtNextRefsection}{%
+   \newrobustcmd*{\AtNextRefsection}{%
+      \ifundef\blx@hook@refsection@next
+        {\gdef\blx@hook@refsection@next{\global\undef\blx@hook@refsection@next}}
+        {}%
+      \gappto\blx@hook@refsection@next%
+    }
+  \patchcmd{\blx@refsection@i}%
+     {\csuse{blx@hook@refsectioninit}}%
+     {\csuse{blx@hook@refsectioninit}\csuse{blx@hook@refsection@next}}
+     {}{\PackageWarning{biblatex-publist}{Patching refsection failed!}}
+}{}
+
 %
 % Removing braces from names (courtesy of egreg at
 % http://tex.stackexchange.com/a/79583/19291)
@@ -400,12 +414,38 @@
 \csnumgdef{bpl@currentitem}{0}
 \csnumgdef{bpl@saverefsection}{0}
 \csnumgdef{bpl@secitems:0}{0}
+\csnumgdef{bpl@savesecitems}{0}
 \newcounter{bplitems}
 \setcounter{bplitems}{0}
 \newcounter{bplsecitems}
 \setcounter{bplsecitems}{0}
+\newcounter{bplbgitems}
+\setcounter{bplbgitems}{0}
+\newcounter{bplnumgroup}
+\setcounter{bplnumgroup}{0}
 \newbool{newsection}
 \newbool{needbpxrerun}
+\newbool{bplnumgroup}
+\def\resetbplnumgroup{}
+
+\newenvironment{bplnumgroup}%
+   {%
+    \global\booltrue{bplnumgroup}%
+    \stepcounter{bplnumgroup}%
+    \setcounter{bplbgitems}{0}%
+    \csnumgdef{bpl@numgroup@done}{0}%
+    \if@bpl@numberreset%
+       \ifbool{@bpl@reversenum}{%
+          \csnumgdef{bpl@itemtotal}{\csuse{bpl@savesecitems:\thebplnumgroup}}%
+       }{}%
+    \fi%
+   }{%
+    \AtNextRefsection{%
+      \global\boolfalse{bplnumgroup}%
+      \stepcounter{bplnumgroup}%
+      \resetbplnumgroup%
+    }%
+   }%
 
 \preto\blx@refsection{\global\booltrue{newsection}}
 
@@ -416,7 +456,10 @@
 \defbibenvironment{bibliography}
     {%
      \addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
-     \setcounter{bplsecitems}{0}
+     \setcounter{bplsecitems}{0}%
+     \ifcsundef{bpl@savesecitems:\thebplnumgroup}{%
+         \csnumgdef{bpl@savesecitems:\thebplnumgroup}{0}%
+     }{}%
      \list
          {\printtext[labelnumberwidth]{%
           \printfield{labelprefix}%
@@ -439,8 +482,25 @@
            \global\boolfalse{manitemreset}%
         }{}%
         \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
-           {\csnumdef{blx@labelnumber@\the\c@refsection}{0}}{}%
-           \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
+           {%
+             \csnumdef{blx@labelnumber@\the\c@refsection}{0}%
+             \ifbool{@bpl@reversenum}{%
+                 \ifbool{bplnumgroup}{%
+                      \csnumgdef{bpl@numgroup@done}{\csuse{bpl@numgroup@done}+\csuse{bpl@savesecitems}}%
+                      \csnumgdef{bpl@itemtotal}{\csuse{bpl@savesecitems:\thebplnumgroup}-\csuse{bpl@numgroup@done}}%
+                      \gdef\resetbplnumgroup{\csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}}%
+                 }{%
+                      \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
+                 }
+             }{%
+                 \ifbool{bplnumgroup}{%
+                      \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@savesecitems}}%
+                      \gdef\resetbplnumgroup{\csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}}%
+                 }{%
+                      \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
+                 }
+             }%
+            }{}%
      \else
         \ifnumgreater{\c@refsection}{\bpl@saverefsection}%
            {\if@bpl@reversenum
@@ -463,6 +523,7 @@
               \protect\csdef{bpl@items:\therefsection}{\thebplitems}%
               \protect\csdef{bpl@items}{\thebplitems}%
               \protect\csdef{bpl@secitems:\therefsection}{\thebplsecitems}%
+              \protect\csdef{bpl@savesecitems:\thebplnumgroup}{\thebplbgitems}%
            }%
          \fi
       \fi
@@ -472,8 +533,12 @@
          % We count all really output items for proper reverse numbering
          % (global and per section)
          \stepcounter{bplitems}%
-         \stepcounter{bplsecitems}%
-      \fi% 
+      \fi%
+      \stepcounter{bplsecitems}%
+      \ifbool{bplnumgroup}{%
+         \stepcounter{bplbgitems}%
+         \csnumgdef{bpl@savesecitems}{\thebplsecitems}%
+      }{}%   
       \item%
     }
 
@@ -556,10 +621,14 @@
        \ifbool{@bpl@numberreset}{%
           % Print the labelnumber as the total number of entries in the
           % current refsection, minus the actual labelnumber, plus one
-          \ifcsdef{bpl@secitems:\therefsection}{%
-             \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1\relax%
-          }{%
+          \ifbool{bplnumgroup}{%
              \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+          }{%
+             \ifcsdef{bpl@secitems:\therefsection}{%
+                \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1\relax%
+             }{%
+                \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+             }%
           }%
        }{%
           % Use decreasing counter
@@ -579,7 +648,11 @@
              \csnumgdef{bpl@secitems:\therefsection}{\csuse{bpl@set@itemtotal}+1}\relax%
              \global\boolfalse{manitemset}%
           }{%
-            \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%
+            \ifbool{bplnumgroup}{%
+                \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@shift@itemtotal}}%
+            }{%
+                \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%
+            }
           }%
        }{%
           \ifbool{manitemset}{%
