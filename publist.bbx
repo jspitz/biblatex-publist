@@ -625,7 +625,8 @@
              \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
           }{%
              \ifcsdef{bpl@secitems:\therefsection}{%
-                \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1\relax%
+                \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1%
+                         +\csuse{bpl@shift@itemtotal}\relax%
              }{%
                 \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
              }%
