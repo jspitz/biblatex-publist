@@ -563,9 +563,6 @@
     \csnumgdef{bpl@shift@itemtotal}{#1}%
 }
 
-% Backwards compatibility
-\let\shiftbplnum\shiftplnum
-
 % Way to manually set the numbering
 \newbool{manitemset}
 \newbool{manitemreset}
@@ -1693,5 +1690,7 @@
     }%
 }
 
+% Renamed in v. 2.0
+\let\shiftbplnum\shiftplnum
 
 \endinput
