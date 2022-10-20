@@ -46,6 +46,7 @@
 %
 
 % Deprecated Options (as of v. 1.4)
+%
 \DeclareBibliographyOption{omitname}{%
     \PackageWarning{biblatex-publist}
         {The omitname option is deprecated!\MessageBreak
@@ -62,7 +63,9 @@
          Please use plauthornameprefix instead.}{}%
     \def\bpl@ovonpart{#1}}
 
+
 % Valid options
+%
 \DeclareBibliographyOption{plauthorname}{\def\bpl@osurname{#1}}
 \DeclareBibliographyOption{plauthorfirstname}{\def\bpl@ofirstname{#1}}
 \DeclareBibliographyOption{plauthornameprefix}{\def\bpl@ovonpart{#1}}
