@@ -421,29 +421,29 @@
 \setcounter{bplsecitems}{0}
 \newcounter{bplbgitems}
 \setcounter{bplbgitems}{0}
-\newcounter{bplnumgroup}
-\setcounter{bplnumgroup}{0}
+\newcounter{plnumgroup}
+\setcounter{plnumgroup}{0}
 \newbool{newsection}
 \newbool{needbpxrerun}
-\newbool{bplnumgroup}
-\def\resetbplnumgroup{}
+\newbool{plnumgroup}
+\def\resetplnumgroup{}
 
-\newenvironment{bplnumgroup}%
+\newenvironment{plnumgroup}%
    {%
-    \global\booltrue{bplnumgroup}%
-    \stepcounter{bplnumgroup}%
+    \global\booltrue{plnumgroup}%
+    \stepcounter{plnumgroup}%
     \setcounter{bplbgitems}{0}%
     \csnumgdef{bpl@numgroup@done}{0}%
     \if@bpl@numberreset%
        \ifbool{@bpl@reversenum}{%
-          \csnumgdef{bpl@itemtotal}{\csuse{bpl@savesecitems:\thebplnumgroup}}%
+          \csnumgdef{bpl@itemtotal}{\csuse{bpl@savesecitems:\theplnumgroup}}%
        }{}%
     \fi%
    }{%
     \AtNextRefsection{%
-      \global\boolfalse{bplnumgroup}%
-      \stepcounter{bplnumgroup}%
-      \resetbplnumgroup%
+      \global\boolfalse{plnumgroup}%
+      \stepcounter{plnumgroup}%
+      \resetplnumgroup%
     }%
    }%
 
@@ -457,8 +457,8 @@
     {%
      \addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
      \setcounter{bplsecitems}{0}%
-     \ifcsundef{bpl@savesecitems:\thebplnumgroup}{%
-         \csnumgdef{bpl@savesecitems:\thebplnumgroup}{0}%
+     \ifcsundef{bpl@savesecitems:\theplnumgroup}{%
+         \csnumgdef{bpl@savesecitems:\theplnumgroup}{0}%
      }{}%
      \list
          {\printtext[labelnumberwidth]{%
@@ -485,17 +485,17 @@
            {%
              \csnumdef{blx@labelnumber@\the\c@refsection}{0}%
              \ifbool{@bpl@reversenum}{%
-                 \ifbool{bplnumgroup}{%
+                 \ifbool{plnumgroup}{%
                       \csnumgdef{bpl@numgroup@done}{\csuse{bpl@numgroup@done}+\csuse{bpl@savesecitems}}%
-                      \csnumgdef{bpl@itemtotal}{\csuse{bpl@savesecitems:\thebplnumgroup}-\csuse{bpl@numgroup@done}}%
-                      \gdef\resetbplnumgroup{\csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}}%
+                      \csnumgdef{bpl@itemtotal}{\csuse{bpl@savesecitems:\theplnumgroup}-\csuse{bpl@numgroup@done}}%
+                      \gdef\resetplnumgroup{\csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}}%
                  }{%
                       \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
                  }
              }{%
-                 \ifbool{bplnumgroup}{%
+                 \ifbool{plnumgroup}{%
                       \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@savesecitems}}%
-                      \gdef\resetbplnumgroup{\csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}}%
+                      \gdef\resetplnumgroup{\csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}}%
                  }{%
                       \csnumgdef{bpl@itemtotal}{\csuse{bpl@set@itemtotal}}%
                  }
@@ -523,7 +523,7 @@
               \protect\csdef{bpl@items:\therefsection}{\thebplitems}%
               \protect\csdef{bpl@items}{\thebplitems}%
               \protect\csdef{bpl@secitems:\therefsection}{\thebplsecitems}%
-              \protect\csdef{bpl@savesecitems:\thebplnumgroup}{\thebplbgitems}%
+              \protect\csdef{bpl@savesecitems:\theplnumgroup}{\thebplbgitems}%
            }%
          \fi
       \fi
@@ -535,7 +535,7 @@
          \stepcounter{bplitems}%
       \fi%
       \stepcounter{bplsecitems}%
-      \ifbool{bplnumgroup}{%
+      \ifbool{plnumgroup}{%
          \stepcounter{bplbgitems}%
          \csnumgdef{bpl@savesecitems}{\thebplsecitems}%
       }{}%   
@@ -559,15 +559,18 @@
 
 % Way to manually shift the numbering
 \csnumgdef{bpl@shift@itemtotal}{0}
-\newcommand*\shiftbplnum[1]{%
+\newcommand*\shiftplnum[1]{%
     \csnumgdef{bpl@shift@itemtotal}{#1}%
 }
+
+% Backwards compatibility
+\let\shiftbplnum\shiftplnum
 
 % Way to manually set the numbering
 \newbool{manitemset}
 \newbool{manitemreset}
 \csnumgdef{bpl@set@itemtotal}{0}
-\newcommand*\setbplnum[1]{%
+\newcommand*\setplnum[1]{%
    \csnumgdef{bpl@set@itemtotal}{#1-1}%
    \global\booltrue{manitemset}%
 }
@@ -621,7 +624,7 @@
        \ifbool{@bpl@numberreset}{%
           % Print the labelnumber as the total number of entries in the
           % current refsection, minus the actual labelnumber, plus one
-          \ifbool{bplnumgroup}{%
+          \ifbool{plnumgroup}{%
              \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
           }{%
              \ifcsdef{bpl@secitems:\therefsection}{%
@@ -648,7 +651,7 @@
              \csnumgdef{bpl@secitems:\therefsection}{\csuse{bpl@set@itemtotal}+1}\relax%
              \global\boolfalse{manitemset}%
           }{%
-            \ifbool{bplnumgroup}{%
+            \ifbool{plnumgroup}{%
                 \csnumgdef{bpl@itemtotal}{\csuse{bpl@itemtotal}+\csuse{bpl@shift@itemtotal}}%
             }{%
                 \csnumgdef{bpl@itemtotal}{\csuse{bpl@shift@itemtotal}}%

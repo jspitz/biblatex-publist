@@ -403,11 +403,11 @@ should be numbered continuously within their category. So \joption{plnumbered=re
 the desired result.
 
 For this case, \bpl\ provides two alternative and slightly different features: First, an environment
-\jenviron*{bplnumgroup}.
+\jenviron*{plnumgroup}.
 All sections you embrace by this in the context of \joption{plnumbered=reset} are numbered continuously,
 so resetting is suspended within this environment. This works both with ascending and descending enumeration.
 
-In the ascending case only, the macro \jcsmacro*{setbplnum} is useful as a (more flexible) alternative.
+In the ascending case only, the macro \jcsmacro*{setplnum} is useful as a (more flexible) alternative.
 It allows you to set the first label number of the next bibliography section that follows to a specific
 (arbitrary) value.
 All following numbers ascend or descend from this new value.
@@ -416,19 +416,19 @@ The adjustment applies to all following bibliography sections with continuous nu
 With \joption{plnumbered=reset}, by contrast, following sections continue to be reset.
 In all cases, the macro can be used repeatedly for re-adjustments in forthcoming sections.
 
-So in the use case mentioned above, inserting \verb|\setbplnum{1}| before the first section that lists
+So in the use case mentioned above, inserting \verb|\setplnum{1}| before the first section that lists
 conference papers, together with \joption{plnumbered=true} (the default), will provide the desired result
 (provided that ascending numbering is wished for). The desired result will also be achieved by embracing
-all publication-related sections in a \jenviron{bplnumgroup} environment and and all conference-paper-related
+all publication-related sections in a \jenviron{plnumgroup} environment and and all conference-paper-related
 sections in another one, while using \joption{plnumbered=reset} (here both for ascending and descending lists).
 
-The macro \jcsmacro*{shiftbplnum}, by contrast, provides a way to adjust the subsequent numbering in a
+The macro \jcsmacro*{shiftplnum}, by contrast, provides a way to adjust the subsequent numbering in a
 \emph{relative} way.
 It takes a positive or negative integer value that determines how much and in which direction the adjustment
-shall take place (e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftbplnum{-1}|). This might be useful if you
+shall take place (e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftplnum{-1}|). This might be useful if you
 insert items in the list manually or in some very specific settings. Again, this macro can be used
 repeatedly  and applies to all subsequent items as of the next section that follows. As opposed to
-\jcsmacro{setbplnum}, the shifting also persists with \joption{plnumbered=reset}.
+\jcsmacro{setplnum}, the shifting also persists with \joption{plnumbered=reset}.
 
 For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done via the macro
 \jcsmacro*{shiftciteitem}.
@@ -805,10 +805,12 @@ or
 	\item [{V. 2.0 (forthcoming):}]~
 	\begin{itemize}
 		\item Properly support \joption{reversenumbering} even if filtering is done.
-		\item Add \jenviron{bplnumgroup} environment to temporarily suspend 
+		\item Add \jenviron{plnumgroup} environment to temporarily suspend 
 		      \joption{plnumbered=reset} (see sec.~\ref{sec:numbers}).
-		\item Add new macro\jcsmacro{setbplnum} (see sec.~\ref{sec:numbers}).
-		\item Fix macro \jcsmacro{shiftbplnum} with \joption{reversenumbering=false}.
+		\item Add new macro\jcsmacro{setplnum} (see sec.~\ref{sec:numbers}).
+		\item Rename macro \jcsmacro{shiftbplnum} to \jcsmacro{shiftplnum}
+		      (old macro kept for compatibility).
+		\item Fix macro \jcsmacro{shiftplnum} with \joption{reversenumbering=false}.
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~
