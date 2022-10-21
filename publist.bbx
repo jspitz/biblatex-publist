@@ -64,126 +64,247 @@
     \def\bpl@ovonpart{#1}}
 
 
-% Valid options
+% Toggles and switches
 %
-\DeclareBibliographyOption{plauthorname}{\def\bpl@osurname{#1}}
-\DeclareBibliographyOption{plauthorfirstname}{\def\bpl@ofirstname{#1}}
-\DeclareBibliographyOption{plauthornameprefix}{\def\bpl@ovonpart{#1}}
-
 \newif\if@marginyear\@marginyearfalse
-\DeclareBibliographyOption{marginyear}[true]{%
-    \ifstrequal{#1}{true}{\@marginyeartrue\reversemarginpar}{\@marginyearfalse}
-}
-
-\newif\if@unboldyear\@unboldyearfalse
-\DeclareBibliographyOption{boldyear}[true]{%
-    \ifstrequal{#1}{false}{\@unboldyeartrue}{\@unboldyearfalse}
-}
-
+\newif\if@boldyear\@boldyeartrue
 \newif\if@pubstateextra\@pubstateextrafalse
-\DeclareBibliographyOption{pubstateextra}[true]{%
-    \ifstrequal{#1}{true}{\@pubstateextratrue}{\@pubstateextrafalse}
-}
-
 \newif\if@hlauthor\@hlauthorfalse
-\DeclareBibliographyOption{plauthorhandling}[omit]{%
-    \ifstrequal{#1}{highlight}{\@hlauthortrue}{\@hlauthorfalse}
-}
-
 \newif\if@givenfirst\@givenfirstfalse
-\DeclareBibliographyOption{nameorder}[family-given]{%
-    \ifstrequal{#1}{given-family}{\@givenfirsttrue}{\@givenfirstfalse}
-}
-
-\newtoggle{firstinit}
-\DeclareBibliographyOption{plauthorfirstinit}[true]{%
-    \ifstrequal{#1}{false}{\togglefalse{firstinit}}{\toggletrue{firstinit}}
-}
-
+\newtoggle{bpl@firstinit}
 \newif\if@bpl@numbered\@bpl@numberedtrue
 \newif\if@bpl@numberreset\@bpl@numberresetfalse
-\DeclareBibliographyOption{plnumbered}[true]{%
-    \ifstrequal{#1}{false}{% 1. "false"
-	\defbibenvironment{bibliography}
-	  {\list
-	    {}
-	    {\setlength{\leftmargin}{\bibhang}%
-	     \setlength{\itemindent}{-\leftmargin}%
-	     \setlength{\itemsep}{\bibitemsep}%
-	     \setlength{\parsep}{\bibparsep}}%
-	  }
-	  {\endlist}
-	  {\item}%
-    }{% 2. else: not "false", either
-	  \ifstrequal{#1}{reset}{% 2a. "reset"
-	       \@bpl@numberresettrue%
-          }{}% 2b. "true" or everything else (default: nothing to do here)
-    }%
-}
-
 \newtoggle{bpl@linktitle}
 \newtoggle{bpl@linktitleisbn}
 \newtoggle{bpl@linktitleissn}
 \newtoggle{bpl@linktitleurl}
 \newtoggle{bpl@linktitledoi}
-\DeclareBibliographyOption{linktitleall}[true]{%
-    \ifstrequal{#1}{true}{
-       \toggletrue{bpl@linktitleisbn}
-       \toggletrue{bpl@linktitleissn}
-       \toggletrue{bpl@linktitleurl}
-       \toggletrue{bpl@linktitledoi}
-       \toggletrue{bpl@linktitle}
-    }{%
-       \togglefalse{bpl@linktitleisbn}
-       \togglefalse{bpl@linktitleissn}
-       \togglefalse{bpl@linktitleurl}
-       \togglefalse{bpl@linktitledoi}
-       \togglefalse{bpl@linktitle}
-    }%
-}
-\DeclareBibliographyOption{linktitleurl}[true]{%
-    \ifstrequal{#1}{true}{%
-       \toggletrue{bpl@linktitleurl}
-       \toggletrue{bpl@linktitle}
-    }{%
-       \togglefalse{bpl@linktitleurl}
-    }%
-}
-\DeclareBibliographyOption{linktitledoi}[true]{%
-    \ifstrequal{#1}{true}{%
-       \toggletrue{bpl@linktitledoi}
-       \toggletrue{bpl@linktitle}
-    }{%
-       \togglefalse{bpl@linktitledoi}
-    }%
-}
-\DeclareBibliographyOption{linktitleisbn}[true]{%
-    \ifstrequal{#1}{true}{%
-       \toggletrue{bpl@linktitleisbn}
-       \toggletrue{bpl@linktitle}
-    }{%
-       \togglefalse{bpl@linktitleisbn}
-    }%
-}
-\DeclareBibliographyOption{linktitleissn}[true]{%
-    \ifstrequal{#1}{true}{%
-       \toggletrue{bpl@linktitleissn}
-       \toggletrue{bpl@linktitle}
-    }{%
-       \togglefalse{bpl@linktitleissn}
-    }%
-}
-
 \newtoggle{bpl@prinfo}
 \toggletrue{bpl@prinfo}
-\DeclareBibliographyOption{prinfo}[true]{%
-    \ifstrequal{#1}{true}{\toggletrue{bpl@prinfo}}{\togglefalse{bpl@prinfo}}
+\newif\if@bpl@reversenum\@bpl@reversenumfalse
+
+
+% Valid options
+%
+
+% We use l3keys here since (1) LaTeX2e keys are rather
+% new and (2) do not provide for choice keys yet.
+\ExplSyntaxOn
+\keys_define:nn { bpl }
+{
+    % plauthorname=<name>
+    % Store author family name
+    plauthorname.tl_set:N = \bpl@osurname,
+    % plauthorfirstname=<name>
+    % Store author first name
+    plauthorfirstname.tl_set:N = \bpl@ofirstname,
+    % plauthornameprefix=<name>
+    % Store author name prefix
+    plauthornameprefix.tl_set:N = \bpl@ovonpart,
+    % marginyear=<true|false>
+    % Print year in margin
+    marginyear.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+            \@marginyeartrue
+            \reversemarginpar
+         }{
+            \@marginyearfalse
+         }
+       },
+    marginyear.default:n = { true },
+    % boldyear=<true|false>
+    % Set year bold
+    boldyear.legacy_if_set:n = @boldyear,
+    % pubstateextra=<true|false>
+    % Extra label for pubstates
+    pubstateextra.legacy_if_set:n = @pubstateextra,
+    pubstateextra.usage:n = preamble,
+    % plauthorhandling=<highlight|omit>
+    % Highlight or omit pl author?
+    plauthorhandling.choice:,
+    % highlight
+    plauthorhandling / highlight.code:n =
+      { 
+       \@hlauthortrue
+       \bpl@set@defsorting
+      },
+    % omit
+    plauthorhandling / omit.code:n =
+       {
+         \@hlauthorfalse
+         \bpl@set@defsorting
+       },
+    plauthorhandling.default:n = { omit },    
+    % nameorder=<family-given|given-family>
+    % Ordering of plauthor name
+    nameorder.choice:,
+    % given-family
+    nameorder / given-family.code:n = { \@givenfirsttrue },
+    % family-given
+    nameorder / family-given.code:n = { \@givenfirstfalse },
+    nameorder.default:n = { family-given },
+    % firstinit=<true|false>
+    % Pass initial as first name
+    firstinit.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+            \toggletrue{bpl@firstinit}
+         }{
+            \togglefalse{bpl@firstinit}
+         }
+       },
+    firstinit.default:n = { true },
+    % plnumbered=<true|false|reset>
+    % Select numbering scheme
+    plnumbered .choice:,
+    % false: no numbering at all
+    plnumbered / false .code:n = 
+      { 
+         \defbibenvironment{bibliography}
+          {\list
+           {}
+           {\setlength{\leftmargin}{\bibhang}%
+            \setlength{\itemindent}{-\leftmargin}%
+            \setlength{\itemsep}{\bibitemsep}%
+            \setlength{\parsep}{\bibparsep}}%
+          }
+          {\endlist}
+          {\item}%
+     },
+    % true: use default consecutive numbering
+    plnumbered / true .code:n = 
+      { \@bpl@numberresetfalse },
+    % reset: use local numbering
+    plnumbered / reset .code:n = 
+      { \@bpl@numberresettrue },
+    plnumbered.default:n = { true },
+    plnumbered.usage:n = preamble,
+    % linktitleall=<true|false>
+    % Link all titles
+    linktitleall.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+             \toggletrue{bpl@linktitleisbn}
+             \toggletrue{bpl@linktitleissn}
+             \toggletrue{bpl@linktitleurl}
+             \toggletrue{bpl@linktitledoi}
+             \toggletrue{bpl@linktitle}
+         }{
+             \togglefalse{bpl@linktitleisbn}
+             \togglefalse{bpl@linktitleissn}
+             \togglefalse{bpl@linktitleurl}
+             \togglefalse{bpl@linktitledoi}
+             \togglefalse{bpl@linktitle}
+         }
+       },
+    linktitleall.default:n = { true },
+    % linktitleurl=<true|false>
+    % Link titles with URL
+    linktitleurl.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+             \toggletrue{bpl@linktitleurl}
+             \toggletrue{bpl@linktitle}
+         }{
+             \togglefalse{bpl@linktitleurl}
+         }
+       },
+    linktitleurl.default:n = { true },
+    % linktitledoi=<true|false>
+    % Link titles with DOI
+    linktitledoi.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+             \toggletrue{bpl@linktitledoi}
+             \toggletrue{bpl@linktitle}
+         }{
+             \togglefalse{bpl@linktitledoi}
+         }
+       },
+    linktitledoi.default:n = { true },
+    % linktitledoi=<true|false>
+    % Link titles with ISBN
+    linktitleisbn.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+             \toggletrue{bpl@linktitleisbn}
+             \toggletrue{bpl@linktitle}
+         }{
+             \togglefalse{bpl@linktitleisbn}
+         }
+       },
+    linktitleisbn.default:n = { true },
+    % linktitledoi=<true|false>
+    % Link titles with ISSN
+    linktitleissn.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+             \toggletrue{bpl@linktitleissn}
+             \toggletrue{bpl@linktitle}
+         }{
+             \togglefalse{bpl@linktitleissn}
+         }
+       },
+    linktitleissn.default:n = { true },
+    % prinfo=<true|false>
+    % Output peer-review information
+    prinfo.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+            \toggletrue{bpl@prinfo}
+         }{
+            \togglefalse{bpl@prinfo}
+         }
+       },
+    prinfo.default:n = { true },
+    % reversenumbering=<true|false>
+    % Output peer-review information
+    reversenumbering.legacy_if_set:n = @bpl@reversenum,
+    reversenumbering.usage:n = preamble
 }
 
-\newif\if@bpl@reversenum\@bpl@reversenumfalse
-\DeclareBibliographyOption{reversenumbering}[true]{%
-    \ifstrequal{#1}{true}{\@bpl@reversenumtrue}{\@bpl@reversenumfalse}
+% Command to set options
+\NewDocumentCommand { \ExecutePublistOptions } { m }
+{
+  \keys_set:nn { bpl } { #1 }
 }
+
+\ExplSyntaxOff
+
+% Biblatex options directly feed into the l3 options
+%
+\DeclareBibliographyOption{plauthorname}{\ExecutePublistOptions{plauthorname=#1}}
+\DeclareBibliographyOption{plauthorfirstname}{\ExecutePublistOptions{plauthorfirstname=#1}}
+\DeclareBibliographyOption{plauthornameprefix}{\ExecutePublistOptions{plauthornameprefix=#1}}
+\DeclareBibliographyOption{plauthorfirstinit}[true]{\ExecutePublistOptions{plauthorfirstinit=#1}}
+\DeclareBibliographyOption{plauthorhandling}[omit]{\ExecutePublistOptions{plauthorhandling=#1}}
+\DeclareBibliographyOption{nameorder}[family-given]{\ExecutePublistOptions{nameorder=#1}}
+
+\DeclareBibliographyOption{plnumbered}[true]{\ExecutePublistOptions{plnumbered=#1}}
+\DeclareBibliographyOption{reversenumbering}[true]{\ExecutePublistOptions{reversenumbering=#1}}
+\DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
+\DeclareBibliographyOption{boldyear}[true]{\ExecutePublistOptions{boldyear=#1}}
+\DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
+\DeclareBibliographyOption{prinfo}[true]{\ExecutePublistOptions{prinfo=#1}}
+
+\DeclareBibliographyOption{linktitleall}[true]{\ExecutePublistOptions{linktitleall=#1}}
+\DeclareBibliographyOption{linktitleurl}[true]{\ExecutePublistOptions{linktitleurl=#1}}
+\DeclareBibliographyOption{linktitledoi}[true]{\ExecutePublistOptions{linktitledoi=#1}}
+\DeclareBibliographyOption{linktitleisbn}[true]{\ExecutePublistOptions{linktitleisbn=#1}}
+\DeclareBibliographyOption{linktitleissn}[true]{\ExecutePublistOptions{linktitleissn=#1}}
+
+
+% Base style
+%
 
 % Check if users have defined different base styles
 % If not, use authoryear.
@@ -200,12 +321,22 @@
     useprefix=false,
     defernumbers=true}
 
-% Default sorting depends on plauthorhandling
-\if@hlauthor%
-    \ExecuteBibliographyOptions{sorting=ydnt}
-\else
-    \ExecuteBibliographyOptions{sorting=ydt}
-\fi
+\newcommand*\bpl@set@defsorting{%
+    % Default sorting depends on plauthorhandling
+    \if@hlauthor%
+        \ifx\@onlypreamble\@notprerr
+            \newrefcontext[sorting=ydnt]
+        \else
+            \ExecuteBibliographyOptions{sorting=ydnt}
+        \fi
+    \else
+        \ifx\@onlypreamble\@notprerr
+            \newrefcontext[sorting=ydt]
+        \else
+            \ExecuteBibliographyOptions{sorting=ydt}
+        \fi
+    \fi
+}
 
 % Execute these options only with the standard base style
 \ifbpl@standardbasestyle
@@ -323,7 +454,7 @@
         test { \bpl@ifstreq{\bpl@esurname}{\bpl@tsurname} }
         and
         ( test { \bpl@ifstreq{\bpl@efirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@ofirstname}{} }
-          or ( test { \iftoggle{firstinit} } and test{ \bpl@iffirstcharequal{\bpl@efirstname}{\bpl@tfirstname} } )
+          or ( test { \iftoggle{bpl@firstinit} } and test{ \bpl@iffirstcharequal{\bpl@efirstname}{\bpl@tfirstname} } )
         )
         and
         ( test { \bpl@ifstreq{\bpl@evonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@ovonpart}{} }) }
@@ -341,7 +472,7 @@
             test { \bpl@ifstreq{\bpl@elsurname}{\bpl@tsurname} }
             and
             ( test { \bpl@ifstreq{\bpl@elfirstname}{\bpl@tfirstname} } or test { \ifdefstring{\bpl@lfirstname}{} }
-              or ( test { \iftoggle{firstinit} } and test{ \bpl@iffirstcharequal{\bpl@lfirstname}{\bpl@tfirstname} } )
+              or ( test { \iftoggle{bpl@firstinit} } and test{ \bpl@iffirstcharequal{\bpl@lfirstname}{\bpl@tfirstname} } )
             )
             and
             ( test { \bpl@ifstreq{\bpl@elvonpart}{\bpl@tvonpart} } or test { \ifdefstring{\bpl@lvonpart}{} }) }
@@ -1168,15 +1299,11 @@
 }
 
 \newbibmacro*{bpl:date:labeldate+extradate}{%
-    \mkbibbold{\usebibmacro{bpl:date:makedate}}%
-}
-
-\AtBeginDocument{%
-    \if@unboldyear
-        \renewbibmacro*{bpl:date:labeldate+extradate}{%
-            \usebibmacro{bpl:date:makedate}%
-        }
-    \fi
+   \if@boldyear
+      \mkbibbold{\usebibmacro{bpl:date:makedate}}%
+   \else
+      \usebibmacro{bpl:date:makedate}%
+   \fi%
 }
 
 \newbibmacro*{bpl:marginyear}{%
@@ -1622,12 +1749,12 @@
            \let\abx@name@shortauthor\abx@name@namea
            \ifdefstring\abx@field@labelnamesource{shortauthor}
               {\ifundef\abx@name@shortauthor
-	          {\ifundef\abx@name@author
-		      {\def\abx@field@labelnamesource{editor}}
-		      {\def\abx@field@labelnamesource{author}}%
+              {\ifundef\abx@name@author
+              {\def\abx@field@labelnamesource{editor}}
+              {\def\abx@field@labelnamesource{author}}%
                   }%
-		  {}%
-	      }%
+          {}%
+          }%
               {}%
         }%
      }%

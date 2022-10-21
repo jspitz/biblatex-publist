@@ -69,13 +69,15 @@
 
 % Some semantic markup
 \makeatletter
+\newcommand*\@marginmacro[2][]{%
+	\marginpar{\IfBlankTF{#1}{}{\hspace*{#1em}}\small\texttt{#2}}%
+}
 \def\jmacro{\@ifstar\@@jmacro\@jmacro}
-\newcommand*\@marginmacro[1]{\marginpar{\small\texttt{#1}}}
 \newcommand*\@jmacro[1]{\textbf{\texttt{#1}}}
-\newcommand*\@@jmacro[1]{\@jmacro{#1}\@marginmacro{#1}}
+\newcommand*\@@jmacro[2][]{\@jmacro{#2}\IfBlankTF{#1}{\@marginmacro{#2}}{\@marginmacro[#1]{#2}}}
 \def\jcsmacro{\@ifstar\@@jcsmacro\@jcsmacro}
 \newcommand*\@jcsmacro[1]{\@jmacro{\textbackslash{#1}}}
-\newcommand*\@@jcsmacro[1]{\@@jmacro{\textbackslash{#1}}}
+\newcommand*\@@jcsmacro[2][]{\IfBlankTF{#1}{\@@jmacro{\textbackslash{#2}}}{\@@jmacro[#1]{\textbackslash{#2}}}}
 \newcommand*\joption[1]{\textbf{\texttt{#1}}}
 \newcommand*\jfoption[1]{\texttt{#1}}
 \newcommand*\jfmacro[1]{\texttt{#1}}
@@ -243,11 +245,11 @@ options provided by the \bibltx\ package itself%
 \item [{\joption{plauthornameprefix=<von-part>}}] ~
 
 This is an alternative to the \jcsmacro{plauthorname} macro
-described in sec.~\ref{sec:standard-usage}.\footnote{The options were called \jfoption{omitname}, \jfoption{omitfirstname} and \jfoption{omitnameprefix} until v.\,1.4
-of \bpl. The old options still work, but are marked as deprecated.} However, due to the
-way bibliography options are implemented in \bibltx, this only works
-if your name does not consist of non-ASCII characters. Hence, the
-\jcsmacro{plauthorname} macro is the recommended way.
+described in sec.~\ref{sec:standard-usage} to set the publication list author.%
+\footnote{The options were called \jfoption{omitname}, \jfoption{omitfirstname} and \jfoption{omitnameprefix}
+	until v.\,1.4 of \bpl. The old options still work, but are marked as deprecated.}
+As opposed to the macro, however, the options do not provide for multiple authors and name variants
+(see sec.~\ref{sec:multiauthors}).
 
 \item [{\joption{plauthorhandling{[}=omit|highlight{]}}}] default: \emph{omit}.
 
@@ -348,7 +350,27 @@ Turns the title (and subtitle, if available) into a clickable hyperlink to the I
 See section~\ref{sec:clicktitles} for details.
 
 \end{description}
+%
+These options should be passed directly to \bibltx\ via \jfcsmacro{usepackage} when loading \bibltx, and they apply for the whole
+document.
 
+For most options, it is possible to change them (repeatedly) within the document. To this end, the macro \jcsmacro*[-3]{ExecutePublistOptions}
+is provided. It takes a comma-separated list of options as its mandatory argument and applies as of the next bibliography
+(\jfcsmacro{printbibliography}) that follows. Options that \emph{cannot} be changed within a document that way include:
+\joption{plnumbered}, \joption{reversenumbering}, and \joption{pubstateextra}, as these options employ features that can only be
+set once for a document.
+
+Also note that 
+\begin{itemize}
+	\setlength\itemsep{0pt}
+	\item with the \joption{plauthor*} options, as opposed to repeated \jcsmacro{plauthorname} calls,
+	      repeated setting of these name options respectively \emph{overwrite}, and not extend, the previous name
+	      settings.
+	\item With \joption{plauthorhandling}, \bpl\ uses different sorting schemes for \joption{omit} (\texttt{ydt})
+	      and \joption{highlight} (\texttt{yndt}), considering the names as sorting factor only in the latter case.
+	      So changing this option within a document might reset your own sorting. You can change that back via
+	      \jfcsmacro{newrefcontext[sorting=<sorting>]}.
+\end{itemize}
 
 \subsection{Numbers games}\label{sec:numbers}
 
@@ -804,6 +826,8 @@ or
 	
 	\item [{V. 2.0 (forthcoming):}]~
 	\begin{itemize}
+		\item Provide \jcsmacro{ExecutePublistOptions} to change (most) \bpl\ options
+		      on the fly (see sec.~\ref{sec:addopts}).
 		\item Properly support \joption{reversenumbering} even if filtering is done.
 		\item Add \jenviron{plnumgroup} environment to temporarily suspend 
 		      \joption{plnumbered=reset} (see sec.~\ref{sec:numbers}).

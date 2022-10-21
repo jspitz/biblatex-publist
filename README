@@ -47,6 +47,8 @@ instructions.
 == CHANGES ==
 
 * V. 2.0 (forthcoming):
+	- Provide \ExecutePublistOptions to change (most) biblatex-publist options
+	  on the fly.
 	- Properly support reversenumbering even if filtering is done (#38).
 	- Add plnumgroup environment to temporarily suspend plnumbered=reset.
 	- Add new macro \setplnum (#39).
