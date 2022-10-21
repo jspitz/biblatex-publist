@@ -650,9 +650,11 @@
          \global\boolfalse{needbpxrerun}%
          \if@filesw%
            % Check if we have a changed value
-           \ifnumequal{\value{bplitems}}{\numexpr\csuse{bpl@items:\therefsection}\relax}{}{%
-                \global\booltrue{needbpxrerun}
-           }
+           \ifcsdef{bpl@items:\therefsection}{%
+              \ifnumequal{\value{bplitems}}{\numexpr\csuse{bpl@items:\therefsection}\relax}{}{%
+                   \global\booltrue{needbpxrerun}
+              }
+           }{\global\booltrue{needbpxrerun}}
            \protected@write\bpl@bpxfile{}{%
               \protect\csdef{bpl@items:\therefsection}{\thebplitems}%
               \protect\csdef{bpl@items}{\thebplitems}%
