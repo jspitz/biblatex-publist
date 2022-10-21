@@ -145,9 +145,9 @@
     % family-given
     nameorder / family-given.code:n = { \@givenfirstfalse },
     nameorder.default:n = { family-given },
-    % firstinit=<true|false>
+    % plauthorfirstinit=<true|false>
     % Pass initial as first name
-    firstinit.code:n =
+    plauthorfirstinit.code:n =
         {
          \str_if_eq:nnTF { #1 } { true }
          {
@@ -156,7 +156,7 @@
             \togglefalse{bpl@firstinit}
          }
        },
-    firstinit.default:n = { true },
+    plauthorfirstinit.default:n = { true },
     % plnumbered=<true|false|reset>
     % Select numbering scheme
     plnumbered .choice:,
