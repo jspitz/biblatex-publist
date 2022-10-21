@@ -268,11 +268,6 @@ By default, the year (or pubstate, if no year is given) is printed in bold face.
 To prevent this, pass the
 option \joption{boldyear=false} to \bibltx.
 
-\item [{\joption{pubstateextra{[}=true|false{]}}}] default: \emph{false}.
-
-If this is \texttt{true}, the extradate marker (a, b etc.) is also appended to pubstates if there are multiple
-indentical pubstates (e.\,g., \emph{Forthcoming(a)}, \emph{Forthcoming(b)})
-
 \item [{\joption{marginyear{[}=true|false{]}}}] default: \emph{false}.
 
 With this option set to \joption{true}, the publication year (or pubstate) will
@@ -280,24 +275,29 @@ be printed in the margin once a new year starts. The option also has
 the effect that all marginpars are printed ``reversed'', i.\,e.
 on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 
-\item [{\joption{plnumbered{[}=true|false|reset{]}}}] default: \emph{true}.
+\item [{\joption{pubstateextra{[}=true|false{]}}}] default: \emph{false}.
 
-By default, the publication list is numbered continuously. If you divide your publication list into sections by means of
-\jfcsmacro{refsection}s (as documented in section~\ref{sec:example}), you will thus get a global numbering over all sections.
+If this is \texttt{true}, the extradate marker (a, b etc.) is also appended to pubstates if there are multiple
+indentical pubstates (e.\,g., \emph{Forthcoming(a)}, \emph{Forthcoming(b)})
 
-If you prefer the numbering to start from 1 at each section instead, set this option to \joption{reset}.
+\item [{\joption{plnumbering{[}=global|local|global-descending|local-descending|none{]}}}] default: \emph{global}.%
+\footnote{Up to \bpl\ 1.27, numbering was controlled by two separate options, \joption{plnumbered} and \joption{reversenumbering}.
+These options (and their differently named values) are still supported, but you get a warning if you use them and are encouraged
+to use the new options.}
 
-If you do not want to have any numbers at all, set this option to \joption{false}.
+By default, the publication list is numbered in continuous ascending order. If you divide your publication list into sections
+by means of \jfcsmacro{refsection}s (as documented in section~\ref{sec:example}), you will thus get a global numbering over
+all sections.
 
-\item [{\joption{reversenumbering{[}=true|false{]}}}] default: \emph{false}.
+If you prefer the numbering to start from 1 at each section instead, set this option to \joption{local}.
 
-If this option is \joption{true}, the entries will be numbered in descending order, starting from the total
-number of entries back to 1. This also works with sectional numbering (\joption{plnumbered=reset});
-in this case, the numbers descend to 1 in each section. Obviously, the option is nonfunctional with
-\joption{plnumbered=false}.
+If you prefer descending rather than ascending enumeration, starting from the total
+number of entries back to 1 (either globally or within each section), use the \joption{*-descending} variants.
 
-Note that if you use this option, \bpl\ will have to do a full counting of all printed items first in order
-to calculate the numbering properly (considering any filtering you might have done).
+If you do not want to have any numbers at all, set this option to \joption{none}.
+
+Note that if you use this descending enumeration, \bpl\ will have to do a full counting of all printed items first
+in order to calculate the numbering properly (considering any filtering you might have done).
 For this calculation, a specific auxiliary file, \emph{<filename>.bpx}, is used. The package will warn you if more
 \texttt{latex} runs are required. See sec.~\ref{sec:numbers} for details.
 
@@ -356,9 +356,9 @@ document.
 
 For most options, it is possible to change them (repeatedly) within the document. To this end, the macro \jcsmacro*[-3]{ExecutePublistOptions}
 is provided. It takes a comma-separated list of options as its mandatory argument and applies as of the next bibliography
-(\jfcsmacro{printbibliography}) that follows. Options that \emph{cannot} be changed within a document that way include:
-\joption{plnumbered}, \joption{reversenumbering}, and \joption{pubstateextra}, as these options employ features that can only be
-set once for a document.
+(\jfcsmacro{printbibliography}) that follows. Options that \emph{cannot} be changed within a document that way are
+\joption{plnumbering} and \joption{pubstateextra}, as these options employ features that can only be
+set once per document. However, please refer to sec.~\ref{sec:numbers} on how to address some frequently requested numbering changes.
 
 Also note that 
 \begin{itemize}
@@ -394,14 +394,13 @@ a person has published. Hence those people prefer to number their publications b
 On the other hand, since publication lists are often ordered reversely chronological, many people also prefer
 to have a reversely ordered (descending) numbering, either globally over the whole list or, again, by section.
 
-The \bpl\ package accounts for these needs and provides, via the options \joption{plnumbered} and
-\joption{reversenumbering} five different numbering variants:
+The \bpl\ package accounts for these needs and provides, via the option \joption{plnumbering}, five different numbering variants:
 \begin{enumerate}\setlength{\itemsep}{0pt}
 	\item Global ascending numbers (that continue across sections) [\emph{default}]
-	\item Global descending numbers [\joption{reversenumbering=true}]
-	\item Local ascending numbers (that are reset to 1 in each section) [\joption{plnumbered=reset}]
-	\item Local descending numbers [\joption{reversenumbering=true, plnumbered=reset}]
-	\item No numbers at all [\joption{plnumbered=false}]
+	\item Global descending numbers [\joption{plnumbering=global-descending}]
+	\item Local ascending numbers (that are reset to 1 in each section) [\joption{plnumbering=local}]
+	\item Local descending numbers [\joption{plnumbering=local-descending}]
+	\item No numbers at all [\joption{plnumbering=none}]
 \end{enumerate} 
 %
 Particularly reverse numbering is, technically, a bit of a challenge; \bibltx, for reasons, does not provide this
@@ -412,21 +411,21 @@ only knows this number after all entries have been processed for output. Yet sin
 ascending numbers, \bibltx\ does not (need to) store this knowledge, and thus, it is not readily available
 to \bpl.
 
-Thus, with \joption{reversenumbering=true}, \bpl\ will first count all printed entries, globally and per section,
-write the results in an auxiliary file (\emph{<filename>.bpx}), and then do at least one additional pass in order
-to fix the numbering. This requires additional \texttt{latex} cycles, but \bpl\ will give you a warning if the
-numbering is not yet fully resolved.
+Thus, with \joption{plnumbering=global-descending} and \joption{plnumbering=local-descending}, \bpl\ will first
+count all printed entries, globally and per section, write the results in an auxiliary file (\emph{<filename>.bpx}),
+and then do at least one additional pass in order to fix the numbering. This requires additional \texttt{latex}
+cycles, but \bpl\ will give you a warning if the numbering is not yet fully resolved.
 
 Now in addition to these mentioned variants, some people still need a more fine-grained control over the numbering.
 For instance, some scholars want to list both their publications and their conference papers (talks) in the
 same document, but separately numbered. Both publications and talks might themselves be divided into different
 sections (\emph{monographs}, \emph{papers}, $\ldots$; \emph{keynotes}, \emph{invited talks}, $\ldots$) which, however,
-should be numbered continuously within their category. So \joption{plnumbered=reset} alone does not produce
+should be numbered continuously within their category. So \joption{plnumbering=local} alone does not produce
 the desired result.
 
 For this case, \bpl\ provides two alternative and slightly different features: First, an environment
 \jenviron*{plnumgroup}.
-All sections you embrace by this in the context of \joption{plnumbered=reset} are numbered continuously,
+All sections you embrace by this in the context of \joption{plnumbering=local} are numbered continuously,
 so resetting is suspended within this environment. This works both with ascending and descending enumeration.
 
 In the ascending case only, the macro \jcsmacro*{setplnum} is useful as a (more flexible) alternative.
@@ -434,15 +433,15 @@ It allows you to set the first label number of the next bibliography section tha
 (arbitrary) value.
 All following numbers ascend or descend from this new value.
 The adjustment applies to all following bibliography sections with continuous numbering, i.\,e., if
-\joption{plnumbered=reset} is not used.
-With \joption{plnumbered=reset}, by contrast, following sections continue to be reset.
+\joption{plnumbering=local} is not used.
+With \joption{plnumbering=local}, by contrast, following sections continue to be reset.
 In all cases, the macro can be used repeatedly for re-adjustments in forthcoming sections.
 
 So in the use case mentioned above, inserting \verb|\setplnum{1}| before the first section that lists
-conference papers, together with \joption{plnumbered=true} (the default), will provide the desired result
+conference papers, together with \joption{plnumbering=global} (the default), will provide the desired result
 (provided that ascending numbering is wished for). The desired result will also be achieved by embracing
 all publication-related sections in a \jenviron{plnumgroup} environment and and all conference-paper-related
-sections in another one, while using \joption{plnumbered=reset} (here both for ascending and descending lists).
+sections in another one, while using \joption{plnumbering=local} (here both for ascending and descending lists).
 
 The macro \jcsmacro*{shiftplnum}, by contrast, provides a way to adjust the subsequent numbering in a
 \emph{relative} way.
@@ -450,7 +449,7 @@ It takes a positive or negative integer value that determines how much and in wh
 shall take place (e.\,g., \verb|\shiftpblnum{2}| or \verb|\shiftplnum{-1}|). This might be useful if you
 insert items in the list manually or in some very specific settings. Again, this macro can be used
 repeatedly  and applies to all subsequent items as of the next section that follows. As opposed to
-\jcsmacro{setplnum}, the shifting also persists with \joption{plnumbered=reset}.
+\jcsmacro{setplnum}, the shifting also persists with \joption{plnumbering=local}.
 
 For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done via the macro
 \jcsmacro*{shiftciteitem}.
@@ -828,13 +827,16 @@ or
 	\begin{itemize}
 		\item Provide \jcsmacro{ExecutePublistOptions} to change (most) \bpl\ options
 		      on the fly (see sec.~\ref{sec:addopts}).
-		\item Properly support \joption{reversenumbering} even if filtering is done.
+		\item Properly support reverse (descending) numbering even if filtering is done.
 		\item Add \jenviron{plnumgroup} environment to temporarily suspend 
-		      \joption{plnumbered=reset} (see sec.~\ref{sec:numbers}).
+		      \joption{plnumbering=local} (see sec.~\ref{sec:numbers}).
 		\item Add new macro\jcsmacro{setplnum} (see sec.~\ref{sec:numbers}).
 		\item Rename macro \jcsmacro{shiftbplnum} to \jcsmacro{shiftplnum}
 		      (old macro kept for compatibility).
-		\item Fix macro \jcsmacro{shiftplnum} with \joption{reversenumbering=false}.
+		\item Introduce one option (\joption{plnumbering}) that replace the previous two
+		      (\joption{plnumbered} + \joption{reversenumbering}).
+		      Old options are kept for compatibility.
+		\item Fix macro \jcsmacro{shiftplnum} with ascending numbering.
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~

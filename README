@@ -49,11 +49,13 @@ instructions.
 * V. 2.0 (forthcoming):
 	- Provide \ExecutePublistOptions to change (most) biblatex-publist options
 	  on the fly.
-	- Properly support reversenumbering even if filtering is done (#38).
-	- Add plnumgroup environment to temporarily suspend plnumbered=reset.
+	- Properly support reverse numbering even if filtering is done (#38).
+	- Add plnumgroup environment to temporarily suspend plnumbering=local.
 	- Add new macro \setplnum (#39).
 	- Rename macro \shiftbplnum to \shiftplnum (old macro kept for compatibility).
-	- Fix with \shiftplnum with reversenumbering=false.
+	- Introduce one option (plnumbering) that replace the previous two
+	  (plnumbered + reversenumbering). Old options are kept for compatibility.
+	- Fix with \shiftplnum with ascending enumeration.
 
 * V. 1.27 (2022-10-03):
 	- Fix once more plauthor check with non-ASCII chars and macros.

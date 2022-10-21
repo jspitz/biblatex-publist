@@ -45,25 +45,6 @@
 % Bibliography Options and Base Style
 %
 
-% Deprecated Options (as of v. 1.4)
-%
-\DeclareBibliographyOption{omitname}{%
-    \PackageWarning{biblatex-publist}
-        {The omitname option is deprecated!\MessageBreak
-         Please use plauthorname instead.}{}%
-    \def\bpl@osurname{#1}}
-\DeclareBibliographyOption{omitfirstname}{%
-    \PackageWarning{biblatex-publist}
-         {The omitfirstname option is deprecated!\MessageBreak
-          Please use plauthorfirstname instead.}{}%
-    \def\bpl@ofirstname{#1}}
-\DeclareBibliographyOption{omitnameprefix}{%
-    \PackageWarning{biblatex-publist}
-        {The omitnameprefix option is deprecated!\MessageBreak
-         Please use plauthornameprefix instead.}{}%
-    \def\bpl@ovonpart{#1}}
-
-
 % Toggles and switches
 %
 \newif\if@marginyear\@marginyearfalse
@@ -157,11 +138,29 @@
          }
        },
     plauthorfirstinit.default:n = { true },
-    % plnumbered=<true|false|reset>
+    % plnumbering=<global|local|global-descending|local-descending|none>
     % Select numbering scheme
-    plnumbered .choice:,
-    % false: no numbering at all
-    plnumbered / false .code:n = 
+    plnumbering .choice:,
+    % global: use default consecutive numbering
+    plnumbering / global .code:n = 
+      { \@bpl@numberresetfalse },
+    % local: use local numbering
+    plnumbering / local .code:n = 
+      { \@bpl@numberresettrue },
+    % global-descending: use default consecutive numbering
+    plnumbering / global-descending .code:n = 
+      { 
+         \@bpl@numberresetfalse
+         \@bpl@reversenumtrue
+      },
+    % local-descending: use local numbering
+    plnumbering / local-descending .code:n = 
+      { 
+         \@bpl@numberresettrue
+         \@bpl@reversenumtrue
+      },
+    % none: no numbering at all
+    plnumbering / none .code:n = 
       { 
          \defbibenvironment{bibliography}
           {\list
@@ -174,14 +173,8 @@
           {\endlist}
           {\item}%
      },
-    % true: use default consecutive numbering
-    plnumbered / true .code:n = 
-      { \@bpl@numberresetfalse },
-    % reset: use local numbering
-    plnumbered / reset .code:n = 
-      { \@bpl@numberresettrue },
-    plnumbered.default:n = { true },
-    plnumbered.usage:n = preamble,
+    plnumbering.default:n = { global },
+    plnumbering.usage:n = preamble,
     % linktitleall=<true|false>
     % Link all titles
     linktitleall.code:n =
@@ -266,10 +259,62 @@
          }
        },
     prinfo.default:n = { true },
+    %
+    % Deprecated options
+    %
+    % plnumbered=<true|false|reset>
+    % Select numbering scheme
+    plnumbered .choice:,
+    % false: no numbering at all
+    plnumbered / false .code:n = 
+      { 
+         \defbibenvironment{bibliography}
+          {\list
+           {}
+           {\setlength{\leftmargin}{\bibhang}%
+            \setlength{\itemindent}{-\leftmargin}%
+            \setlength{\itemsep}{\bibitemsep}%
+            \setlength{\parsep}{\bibparsep}}%
+          }
+          {\endlist}
+          {\item}%
+         \PackageWarning{biblatex-publist}%
+             {The~ option~ plnumbered=false~ is~ deprecated!\MessageBreak
+              Please~ use~ plnumbering=none~ instead.}
+     },
+    % true: use default consecutive numbering
+    plnumbered / true .code:n = 
+      { 
+        \@bpl@numberresetfalse
+        \PackageWarning{biblatex-publist}%
+             {The~ option~ plnumbered=true~ is~ deprecated!\MessageBreak
+              Please~ use~ plnumbering=global~ instead.}
+      },
+    % reset: use local numbering
+    plnumbered / reset .code:n = 
+      {
+        \@bpl@numberresettrue
+        \PackageWarning{biblatex-publist}%
+             {The~ option~ plnumbered=reset~ is~ deprecated!\MessageBreak
+              Please~ use~ plnumbering=local~ instead.}
+      },
+    plnumbered.default:n = { true },
+    plnumbered.usage:n = preamble,
     % reversenumbering=<true|false>
-    % Output peer-review information
-    reversenumbering.legacy_if_set:n = @bpl@reversenum,
-    reversenumbering.usage:n = preamble
+    % Use descending numbers
+    reversenumbering.code:n = 
+       { 
+         \str_if_eq:nnTF { #1 } { true }
+           {
+             \@bpl@reversenumtrue
+         }{
+             \@bpl@reversenumfalse
+         }
+         \PackageWarning{biblatex-publist}%
+             {The~ option~ reversenumbering~ is~ deprecated!\MessageBreak
+              Please~ use~ the~ option~ plnumbering~ instead.}
+       },
+    reversenumbering.usage:n = preamble,
 }
 
 % Command to set options
@@ -289,8 +334,7 @@
 \DeclareBibliographyOption{plauthorhandling}[omit]{\ExecutePublistOptions{plauthorhandling=#1}}
 \DeclareBibliographyOption{nameorder}[family-given]{\ExecutePublistOptions{nameorder=#1}}
 
-\DeclareBibliographyOption{plnumbered}[true]{\ExecutePublistOptions{plnumbered=#1}}
-\DeclareBibliographyOption{reversenumbering}[true]{\ExecutePublistOptions{reversenumbering=#1}}
+\DeclareBibliographyOption{plnumbering}[global]{\ExecutePublistOptions{plnumbering=#1}}
 \DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
 \DeclareBibliographyOption{boldyear}[true]{\ExecutePublistOptions{boldyear=#1}}
 \DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
@@ -301,6 +345,28 @@
 \DeclareBibliographyOption{linktitledoi}[true]{\ExecutePublistOptions{linktitledoi=#1}}
 \DeclareBibliographyOption{linktitleisbn}[true]{\ExecutePublistOptions{linktitleisbn=#1}}
 \DeclareBibliographyOption{linktitleissn}[true]{\ExecutePublistOptions{linktitleissn=#1}}
+
+% Deprecated Options
+%
+% Deprecated as of v. 1.4
+\DeclareBibliographyOption{omitname}{%
+    \PackageWarning{biblatex-publist}
+        {The omitname option is deprecated!\MessageBreak
+         Please use plauthorname instead.}{}%
+    \def\bpl@osurname{#1}}
+\DeclareBibliographyOption{omitfirstname}{%
+    \PackageWarning{biblatex-publist}
+         {The omitfirstname option is deprecated!\MessageBreak
+          Please use plauthorfirstname instead.}{}%
+    \def\bpl@ofirstname{#1}}
+\DeclareBibliographyOption{omitnameprefix}{%
+    \PackageWarning{biblatex-publist}
+        {The omitnameprefix option is deprecated!\MessageBreak
+         Please use plauthornameprefix instead.}{}%
+    \def\bpl@ovonpart{#1}}
+% Deprecated as of v. 2.0
+\DeclareBibliographyOption{plnumbered}[true]{\ExecutePublistOptions{plnumbered=#1}}
+\DeclareBibliographyOption{reversenumbering}[true]{\ExecutePublistOptions{reversenumbering=#1}}
 
 
 % Base style
