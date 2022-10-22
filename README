@@ -59,6 +59,7 @@ instructions.
 	- Introduce one multichoice option (linktitles) that replaces the previous
 	  options (linktitleall, linktitledoi, linktitleurl, linktitleisbn,
 	  linktitleissn). Old options are kept for compatibility.
+	- Rename option boldyear to hlyear. Old option kept for compatibility.
 
 * V. 1.27 (2022-10-03):
 	- Fix once more plauthor check with non-ASCII chars and macros.

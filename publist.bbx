@@ -48,7 +48,7 @@
 % Toggles and switches
 %
 \newif\if@marginyear\@marginyearfalse
-\newif\if@boldyear\@boldyeartrue
+\newif\if@hlyear\@hlyeartrue
 \newif\if@pubstateextra\@pubstateextrafalse
 \newif\if@hlauthor\@hlauthorfalse
 \newif\if@givenfirst\@givenfirstfalse
@@ -95,9 +95,9 @@
          }
        },
     marginyear.default:n = { true },
-    % boldyear=<true|false>
-    % Set year bold
-    boldyear.legacy_if_set:n = @boldyear,
+    % hlyear=<true|false>
+    % Set year highlighted
+    hlyear.legacy_if_set:n = @hlyear,
     % pubstateextra=<true|false>
     % Extra label for pubstates
     pubstateextra.legacy_if_set:n = @pubstateextra,
@@ -280,6 +280,9 @@
          }
        },
     reversenumbering.usage:n = preamble,
+    % boldyear=<true|false>
+    % Set year bold
+    boldyear.legacy_if_set:n = @hlyear,
     % linktitleall=<true|false>
     % Link all titles
     linktitleall.code:n =
@@ -383,7 +386,7 @@
 
 \DeclareBibliographyOption{plnumbering}[global]{\ExecutePublistOptions{plnumbering=#1}}
 \DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
-\DeclareBibliographyOption{boldyear}[true]{\ExecutePublistOptions{boldyear=#1}}
+\DeclareBibliographyOption{hlyear}[true]{\ExecutePublistOptions{hlyear=#1}}
 \DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
 \DeclareBibliographyOption{prinfo}[true]{\ExecutePublistOptions{prinfo=#1}}
 
@@ -413,6 +416,7 @@
 % Deprecated as of v. 2.0
 \DeclareBibliographyOption{plnumbered}[true]{\ExecuteDepPublistOptions{plnumbered=#1}{plnumbering}}
 \DeclareBibliographyOption{reversenumbering}[true]{\ExecuteDepPublistOptions{reversenumbering=#1}{plnumbering}}
+\DeclareBibliographyOption{boldyear}[true]{\ExecuteDepPublistOptions{boldyear=#1}{hlyear}}
 \DeclareBibliographyOption{linktitleall}[true]{\ExecuteDepPublistOptions{linktitleall=#1}{linktitles}}
 \DeclareBibliographyOption{linktitleurl}[true]{\ExecuteDepPublistOptions{linktitleurl=#1}{linktitles}}
 \DeclareBibliographyOption{linktitledoi}[true]{\ExecuteDepPublistOptions{linktitledoi=#1}{linktitles}}
@@ -1418,8 +1422,8 @@
 }
 
 \newbibmacro*{bpl:date:labeldate+extradate}{%
-   \if@boldyear
       \mkbibbold{\usebibmacro{bpl:date:makedate}}%
+   \if@hlyear
    \else
       \usebibmacro{bpl:date:makedate}%
    \fi%

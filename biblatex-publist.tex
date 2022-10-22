@@ -261,11 +261,9 @@ it is highlighted instead (set in bold face by default; see sec.~\ref{sec:auxmac
 By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order ``Lastname, Given Names''.
 To change the order to ``Given Names Lastname'', pass the option \joption{nameorder=given-family} to \bibltx.
 
-\item [{\joption{boldyear{[}=true|false{]}}}] default: \emph{true}.
+\item [{\joption{hlyear{[}=true|false{]}}}] default: \emph{true}.\footnote{%
+   Named \joption{boldyear} up to \bpl\ 1.27. The old option is till supported.}
 
-By default, the year (or pubstate, if no year is given) is printed in bold face.
-To prevent this, pass the
-option \joption{boldyear=false} to \bibltx.
 
 \item [{\joption{marginyear{[}=true|false{]}}}] default: \emph{false}.
 
@@ -826,6 +824,8 @@ or
 		      options (\joption{linktitleall}, \joption{linktitledoi}, \joption{linktitleurl},
 		      \joption{linktitleisbn},\\ \joption{linktitleissn}).
     	      Old options are kept for compatibility.
+    	\item Rename option \joption{boldyear} to \joption{hlyear}.
+              Old option kept for compatibility.
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~
