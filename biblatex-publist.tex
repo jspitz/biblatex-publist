@@ -232,7 +232,6 @@ If you want to refer to an item number, use \jcsmacro*{citeitem}\jmacro{\{<key>\
 This will print the item number in square brackets (like the \jfcsmacro{cite} command in numeric citation styles),
 but as opposed to normal \jfcsmacro{cite} it also considers all numbering tweaks you make via the \bpl\ options.
 
-\condbr{4}
 
 \subsection{Additional options}\label{sec:addopts}
 
@@ -296,7 +295,7 @@ number of entries back to 1 (either globally or within each section), use the \j
 
 If you do not want to have any numbers at all, set this option to \joption{none}.
 
-Note that if you use this descending enumeration, \bpl\ will have to do a full counting of all printed items first
+Note that if you use descending enumeration, \bpl\ will have to do a full counting of all printed items first
 in order to calculate the numbering properly (considering any filtering you might have done).
 For this calculation, a specific auxiliary file, \emph{<filename>.bpx}, is used. The package will warn you if more
 \texttt{latex} runs are required. See sec.~\ref{sec:numbers} for details.
@@ -319,39 +318,26 @@ If this option is \joption{true}, peer review information, as specified via the 
 
 \end{description}
 %
-The following options are available if \textsf{hyperref} is loaded:
+The following option is available if \textsf{hyperref} is loaded:
 
 \begin{description}
 
-\item [{\joption{linktitleall{[}=true|false{]}}}] default: \emph{false}.
+\item [{\joption{linktitles={[}all|doi|url|isbn|issn|none{]}}}] default: \emph{none}.
 
 Turns the title (and subtitle, if available) into a clickable hyperlink to either the DOI, the URL, the ISBN,
-or the ISSN (the latter two via customizable search provider), if any of these is available. See section~\ref{sec:clicktitles}
-for details.
-
-\item [{\joption{linktitledoi{[}=true|false{]}}}] default: \emph{false}.
-
-Turns the title (and subtitle, if available) into a clickable hyperlink to the DOI, if available. See section~\ref{sec:clicktitles}
-for details.
-
-\item [{\joption{linktitleurl{[}=true|false{]}}}] default: \emph{false}.
-
-Turns the title (and subtitle, if available) into a clickable hyperlink to the URL, if available. See section~\ref{sec:clicktitles}
-for details.
-
-\item [{\joption{linktitleisbn{[}=true|false{]}}}] default: \emph{false}.
-
-Turns the title (and subtitle, if available) into a clickable hyperlink to the ISBN (via customizable search provider), if available.
-See section~\ref{sec:clicktitles} for details.
-
-\item [{\joption{linktitleissn{[}=true|false{]}}}] default: \emph{false}.
-
-Turns the title (and subtitle, if available) into a clickable hyperlink to the ISSN (via customizable search provider), if available.
+or the ISSN (the latter two via customizable search provider), if any of these is available.\footnote{%
+Up to v.\,1.27, \bpl\ provided a range of boolean options for this task. These are still supported, but considered deprecated.
+} The option \joption{all} activates all these targets, \joption{none} deactivates them.
+To enable several targets, multiple values might be passed to the option, embraced and separated by comma
+(e.\,g., \joption{linktitles=\{doi, isbn,issn\}}). If an entry provides several targets, the first found from
+the order DOI \textrightarrow\ URL \textrightarrow\ ISBN \textrightarrow\ ISSN is used, so the order passed to the
+option does not matter, except for  \joption{all} and  \joption{none}, which activate or deactivate all at their
+position in the chain (and options that follow might re-enable them, as in \joption{linktitles=\{none,url\}}).
 See section~\ref{sec:clicktitles} for details.
 
 \end{description}
 %
-These options should be passed directly to \bibltx\ via \jfcsmacro{usepackage} when loading \bibltx, and they apply for the whole
+All options listed here should be passed directly to \bibltx\ via \jfcsmacro{usepackage} when loading \bibltx, and they apply to the whole
 document.
 
 For most options, it is possible to change them (repeatedly) within the document. To this end, the macro \jcsmacro*[-3]{ExecutePublistOptions}
@@ -586,11 +572,10 @@ use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 
 \subsection{Clickable titles}\label{sec:clicktitles}
 
-With the options \joption{linktitledoi}, \joption{linktitleurl}, \joption{linktitleisbn}, \joption{linktitleissn}
-or the combining option \joption{linktitleall}, titles and subtitles are turned into clickable hyperlinks if
-the \textsf{hyperref} package is loaded, and the respective data is there, i.\,e., if either the DOI field,
-the URL field, the ISBN field or the ISSN field is defined for the given entry (checked in this order if multiple
-of these options or \joption{linktitleall} are used).
+With the option \joption{linktitles} (see sec.~\ref{sec:addopts}), titles and subtitles are turned into clickable
+hyperlinks if the \textsf{hyperref} package is loaded, and the respective data is there, i.\,e., if either the
+DOI field, the URL field, the ISBN field or the ISSN field is defined for the given entry (checked in this order
+if multiple of these targets are enabled or \joption{linktitles=all} is used).
 
 With URL and DOI, direct links are created. With ISBN or ISSN, a link to a search provider is created instead
 (\textsf{worldcat} by default). The search provider can be customized by redefining the following macros:
@@ -601,9 +586,9 @@ With URL and DOI, direct links are created. With ISBN or ISSN, a link to a searc
 %
 where \verb|#1| is a placeholder for the ISBN or ISSN, respectively.
 
-Note that the output of URLs, DOIs, ISBNs and ISSNs is not affected by the \joption{linktitle} options,
-so you might get redundant output. To control (e.\,g., omit) them, use the \joption{url}, \joption{doi}
-and \joption{isbn} biblatex options. 
+Note that the \joption{linktitles} option does not have any affect on whether URLs, DOIs, ISBNs and ISSNs
+are printed, so you might get redundant output. To control (e.\,g., omit) them, use the \joption{url},
+\joption{doi} and \joption{isbn} biblatex options. 
 
 \section{Localization}\label{sec:localization}
 
@@ -833,10 +818,14 @@ or
 		\item Add new macro\jcsmacro{setplnum} (see sec.~\ref{sec:numbers}).
 		\item Rename macro \jcsmacro{shiftbplnum} to \jcsmacro{shiftplnum}
 		      (old macro kept for compatibility).
-		\item Introduce one option (\joption{plnumbering}) that replace the previous two
-		      (\joption{plnumbered} + \joption{reversenumbering}).
-		      Old options are kept for compatibility.
 		\item Fix macro \jcsmacro{shiftplnum} with ascending numbering.
+		\item Introduce one option (\joption{plnumbering}) that replaces the previous two
+		      separated options (\joption{plnumbered} + \joption{reversenumbering}).
+		      Old options are kept for compatibility.
+		\item Introduce one multichoice option (\joption{linktitles}) that replaces the previous
+		      options (\joption{linktitleall}, \joption{linktitledoi}, \joption{linktitleurl},
+		      \joption{linktitleisbn},\\ \joption{linktitleissn}).
+    	      Old options are kept for compatibility.
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~

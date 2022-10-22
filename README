@@ -53,9 +53,12 @@ instructions.
 	- Add plnumgroup environment to temporarily suspend plnumbering=local.
 	- Add new macro \setplnum (#39).
 	- Rename macro \shiftbplnum to \shiftplnum (old macro kept for compatibility).
-	- Introduce one option (plnumbering) that replace the previous two
-	  (plnumbered + reversenumbering). Old options are kept for compatibility.
 	- Fix with \shiftplnum with ascending enumeration.
+	- Introduce one option (plnumbering) that replaces the previous two
+	  (plnumbered + reversenumbering). Old options are kept for compatibility.
+	- Introduce one multichoice option (linktitles) that replaces the previous
+	  options (linktitleall, linktitledoi, linktitleurl, linktitleisbn,
+	  linktitleissn). Old options are kept for compatibility.
 
 * V. 1.27 (2022-10-03):
 	- Fix once more plauthor check with non-ASCII chars and macros.

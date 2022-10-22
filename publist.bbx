@@ -175,6 +175,111 @@
      },
     plnumbering.default:n = { global },
     plnumbering.usage:n = preamble,
+    % linktitles=<all|url|doi|isbn|issn|none>
+    linktitles .multichoice:,
+    % Link all titles
+    linktitles / all.code:n =
+        {
+             \toggletrue{bpl@linktitleisbn}
+             \toggletrue{bpl@linktitleissn}
+             \toggletrue{bpl@linktitleurl}
+             \toggletrue{bpl@linktitledoi}
+             \toggletrue{bpl@linktitle}
+        },
+    % Link no titles
+    linktitles / none.code:n =
+        {
+             \togglefalse{bpl@linktitleisbn}
+             \togglefalse{bpl@linktitleissn}
+             \togglefalse{bpl@linktitleurl}
+             \togglefalse{bpl@linktitledoi}
+             \togglefalse{bpl@linktitle}
+        },
+    % Link titles with URL
+    linktitles / url.code:n =
+        {
+         \toggletrue{bpl@linktitleurl}
+         \toggletrue{bpl@linktitle}
+        },
+    % Link titles with DOI
+    linktitles / doi.code:n =
+        {
+             \toggletrue{bpl@linktitledoi}
+             \toggletrue{bpl@linktitle}
+        },
+    % Link titles with ISBN
+    linktitles / isbn.code:n =
+        {
+           \toggletrue{bpl@linktitleisbn}
+           \toggletrue{bpl@linktitle}
+        },
+    % Link titles with ISSN
+    linktitles / issn.code:n =
+        {
+             \toggletrue{bpl@linktitleissn}
+             \toggletrue{bpl@linktitle}
+        },
+    linktitles.default:n = { all },
+    % prinfo=<true|false>
+    % Output peer-review information
+    prinfo.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+            \toggletrue{bpl@prinfo}
+         }{
+            \togglefalse{bpl@prinfo}
+         }
+       },
+    prinfo.default:n = { true }
+}
+
+%
+% Deprecated options
+%
+\keys_define:nn { bpl-deprecated }
+{
+    % plnumbered=<true|false|reset>
+    % Select numbering scheme
+    plnumbered .choice:,
+    % false: no numbering at all
+    plnumbered / false .code:n = 
+      { 
+         \defbibenvironment{bibliography}
+          {\list
+           {}
+           {\setlength{\leftmargin}{\bibhang}%
+            \setlength{\itemindent}{-\leftmargin}%
+            \setlength{\itemsep}{\bibitemsep}%
+            \setlength{\parsep}{\bibparsep}}%
+          }
+          {\endlist}
+          {\item}%
+     },
+    % true: use default consecutive numbering
+    plnumbered / true .code:n = 
+      { 
+        \@bpl@numberresetfalse
+      },
+    % reset: use local numbering
+    plnumbered / reset .code:n = 
+      {
+        \@bpl@numberresettrue
+      },
+    plnumbered.default:n = { true },
+    plnumbered.usage:n = preamble,
+    % reversenumbering=<true|false>
+    % Use descending numbers
+    reversenumbering.code:n = 
+       { 
+         \str_if_eq:nnTF { #1 } { true }
+           {
+             \@bpl@reversenumtrue
+         }{
+             \@bpl@reversenumfalse
+         }
+       },
+    reversenumbering.usage:n = preamble,
     % linktitleall=<true|false>
     % Link all titles
     linktitleall.code:n =
@@ -246,81 +351,23 @@
              \togglefalse{bpl@linktitleissn}
          }
        },
-    linktitleissn.default:n = { true },
-    % prinfo=<true|false>
-    % Output peer-review information
-    prinfo.code:n =
-        {
-         \str_if_eq:nnTF { #1 } { true }
-         {
-            \toggletrue{bpl@prinfo}
-         }{
-            \togglefalse{bpl@prinfo}
-         }
-       },
-    prinfo.default:n = { true },
-    %
-    % Deprecated options
-    %
-    % plnumbered=<true|false|reset>
-    % Select numbering scheme
-    plnumbered .choice:,
-    % false: no numbering at all
-    plnumbered / false .code:n = 
-      { 
-         \defbibenvironment{bibliography}
-          {\list
-           {}
-           {\setlength{\leftmargin}{\bibhang}%
-            \setlength{\itemindent}{-\leftmargin}%
-            \setlength{\itemsep}{\bibitemsep}%
-            \setlength{\parsep}{\bibparsep}}%
-          }
-          {\endlist}
-          {\item}%
-         \PackageWarning{biblatex-publist}%
-             {The~ option~ plnumbered=false~ is~ deprecated!\MessageBreak
-              Please~ use~ plnumbering=none~ instead.}
-     },
-    % true: use default consecutive numbering
-    plnumbered / true .code:n = 
-      { 
-        \@bpl@numberresetfalse
-        \PackageWarning{biblatex-publist}%
-             {The~ option~ plnumbered=true~ is~ deprecated!\MessageBreak
-              Please~ use~ plnumbering=global~ instead.}
-      },
-    % reset: use local numbering
-    plnumbered / reset .code:n = 
-      {
-        \@bpl@numberresettrue
-        \PackageWarning{biblatex-publist}%
-             {The~ option~ plnumbered=reset~ is~ deprecated!\MessageBreak
-              Please~ use~ plnumbering=local~ instead.}
-      },
-    plnumbered.default:n = { true },
-    plnumbered.usage:n = preamble,
-    % reversenumbering=<true|false>
-    % Use descending numbers
-    reversenumbering.code:n = 
-       { 
-         \str_if_eq:nnTF { #1 } { true }
-           {
-             \@bpl@reversenumtrue
-         }{
-             \@bpl@reversenumfalse
-         }
-         \PackageWarning{biblatex-publist}%
-             {The~ option~ reversenumbering~ is~ deprecated!\MessageBreak
-              Please~ use~ the~ option~ plnumbering~ instead.}
-       },
-    reversenumbering.usage:n = preamble,
+    linktitleissn.default:n = { true }
 }
 
 % Command to set options
 \NewDocumentCommand { \ExecutePublistOptions } { m }
 {
   \keys_set:nn { bpl } { #1 }
+}
+
+% Command to set deprecated options
+\NewDocumentCommand { \ExecuteDepPublistOptions } { m m }
+{
+  \keys_set:nn { bpl-deprecated } { #1 }
+  
+  \PackageWarning{biblatex-publist}%
+             {The~ option~ `#1'~ is~ deprecated!\MessageBreak
+              Please~ use~ the~ option~ `#2'~ instead.}
 }
 
 \ExplSyntaxOff
@@ -340,11 +387,9 @@
 \DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
 \DeclareBibliographyOption{prinfo}[true]{\ExecutePublistOptions{prinfo=#1}}
 
-\DeclareBibliographyOption{linktitleall}[true]{\ExecutePublistOptions{linktitleall=#1}}
-\DeclareBibliographyOption{linktitleurl}[true]{\ExecutePublistOptions{linktitleurl=#1}}
-\DeclareBibliographyOption{linktitledoi}[true]{\ExecutePublistOptions{linktitledoi=#1}}
-\DeclareBibliographyOption{linktitleisbn}[true]{\ExecutePublistOptions{linktitleisbn=#1}}
-\DeclareBibliographyOption{linktitleissn}[true]{\ExecutePublistOptions{linktitleissn=#1}}
+\DeclareBibliographyOption{linktitles}[all]{\ExecutePublistOptions{linktitles={#1}}}% Extra braces needed (multichoice)
+
+
 
 % Deprecated Options
 %
@@ -364,9 +409,15 @@
         {The omitnameprefix option is deprecated!\MessageBreak
          Please use plauthornameprefix instead.}{}%
     \def\bpl@ovonpart{#1}}
+%
 % Deprecated as of v. 2.0
-\DeclareBibliographyOption{plnumbered}[true]{\ExecutePublistOptions{plnumbered=#1}}
-\DeclareBibliographyOption{reversenumbering}[true]{\ExecutePublistOptions{reversenumbering=#1}}
+\DeclareBibliographyOption{plnumbered}[true]{\ExecuteDepPublistOptions{plnumbered=#1}{plnumbering}}
+\DeclareBibliographyOption{reversenumbering}[true]{\ExecuteDepPublistOptions{reversenumbering=#1}{plnumbering}}
+\DeclareBibliographyOption{linktitleall}[true]{\ExecuteDepPublistOptions{linktitleall=#1}{linktitles}}
+\DeclareBibliographyOption{linktitleurl}[true]{\ExecuteDepPublistOptions{linktitleurl=#1}{linktitles}}
+\DeclareBibliographyOption{linktitledoi}[true]{\ExecuteDepPublistOptions{linktitledoi=#1}{linktitles}}
+\DeclareBibliographyOption{linktitleisbn}[true]{\ExecuteDepPublistOptions{linktitleisbn=#1}{linktitles}}
+\DeclareBibliographyOption{linktitleissn}[true]{\ExecuteDepPublistOptions{linktitleissn=#1}{linktitles}}
 
 
 % Base style
