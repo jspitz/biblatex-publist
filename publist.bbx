@@ -641,7 +641,13 @@
 }
 
 %
-% Highlighting auf publist author with plauthorhandling=highlight
+% Highlighting of the year with hlyear=true
+\providecommand*\plyearhl[1]{%
+    \mkbibbold{#1}%
+}
+
+%
+% Highlighting of publist author with plauthorhandling=highlight
 \providecommand*\plauthorhl[1]{%
     \mkbibbold{#1}%
 }
@@ -1422,8 +1428,8 @@
 }
 
 \newbibmacro*{bpl:date:labeldate+extradate}{%
-      \mkbibbold{\usebibmacro{bpl:date:makedate}}%
    \if@hlyear
+      \plyearhl{\usebibmacro{bpl:date:makedate}}%
    \else
       \usebibmacro{bpl:date:makedate}%
    \fi%
