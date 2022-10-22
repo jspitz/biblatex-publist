@@ -280,6 +280,12 @@ on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 If this is \texttt{true}, the extradate marker (a, b etc.) is also appended to pubstates if there are multiple
 indentical pubstates; e.\,g., \emph{Forthcoming(a)}, \emph{Forthcoming(b)}.
 
+\item [{\joption{plsorting{[}=sorting scheme{]}}}] default: \emph{ydt}.
+
+This option works like the \joption{sorting} option you know from \bibltx. It is provided since \bpl\ sets its
+own sorting schemes (differently depending on \joption{plauthorhandling}) and thus overrides any setting made
+via \bibltx. You can overwrite those settings here yourself and set an own sorting scheme (see also sec.~\ref{sec:sorting}).
+
 \item [{\joption{plnumbering{[}=global|local|global-descending|local-descending|none{]}}}] default: \emph{global}.%
 \footnote{Up to \bpl\ 1.27, numbering was controlled by two separate options, \joption{plnumbered} and \joption{reversenumbering}.
 These options (and their differently named values) are still supported, but you get a warning if you use them and are encouraged
@@ -357,10 +363,10 @@ Also note that
 	      settings.
 	\item With \joption{plauthorhandling}, \bpl\ uses different sorting schemes for \joption{omit} (\texttt{ydt})
 	      and \joption{highlight} (\texttt{yndt}), considering the names as sorting factor only in the latter case
-	      (see sec.~\ref{sec:sorting}).
+	      (cf. sec.~\ref{sec:sorting}).
 	      Changing this option within a document, however, does \emph{not} adjust the sorting scheme if you use
 	      refsections (to make it work, \jfcsmacro{newrefcontext[sorting=<sorting scheme>]} will have to be set
-	      within each refsection). This is a \bibltx\ limitation.
+	      within each refsection). This is a \bibltx\ limitation which also applies to \joption{plsorting}.
 \end{itemize}
 
 \subsection{Numbers games}\label{sec:numbers}
@@ -711,9 +717,10 @@ Then a typical file would look like example~\ref{example} (p.~\pageref{example})
 \end{lstlisting}
 %
 If you want to add other people's reviews of your work, add a section
-such as the following:
+as shown in example~\ref{example2}.
 \begin{lstlisting}[caption={Adding foreign reviews},
-		  moretexcs={[4]{bibfont,subsubsection,printbibliography,newrefsection}}]
+	               label={example2},
+		           moretexcs={[4]{bibfont,subsubsection,printbibliography,newrefsection}}]
 \subsubsection*{Reviews of my thesis}
 \newrefsection[mythesis-reviews]
 \renewcommand\bibfont{\small}
@@ -802,13 +809,19 @@ The following templates, with and without author sorting, are provided:
        (all ascending).
 \end{itemize}
 In order to use any of these, or another sorting template provided by \bibltx\, 
-use \bibltx's \jfmacro{sorting} option, which can be passed either globally
-(via \joption{sorting=<template>} as a \bibltx\ option) or locally
-(by means of a \jfcsmacro{newrefcontext} macro with the option \joption{sorting=<template>}).
+use \bpl's \jmacro{plsorting} option, which can be passed globally
+as a \bibltx\ option or locally by means of \jcsmacro{ExecutePublistOptions}.
+Alternatively, you can also use a \jfcsmacro{newrefcontext} macro with the option
+\jfoption{sorting=<template>}.
 So, to sort your talks in descending order by full date in your CV, you would
 use either
 \begin{lstlisting}[moretexcs={[1]{printbibliography}}]
-\usepackage[style=publist,sorting=ddt]{biblatex}
+\usepackage[style=publist,plsorting=ddt]{biblatex}
+\end{lstlisting}
+or
+\begin{lstlisting}[moretexcs={[3]{printbibliography,ExecutePublistOptions}}]
+\ExecutePublistOptions{plsorting=ddt}
+\printbibliography[heading=none]
 \end{lstlisting}
 or
 \begin{lstlisting}[moretexcs={[3]{printbibliography,newrefcontext,endrefcontext}}]
@@ -816,8 +829,9 @@ or
 \printbibliography[heading=none]
 \endrefcontext
 \end{lstlisting}
-
-\condbr{4}
+%
+Note that if you use refsections, local sorting changes will only apply to the current
+refsection.
 
 \section{Revision Log}
 
@@ -845,6 +859,7 @@ or
               Old option kept for compatibility.
     	\item Allow customization of the highlighting set with \joption{hlyear}.
     	      See sec.~\ref*{sec:auxmacros}.
+    	\item Introduce \joption{plsorting} option.
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~
@@ -866,7 +881,7 @@ or
 	\begin{itemize}
 		\item More robustification with names consisting of non-ASCII chars.
 		\item With \joption{pubstateextra}, differentiate between pubstates.
-	\end{itemize}
+	\end{itemize}\condbr{2}
 	
 	\item [{V. 1.24 (2021-12-11):}]~
 	\begin{itemize}

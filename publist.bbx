@@ -126,6 +126,13 @@
     % family-given
     nameorder / family-given.code:n = { \@givenfirstfalse },
     nameorder.default:n = { family-given },
+    % plsorting=<sortingscheme>
+    % Set a sorting scheme
+    plsorting.code:n =
+      { 
+       \bpl@set@defsorting[#1]
+      },
+    plsorting.default:n = { ydt },
     % plauthorfirstinit=<true|false>
     % Pass initial as first name
     plauthorfirstinit.code:n =
@@ -383,6 +390,7 @@
 \DeclareBibliographyOption{plauthorfirstinit}[true]{\ExecutePublistOptions{plauthorfirstinit=#1}}
 \DeclareBibliographyOption{plauthorhandling}[omit]{\ExecutePublistOptions{plauthorhandling=#1}}
 \DeclareBibliographyOption{nameorder}[family-given]{\ExecutePublistOptions{nameorder=#1}}
+\DeclareBibliographyOption{plsorting}[ydt]{\ExecutePublistOptions{plsorting=#1}}
 
 \DeclareBibliographyOption{plnumbering}[global]{\ExecutePublistOptions{plnumbering=#1}}
 \DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
@@ -440,22 +448,23 @@
     pagetracker=true,
     labelnumber,
     useprefix=false,
-    defernumbers=true}
+    defernumbers=true%
+}
 
-\newcommand*\bpl@set@defsorting{%
-    % Default sorting depends on plauthorhandling
-    \if@hlauthor%
-        \ifx\@onlypreamble\@notprerr
-            \newrefcontext[sorting=ydnt]
+\newcommand*\bpl@set@defsorting[1][\empty]{%
+    \edef\bpl@scheme{#1}%
+    \ifx#1\empty
+        % Default sorting depends on plauthorhandling
+        \if@hlauthor%
+            \edef\bpl@scheme{ydnt}%
         \else
-            \ExecuteBibliographyOptions{sorting=ydnt}
+            \edef\bpl@scheme{ydt}%
         \fi
+    \fi
+    \ifx\@onlypreamble\@notprerr
+        \newrefcontext[sorting=\bpl@scheme]
     \else
-        \ifx\@onlypreamble\@notprerr
-            \newrefcontext[sorting=ydt]
-        \else
-            \ExecuteBibliographyOptions{sorting=ydt}
-        \fi
+        \ExecuteBibliographyOptions{sorting=\bpl@scheme}
     \fi
 }
 

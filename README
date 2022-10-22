@@ -61,6 +61,7 @@ instructions.
 	  linktitleissn). Old options are kept for compatibility.
 	- Rename option boldyear to hlyear. Old option kept for compatibility.
 	- Allow customization of the highlighting set with hlyear.
+	- Introduce plsorting option.
 
 * V. 1.27 (2022-10-03):
 	- Fix once more plauthor check with non-ASCII chars and macros.
