@@ -358,9 +358,9 @@ Also note that
 	\item With \joption{plauthorhandling}, \bpl\ uses different sorting schemes for \joption{omit} (\texttt{ydt})
 	      and \joption{highlight} (\texttt{yndt}), considering the names as sorting factor only in the latter case
 	      (see sec.~\ref{sec:sorting}).
-	      So changing this option within a document might reset sorting you have set yourself via \bibltx's
-	      \jfoption{sorting} option.
-	      You can change that back via \jfcsmacro{newrefcontext[sorting=<sorting>]}.
+	      Changing this option within a document, however, does \emph{not} adjust the sorting scheme if you use
+	      refsections (to make it work, \jfcsmacro{newrefcontext[sorting=<sorting scheme>]} will have to be set
+	      within each refsection). This is a \bibltx\ limitation.
 \end{itemize}
 
 \subsection{Numbers games}\label{sec:numbers}
