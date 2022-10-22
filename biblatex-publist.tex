@@ -127,7 +127,7 @@ The package requires at least version 3.8 of \bibltx\ and \texttt{biber}
 
 \tableofcontents
 
-\section{Aim of the package}
+\section{Aim of the Package}
 
 The \bpl\ package provides a \bibltx\ bibliography style specifically for academic publication lists.
 Such lists, which are a central part of the academic CV, contain all or selected
@@ -173,7 +173,7 @@ Many features have been suggested by users of the package.
 If you miss a specific feature, feel free to suggest it via
 \url{https://github.com/jspitz/biblatex-publist/issues}.
 
-\subsection*{Requirements and caveats}
+\subsection*{Requirements and Caveats}
 
 Note that \bpl\ relies on rather advanced features of \bibltx\ for some of its own features.
 These are only available with the \texttt{biber} backend of \bibltx. Hence \bpl\ requires
@@ -190,7 +190,7 @@ forms of citing may break or not produce the expected result. The reason is that
 
 \section{Usage}
 
-\subsection{Standard usage\label{sec:standard-usage}}
+\subsection{Standard Usage\label{sec:standard-usage}}
 
 The standard way of using the package is to load the style file via
 \begin{lstlisting}[moretexcs={[1]{plauthorname}}]
@@ -233,7 +233,7 @@ This will print the item number in square brackets (like the \jfcsmacro{cite} co
 but as opposed to normal \jfcsmacro{cite} it also considers all numbering tweaks you make via the \bpl\ options.
 
 
-\subsection{Additional options}\label{sec:addopts}
+\subsection{Additional Options}\label{sec:addopts}
 
 Currently, the following additional options are provided (next to the
 options provided by the \bibltx\ package itself%
@@ -369,7 +369,7 @@ Also note that
 	      within each refsection). This is a \bibltx\ limitation which also applies to \joption{plsorting}.
 \end{itemize}
 
-\subsection{Numbers games}\label{sec:numbers}
+\subsection{Numbers Games}\label{sec:numbers}
 
 Among the peculiarities of publication lists is the greater variety of numbering conventions, as compared
 with normal bibliographies in academic works. If a numeric citation style is used in the latter, the items are
@@ -452,7 +452,7 @@ repeatedly  and applies to all subsequent items as of the next section that foll
 For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done via the macro
 \jcsmacro*{shiftciteitem}.
 
-\subsection{Handling multiple authors and\slash or name variants}\label{sec:multiauthors}
+\subsection{Handling Multiple Authors and\slash or Name Variants}\label{sec:multiauthors}
 
 If multiple \jcsmacro{plauthorname} specifications have been entered (or a \jcsmacro{plauthorname} specification
 in addition to a specification via the options \joption{plauthorname}, \joption{plauthorname} and
@@ -485,7 +485,7 @@ Note that multiple specifications also affect filtering (see sec.~\ref{sec:filte
 entries authored or edited by any and all specified persons.
 
 
-\subsection{Truncation of name lists}\label{sec:trunc}
+\subsection{Truncation of Name Lists}\label{sec:trunc}
 
 Truncation of name lists via the \jfoption{maxnames} and \jfoption{minnames} \bibltx\ options is supported.
 However, it works a bit differently than normal truncation, since the publication list authors have to be
@@ -535,7 +535,7 @@ as is (and not localized).
 
 \section{Customization}
 
-\subsection{Auxiliary macros and lengths}\label{sec:auxmacros}
+\subsection{Auxiliary Macros and Lengths}\label{sec:auxmacros}
 
 The appearance of the \emph{marginyear} is controlled by the
 \jcsmacro*{plmarginyear} macro, which has the following default definition:
@@ -571,7 +571,7 @@ This might be needed for long bibliographies (> 99 entries) in order to adjust t
 space the item number needs.
 
 
-\subsection{Using a different base style}\label{sec:basestyle}
+\subsection{Using a Different Base Style}\label{sec:basestyle}
 
 By default, \bpl\ loads \bibltx's \emph{authoryear} style, and it has been written
 to work with that style. However, it is possible to try a diffent base style, if
@@ -591,7 +591,7 @@ differ from what you expect with specific base styles. To change the order,
 use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 
 
-\subsection{Clickable titles}\label{sec:clicktitles}
+\subsection{Clickable Titles}\label{sec:clicktitles}
 
 With the option \joption{linktitles} (see sec.~\ref{sec:addopts}), titles and subtitles are turned into clickable
 hyperlinks if the \textsf{hyperref} package is loaded, and the respective data is there, i.\,e., if either the
@@ -641,7 +641,7 @@ languages: English, French and German.%
 The following extensions of standard \bibltx\ features are provided.
 
 
-\subsection{Review bibliography type}\label{sec:review-bibliography-type}
+\subsection{Review Bibliography Type}\label{sec:review-bibliography-type}
 
 Although a \emph{review} entry type is provided by \bibltx, this
 type is treated as an alias for \emph{article}. The \bpl\ package
@@ -655,7 +655,7 @@ titles are clearly marked and do not interfere with the overall numbering
 (see sec.~\ref{sec:example} for an example).
 
 
-\subsection{Partial translations}\label{sec:partial-translations}
+\subsection{Partial Translations}\label{sec:partial-translations}
 
 A new ``related entry'' type \emph{parttranslationof} is provided.
 This is an addition to the \emph{translationof} related entry type
@@ -663,7 +663,7 @@ This is an addition to the \emph{translationof} related entry type
 on what ``related entries'' are and how to use them.
 
 
-\section{An example}\label{sec:example}
+\section{An Example}\label{sec:example}
 
 Publication lists are usually categorized by genre (monographs, articles,
 book chapters, etc.). For this task, the use of \jfmacro{refsections} (see \cite[sec 3.7.4]{bibltx} for details) is
