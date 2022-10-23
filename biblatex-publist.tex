@@ -165,6 +165,7 @@ The list of features includes:
 	\item Optionally indicate the year of publication (sets) in the margin
 	\item Clickable titles, linking to the URL, DOI, or a web catalog
 	\item Indicate if/how a title has been peer-reviewed
+	\item Mark OpenAccess publications
 	\item List reviews of specific titles
 	\item Adjustable base bibliography style
 \end{itemize}
@@ -316,6 +317,12 @@ whose prename starts with the specified character. This allows you to deal with 
 with abbreviated and full first name (\textsc{J. Doe} and well as \textsc{John Doe} and \textsc{John Robert Doe}) \emph{as well as}
 works of colleagues with the same surname (maybe your family members), which you will not want to mark as your own's.
 Of course, the solution does not help if there is an entry with same surname and same first name initial (such as \textsc{Jane Doe}).
+
+\item [{\joption{oainfo{[}=simple|verbose|none{]}}}] default: \emph{none}.
+
+If \joption{simple} or \joption{verbose} is selected, open-access information, as specified via the \texttt{openaccess} field
+(see section~\ref{sec:openaccess}), will be appended to the entries. With \joption{verbose}, different OpenAccess strategies
+(\enquote*{gold}, \enquote*{green}) will be differentiated in the output.
 
 
 \item [{\joption{prinfo{[}=true|false{]}}}] default: \emph{true}.
@@ -533,6 +540,28 @@ A specific localizable bibkey is used for this purpose (see section~\ref{sec:loc
 the shorthands, you can also enter arbitrary text to the \texttt{peerreview} field, which is then output
 as is (and not localized).
 
+
+\subsection{Marking OpenAccess Publications}\label{sec:openaccess}
+
+Some people also want, or need, to indicate whether and which (some of) their publications have
+been published \enquote*{OpenAccess}, that is, free of charges and other access barriers.
+To this end, \bpl\ provides a specific database field, \texttt{openaccess}, in which you can use
+the following shorthands:
+
+\begin{itemize}\setlength{\itemsep}{0pt}
+	\item{\texttt{true}} -- Indicates that this publication has been published OpenAccess, no matter which strategy
+	\item{\texttt{gold}} -- Indicates that this publication has been published OpenAccess from the beginning (\enquote*{gold} strategy)
+	\item{\texttt{green}} -- Indicates that a secondary version of this publication has been made openly accessible on a public document
+	      server (repository) (\enquote*{green} strategy)
+\end{itemize}
+%
+If you use the option \joption{oainfo=verbose} or \joption{oainfo=simple}, then \bpl\ will append the respective information to the entries.
+In the former case, \enquote*{gold} and \enquote*{green} publications will be differentiated, in the latter, this differentiation is
+not done.
+Specific localizable bibkeys are used for this purpose (see section~\ref{sec:localization}). Instead of
+the shorthands, you can also enter arbitrary text to the \texttt{openaccess} field, which is then output
+as is (and not localized).
+
 \section{Customization}
 
 \subsection{Auxiliary Macros and Lengths}\label{sec:auxmacros}
@@ -570,6 +599,16 @@ The indendation of the bibliographic entries (lines > 1) can be adjusted by sett
 This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
 space the item number needs.
 
+The separator between extra information (peer review, OpenAccess) can be redefined.
+The default definition is:
+\begin{lstlisting}[moretexcs={[4]{plextrainfosep,addsemicolon,addspace}}]
+\newcommand*\plextrainfosep{\addsemicolon\addspace}
+\end{lstlisting}
+%
+The embracing of extra information (brackets by default) can be customized by changing
+\begin{lstlisting}[moretexcs={[4]{DeclareFieldFormat,mkbibbrackets}}]
+\DeclareFieldFormat{plextrainfo}{\mkbibbrackets{#1}}
+\end{lstlisting}
 
 \subsection{Using a Different Base Style}\label{sec:basestyle}
 
@@ -622,6 +661,9 @@ are added by the package:
 \item \emph{parttranslationof}: the expression ``partial translation of''
                    for entries referring to partially translated work via \bibltx's
        ``related entries'' feature (see sec.~\ref{sec:partial-translations}).
+\item \emph{openaccess:true}: the expression ``OpenAccess''.
+\item \emph{openaccess:gold}: the phrase ``OpenAccess (gold)''.
+\item \emph{openaccess:green}: the phrase ``OpenAccess (green)''.
 \item \emph{peerreview:sb}: the phrase ``single blind peer review''.
 \item \emph{peerreview:db}: the phrase ``double blind peer review''.
 \item \emph{peerreview:op}: the phrase ``open peer review''.
@@ -860,6 +902,7 @@ refsection.
     	\item Allow customization of the highlighting set with \joption{hlyear}.
     	      See sec.~\ref*{sec:auxmacros}.
     	\item Introduce \joption{plsorting} option.
+ 		\item Add support for OpenAccess information (see sec.~\ref{sec:openaccess}).
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~

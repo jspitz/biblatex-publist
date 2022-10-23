@@ -62,6 +62,8 @@
 \newtoggle{bpl@linktitledoi}
 \newtoggle{bpl@prinfo}
 \toggletrue{bpl@prinfo}
+\newtoggle{bpl@oainfo}
+\newtoggle{bpl@oainfosimple}
 \newif\if@bpl@reversenum\@bpl@reversenumfalse
 
 
@@ -227,6 +229,25 @@
              \toggletrue{bpl@linktitle}
         },
     linktitles.default:n = { all },
+    % oainfo=<verbose|simple|nonr>
+    % Output OpenAccess information
+    oainfo .choice:,
+    oainfo / verbose.code:n =
+       {
+         \toggletrue{bpl@oainfo}
+         \togglefalse{bpl@oainfosimple}
+       },
+    oainfo / simple.code:n =
+       {
+         \toggletrue{bpl@oainfo}
+         \toggletrue{bpl@oainfosimple}
+       },
+    oainfo / none.code:n =
+       {
+         \togglefalse{bpl@oainfo}
+         \togglefalse{bpl@oainfosimple}
+       },
+    oainfo.default:n = { simple },
     % prinfo=<true|false>
     % Output peer-review information
     prinfo.code:n =
@@ -396,6 +417,7 @@
 \DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
 \DeclareBibliographyOption{hlyear}[true]{\ExecutePublistOptions{hlyear=#1}}
 \DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
+\DeclareBibliographyOption{oainfo}[simple]{\ExecutePublistOptions{oainfo=#1}}
 \DeclareBibliographyOption{prinfo}[true]{\ExecutePublistOptions{prinfo=#1}}
 
 \DeclareBibliographyOption{linktitles}[all]{\ExecutePublistOptions{linktitles={#1}}}% Extra braces needed (multichoice)
@@ -678,6 +700,7 @@
 %
 % Omission of names in truncated autor list
 \newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
+\newcommand*\plextrainfosep{\addsemicolon\addspace}
 
 
 %
@@ -962,17 +985,33 @@
 
 
 %
+% OpenAccess type
+%
+\DeclareFieldFormat{openaccess}{%
+  \iftoggle{bpl@oainfosimple}{%
+     \ifbibstring{openaccess:true}%
+       {\bibstring{openaccess:true}}%
+       {#1}%
+  }{%
+    \ifbibstring{openaccess:#1}%
+       {\bibstring{openaccess:#1}}%
+       {\ifbibstring{openaccess:true}%
+          {\bibstring{openaccess:true}}%
+          {#1}%
+       }%
+  }%
+}
+
+%
 % Peer-review type
 %
-\newcommand\printprinfo[1]{%
-    \ifbibstring{peerreview:#1}%
+\DeclareFieldFormat{peerreview}{%
+   \ifbibstring{peerreview:#1}%
        {\bibstring{peerreview:#1}}%
        {#1}%
 }
 
-\DeclareFieldFormat{peerreview}{%
-    \printtext[brackets]{\printprinfo{#1}}%
-}
+\DeclareFieldFormat{plextrainfo}{\mkbibbrackets{#1}}
 
 %
 % Bibliography filter
@@ -1540,9 +1579,31 @@
   \newunit\newblock
   \printfield{pubstate}%
   \iftoggle{bpl@prinfo}{%
-    \newunit\newblock
-    \printfield{peerreview}%
-  }{}%
+    \ifboolexpr{test {\iffieldundef{peerreview}}
+                and test {\iffieldundef{openaccess}}}
+       {}%
+       {%
+         \newunit\newblock%
+         \printtext[plextrainfo]{%
+            \printfield{peerreview}%
+            \iffieldundef{openaccess}{}{%
+               \iftoggle{bpl@oainfo}{%
+                  \iffieldundef{peerreview}{}{%
+                     \plextrainfosep%
+                  }%
+                  \printfield{openaccess}%
+                }{}%
+             }%
+         }%
+       }%
+  }{%
+    \iftoggle{bpl@oainfo}{%
+       \iffieldundef{openaccess}{}{%
+          \newunit\newblock
+          \printfield[plextrainfo]{openaccess}%
+       }%
+     }{}%
+  }%
 }
 
 %
@@ -1550,6 +1611,9 @@
 %
 \NewBibliographyString{with}
 \NewBibliographyString{parttranslationof}
+\NewBibliographyString{openaccess:true}
+\NewBibliographyString{openaccess:gold}
+\NewBibliographyString{openaccess:green}
 \NewBibliographyString{peerreview:sb}
 \NewBibliographyString{peerreview:db}
 \NewBibliographyString{peerreview:op}
@@ -1561,6 +1625,9 @@
 \DefineBibliographyStrings{english}{%
     parttranslationof   = {partial translation of},
     with                = {with},
+    openaccess:true     = {OpenAccess},
+    openaccess:gold     = {OpenAccess (gold)},
+    openaccess:green    = {OpenAccess (green)},
     peerreview:sb       = {single blind peer review},
     peerreview:db       = {double blind peer review},
     peerreview:op       = {open peer review},
@@ -1573,6 +1640,9 @@
 \DefineBibliographyStrings{french}{%
     parttranslationof   = {traduction partielle de},
     with                = {avec},
+    openaccess:true     = {libre acc\`es},
+    openaccess:gold     = {libre acc\`es (dorée)},
+    openaccess:green    = {libre acc\`es (verte)},
     peerreview:sb       = {\'{e}valuation par des pairs anonymis\'{e}s},
     peerreview:db       = {\'{e}valuation par les pairs en double aveugle},
     peerreview:op       = {\'{e}valuation par les pairs ouverte},
@@ -1585,6 +1655,9 @@
 \DefineBibliographyStrings{german}{%
     parttranslationof   = {Teil\"ubersetzung von},
     with                = {mit},
+    openaccess:true     = {OpenAccess},
+    openaccess:gold     = {OpenAccess (gold)},
+    openaccess:green    = {OpenAccess (gr\"un)},
     peerreview:sb       = {Blindbegutachtung},
     peerreview:db       = {Doppelblindbegutachtung},
     peerreview:op       = {Offene Begutachtung},
