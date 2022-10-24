@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.0 (forthcoming):
+* V. 2.0 (2022-10-24):
 	- Provide \ExecutePublistOptions to change (most) biblatex-publist options
 	  on the fly.
 	- Properly support reverse numbering even if filtering is done (#38).
