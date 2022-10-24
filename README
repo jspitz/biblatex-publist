@@ -63,6 +63,7 @@ instructions.
 	- Allow customization of the highlighting set with hlyear.
 	- Introduce plsorting option.
 	- Add support for OpenAccess information.
+	- Add support for Journal Impact Factor.
 
 * V. 1.27 (2022-10-03):
 	- Fix once more plauthor check with non-ASCII chars and macros.

@@ -60,6 +60,7 @@
 \newtoggle{bpl@linktitleissn}
 \newtoggle{bpl@linktitleurl}
 \newtoggle{bpl@linktitledoi}
+\newtoggle{bpl@jifinfo}
 \newtoggle{bpl@prinfo}
 \toggletrue{bpl@prinfo}
 \newtoggle{bpl@oainfo}
@@ -229,6 +230,18 @@
              \toggletrue{bpl@linktitle}
         },
     linktitles.default:n = { all },
+    % jifinfo=<true|false>
+    % Impact factor information
+    jifinfo.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+            \toggletrue{bpl@jifinfo}
+         }{
+            \togglefalse{bpl@jifinfo}
+         }
+       },
+    jifinfo.default:n = { true },
     % oainfo=<verbose|simple|nonr>
     % Output OpenAccess information
     oainfo .choice:,
@@ -417,6 +430,7 @@
 \DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
 \DeclareBibliographyOption{hlyear}[true]{\ExecutePublistOptions{hlyear=#1}}
 \DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
+\DeclareBibliographyOption{jifinfo}[true]{\ExecutePublistOptions{jifinfo=#1}}
 \DeclareBibliographyOption{oainfo}[simple]{\ExecutePublistOptions{oainfo=#1}}
 \DeclareBibliographyOption{prinfo}[true]{\ExecutePublistOptions{prinfo=#1}}
 
@@ -1011,6 +1025,13 @@
        {#1}%
 }
 
+%
+% Impact factor
+%
+\DeclareFieldFormat{impactfactor}{%
+   \bibstring{impactfactor}\addcolon\addspace#1%
+}
+
 \DeclareFieldFormat{plextrainfo}{\mkbibbrackets{#1}}
 
 %
@@ -1574,36 +1595,51 @@
         }%
 }
 
+\newtoggle{bpl@have@extrainfo}
+
 \renewbibmacro*{addendum+pubstate}{%
+  \togglefalse{bpl@have@extrainfo}%
   \printfield{addendum}%
   \newunit\newblock
   \printfield{pubstate}%
-  \iftoggle{bpl@prinfo}{%
-    \ifboolexpr{test {\iffieldundef{peerreview}}
-                and test {\iffieldundef{openaccess}}}
-       {}%
-       {%
-         \newunit\newblock%
-         \printtext[plextrainfo]{%
-            \printfield{peerreview}%
-            \iffieldundef{openaccess}{}{%
-               \iftoggle{bpl@oainfo}{%
-                  \iffieldundef{peerreview}{}{%
-                     \plextrainfosep%
-                  }%
-                  \printfield{openaccess}%
-                }{}%
-             }%
-         }%
-       }%
-  }{%
-    \iftoggle{bpl@oainfo}{%
-       \iffieldundef{openaccess}{}{%
-          \newunit\newblock
-          \printfield[plextrainfo]{openaccess}%
-       }%
-     }{}%
-  }%
+  \ifboolexpr{ (
+                 not test {\iffieldundef{peerreview}}
+                 and test {\iftoggle{bpl@prinfo}}
+               )
+               or
+               (
+                 not test {\iffieldundef{openaccess}}
+                 and test {\iftoggle{bpl@oainfo}}
+               )
+               or
+               (
+                 not test {\iffieldundef{impactfactor}}
+                 and test {\iftoggle{bpl@jifinfo}}          
+               )
+            }{%
+                \newunit\newblock%
+                \printtext[plextrainfo]{%
+                   \ifboolexpr{ not test {\iffieldundef{peerreview}}
+                      and test {\iftoggle{bpl@prinfo}}
+                   }{%
+                      \toggletrue{bpl@have@extrainfo}%
+                      \printfield{peerreview}%
+                   }{}%
+                   \ifboolexpr{ not test {\iffieldundef{openaccess}}
+                      and test {\iftoggle{bpl@oainfo}}
+                   }{%
+                      \iftoggle{bpl@have@extrainfo}{\plextrainfosep}{}%
+                      \printfield{openaccess}%
+                      \toggletrue{bpl@have@extrainfo}%
+                   }{}%
+                   \ifboolexpr{ not test {\iffieldundef{impactfactor}}
+                      and test {\iftoggle{bpl@jifinfo}}
+                   }{%
+                      \iftoggle{bpl@have@extrainfo}{\plextrainfosep}{}%
+                      \printfield{impactfactor}%
+                   }{}%
+               }%
+            }%
 }
 
 %
@@ -1611,6 +1647,7 @@
 %
 \NewBibliographyString{with}
 \NewBibliographyString{parttranslationof}
+\NewBibliographyString{impactfactor}
 \NewBibliographyString{openaccess:true}
 \NewBibliographyString{openaccess:gold}
 \NewBibliographyString{openaccess:green}
@@ -1625,6 +1662,7 @@
 \DefineBibliographyStrings{english}{%
     parttranslationof   = {partial translation of},
     with                = {with},
+    impactfactor        = {impact factor},
     openaccess:true     = {OpenAccess},
     openaccess:gold     = {OpenAccess (gold)},
     openaccess:green    = {OpenAccess (green)},
@@ -1640,6 +1678,7 @@
 \DefineBibliographyStrings{french}{%
     parttranslationof   = {traduction partielle de},
     with                = {avec},
+    impactfactor        = {facteur d'impact},
     openaccess:true     = {libre acc\`es},
     openaccess:gold     = {libre acc\`es (dorée)},
     openaccess:green    = {libre acc\`es (verte)},
@@ -1655,6 +1694,7 @@
 \DefineBibliographyStrings{german}{%
     parttranslationof   = {Teil\"ubersetzung von},
     with                = {mit},
+    impactfactor        = {Impactfaktor},
     openaccess:true     = {OpenAccess},
     openaccess:gold     = {OpenAccess (gold)},
     openaccess:green    = {OpenAccess (gr\"un)},

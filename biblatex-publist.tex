@@ -66,6 +66,8 @@
 \renewcommand{\cftsecpagefont}{\small\bfseries}
 \renewcommand{\cftsubsecfont}{\small}
 \renewcommand{\cftsubsecpagefont}{\small}
+\renewcommand{\cftsubsubsecfont}{\small}
+\renewcommand{\cftsubsubsecpagefont}{\small}
 
 % Some semantic markup
 \makeatletter
@@ -166,6 +168,7 @@ The list of features includes:
 	\item Clickable titles, linking to the URL, DOI, or a web catalog
 	\item Indicate if/how a title has been peer-reviewed
 	\item Mark OpenAccess publications
+	\item Give bibliometric information (journal impact factor)
 	\item List reviews of specific titles
 	\item Adjustable base bibliography style
 \end{itemize}
@@ -259,8 +262,8 @@ it is highlighted instead (set in bold face by default; see sec.~\ref{sec:auxmac
 
 \item [{\joption{nameorder{[}=family-given|given-family{]}}}] default: \emph{family-given}.
 
-By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order ``Lastname, Given Names''.
-To change the order to ``Given Names Lastname'', pass the option \joption{nameorder=given-family} to \bibltx.
+By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order \enquote{Lastname, Given Names}.
+To change the order to \enquote{Given Names Lastname}, pass the option \joption{nameorder=given-family} to \bibltx.
 
 \item [{\joption{hlyear{[}=true|false{]}}}] default: \emph{true}.\footnote{%
    Named \joption{boldyear} up to \bpl\ 1.27. The old option is till supported.}
@@ -273,7 +276,7 @@ can be customized as well (see sec.~\ref{sec:auxmacros}).
 
 With this option set to \joption{true}, the publication year (or pubstate) will
 be printed in the margin once a new year starts. The option also has
-the effect that all marginpars are printed ``reversed'', i.\,e.
+the effect that all marginpars are printed \enquote{reversed}, i.\,e.
 on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 
 \item [{\joption{pubstateextra{[}=true|false{]}}}] default: \emph{false}.
@@ -317,6 +320,11 @@ whose prename starts with the specified character. This allows you to deal with 
 with abbreviated and full first name (\textsc{J. Doe} and well as \textsc{John Doe} and \textsc{John Robert Doe}) \emph{as well as}
 works of colleagues with the same surname (maybe your family members), which you will not want to mark as your own's.
 Of course, the solution does not help if there is an entry with same surname and same first name initial (such as \textsc{Jane Doe}).
+
+\item [{\joption{jifinfo{[}=true|false{]}}}] default: \emph{false}.
+
+If this option is \joption{true}, the journal impact factor, as specified via the \texttt{impactfactor} field
+(see section~\ref{sec:impactfactor}), will be appended to the entries.
 
 \item [{\joption{oainfo{[}=simple|verbose|none{]}}}] default: \emph{none}.
 
@@ -517,7 +525,28 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 \newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
 \end{lstlisting}
 
-\subsection{Adding Peer Review Information}\label{sec:peerreview}
+\subsection{Adding Specific Entry-Related Information}
+
+Publication lists usually contain some information which is not commonly given in normal
+bibliographies, information that is supposed to help ranking the author (bibliometrics; the
+peer review procedures publications have been subject to) or their publication strategy (e.\,g.,
+OpenAcess). To allow for this, \bpl\ provides some extra features which will be described in what
+follows. Please also refer to sec.~\ref{sec:auxmacros} for some customization possibilities. 
+
+\subsubsection{Journal Impact Factor}\label{sec:impactfactor}
+
+Although the meaningfulness of this measure has been heavily challenged, scholars in many fields are
+supposed to give the impact factor (citation ratio) of the journals they have published in.
+Thus, \bpl\ provides a specific database field, \texttt{impactfactor}, in which you can store
+this value and maybe specify the metrics used.
+
+If you publish in a journal repeatedly, it might make sense to store the journal name and impact factor
+in a specific \texttt{@xdata} subset (please refer to the \bibltx\ documentation for details on such subsets).
+
+If the option \joption{jifinfo} is true, then \bpl\ will append the respective information to the entries.
+A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}).
+
+\subsubsection{Peer Review}\label{sec:peerreview}
 
 It is common, and sometimes mandatory, to add information to publication list entries indicating if
 and how listed work has been subject to peer review.
@@ -541,7 +570,7 @@ the shorthands, you can also enter arbitrary text to the \texttt{peerreview} fie
 as is (and not localized).
 
 
-\subsection{Marking OpenAccess Publications}\label{sec:openaccess}
+\subsubsection{OpenAccess Strategies}\label{sec:openaccess}
 
 Some people also want, or need, to indicate whether and which (some of) their publications have
 been published \enquote*{OpenAccess}, that is, free of charges and other access barriers.
@@ -656,22 +685,24 @@ Since the package draws on \bibltx, it supports localization.
 The following additional localization keys (\jfcsmacro{bibstrings})
 are added by the package:
 \begin{itemize}
-\item \emph{with}: the preposition ``with'' that precedes the list of
-                   co-authors by default (i.\,e., with \joption{plauthorhandling=omit}).
-\item \emph{parttranslationof}: the expression ``partial translation of''
-                   for entries referring to partially translated work via \bibltx's
-       ``related entries'' feature (see sec.~\ref{sec:partial-translations}).
-\item \emph{openaccess:true}: the expression ``OpenAccess''.
-\item \emph{openaccess:gold}: the phrase ``OpenAccess (gold)''.
-\item \emph{openaccess:green}: the phrase ``OpenAccess (green)''.
-\item \emph{peerreview:sb}: the phrase ``single blind peer review''.
-\item \emph{peerreview:db}: the phrase ``double blind peer review''.
-\item \emph{peerreview:op}: the phrase ``open peer review''.
-\item \emph{peerreview:co}: the phrase ``collaborative peer review''.
-\item \emph{peerreview:cc}: the phrase ``cascading peer review''.
-\item \emph{peerreview:tp}: the phrase ``third-party peer review''.
-\item \emph{peerreview:pp}: the phrase ``post-publication peer review''.
-\item \emph{peerreview:no}: the phrase ``no peer review''.
+\setlength{\itemsep}{0pt}
+\item \emph{impactfactor}: the expression \enquote{impact factor}.
+\item \emph{openaccess:true}: the expression \enquote{OpenAccess}.
+\item \emph{openaccess:gold}: the phrase \enquote{OpenAccess (gold)}.
+\item \emph{openaccess:green}: the phrase \enquote{OpenAccess (green)}.
+\item \emph{parttranslationof}: the expression \enquote{partial translation of}
+       for entries referring to partially translated work via \bibltx's
+      \enquote*{related entries} feature (see sec.~\ref{sec:partial-translations}).
+\item \emph{peerreview:sb}: the phrase \enquote{single blind peer review}.
+\item \emph{peerreview:db}: the phrase \enquote{double blind peer review}.
+\item \emph{peerreview:op}: the phrase \enquote{open peer review}.
+\item \emph{peerreview:co}: the phrase \enquote{collaborative peer review}.
+\item \emph{peerreview:cc}: the phrase \enquote{cascading peer review}.
+\item \emph{peerreview:tp}: the phrase \enquote{third-party peer review}.
+\item \emph{peerreview:pp}: the phrase \enquote{post-publication peer review}.
+\item \emph{peerreview:no}: the phrase \enquote{no peer review}.
+\item \emph{with}: the preposition \enquote{with} that precedes the list of
+       co-authors by default (i.\,e., with \joption{plauthorhandling=omit}).
 \end{itemize}
 Currently, these additional localization keys are available in the following
 languages: English, French and German.%
@@ -699,10 +730,10 @@ titles are clearly marked and do not interfere with the overall numbering
 
 \subsection{Partial Translations}\label{sec:partial-translations}
 
-A new ``related entry'' type \emph{parttranslationof} is provided.
+A new \enquote{related entry} type \emph{parttranslationof} is provided.
 This is an addition to the \emph{translationof} related entry type
 \bibltx\ itself provides. Please refer to the \bibltx\ manual \cite{bibltx}
-on what ``related entries'' are and how to use them.
+on what \enquote{related entries} are and how to use them.
 
 
 \section{An Example}\label{sec:example}
@@ -903,6 +934,7 @@ refsection.
     	      See sec.~\ref*{sec:auxmacros}.
     	\item Introduce \joption{plsorting} option.
  		\item Add support for OpenAccess information (see sec.~\ref{sec:openaccess}).
+ 		\item Add support for journal impact factor (see sec.~\ref{sec:impactfactor}).
 	\end{itemize}
 	
 	\item [{V. 1.27 (2022-10-03):}]~
@@ -1153,8 +1185,8 @@ Gregorio.%
 
 \item [{V.~0.3~(2012-10-23):}]~
 \begin{itemize}
-\item Bug fix: Add missing ``and'' if omitted name was last minus one.
-\item Bug fix: Fix output with ``et al.'' if omitted name is first and
+\item Bug fix: Add missing \enquote{and} if omitted name was last minus one.
+\item Bug fix: Fix output with \enquote{et al.} if omitted name is first and
 \emph{liststop} is 1.
 \item Set \joption{maxnames} default to 4.
 \item Add filter possibility (see sec.~\ref{sec:filtering}).
