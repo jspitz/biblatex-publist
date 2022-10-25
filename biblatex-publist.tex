@@ -256,7 +256,7 @@ As opposed to the macro, however, the options do not provide for multiple author
 
 \item [{\joption{plauthorhandling{[}=omit|highlight{]}}}] default: \emph{omit}.
 
-By default, the publist author (as defined with \jmacro{plauthor}) is omitted from
+By default, the publist author (as defined with \jcsmacro{plauthorname}) is omitted from
 the author or editor list. If you use the option \joption{plauthorhandling=highlight},
 it is highlighted instead (set in bold face by default; see sec.~\ref{sec:auxmacros} how to change that).
 
@@ -284,7 +284,7 @@ on the left side in one-sided documents (via \jfcsmacro{reversemarginpar}).
 If this is \texttt{true}, the extradate marker (a, b etc.) is also appended to pubstates if there are multiple
 indentical pubstates; e.\,g., \emph{Forthcoming(a)}, \emph{Forthcoming(b)}.
 
-\item [{\joption{plsorting{[}=sorting scheme{]}}}] default: \emph{ydt}.
+\item [{\joption{plsorting=<sorting scheme>}}] default: \emph{ydt}.
 
 This option works like the \joption{sorting} option you know from \bibltx. It is provided since \bpl\ sets its
 own sorting schemes (differently depending on \joption{plauthorhandling}) and thus overrides any setting made
