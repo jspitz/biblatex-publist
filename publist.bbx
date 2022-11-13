@@ -1196,20 +1196,20 @@
             \plauthorhl{%
                 \if@givenfirst% given name first
                     \ifgiveninits
-                        {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                        {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                        {\ifdefvoid{\namepartgiveni}{}{\mkbibnamegiven{\namepartgiveni}\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
                     \ifdefvoid{\namepartprefix}%
                         {}%
-                        {\namepartprefix\addspace}%
-                    \namepartfamily%
+                        {\mkbibnameprefix{\namepartprefix}\addspace}%
+                    \mkbibnamefamily{\namepartfamily}%
                 \else% family name first
                     \ifdefvoid{\namepartprefix}%
                         {}%
-                        {\namepartprefix\addspace}%
-                    \namepartfamily%
+                        {\mkbibnameprefix{\namepartprefix}\addspace}%
+                    \mkbibnamefamily{\namepartfamily}%
                     \ifgiveninits
-                        {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\namepartgiveni\addspace}}%
-                        {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\namepartgiven\isdot\addspace}}%
+                        {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\mkbibnamegiven{\namepartgiveni}\addspace}}%
+                        {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\mkbibnamegiven{\namepartgiven}\isdot\addspace}}%
                 \fi
             }%
             \ifnumequal{\value{listcount}}{\value{liststop}}{}{\usebibmacro{bpl:name:andothers}}%
@@ -1217,20 +1217,20 @@
            \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
              \if@givenfirst% given name first
                  \ifgiveninits
-                     {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                     {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
+                     {\ifdefvoid{\namepartgiveni}{}{\mkbibnamegiven{\namepartgiveni}\addspace}}%
+                     {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
                  \ifdefvoid{\namepartprefix}%
                      {}%
-                     {\namepartprefix\addspace}%
-                 \namepartfamily%
+                     {\mkbibnameprefix{\namepartprefix}\addspace}%
+                 \mkbibnamefamily{\namepartfamily}%
              \else% family name first
                  \ifdefvoid{\namepartprefix}%
                        {}%
-                       {\namepartprefix\addspace}%
-                 \namepartfamily%
+                       {\mkbibnameprefix{\namepartprefix}\addspace}%
+                 \mkbibnamefamily{\namepartfamily}%
                  \ifgiveninits
-                    {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\namepartgiveni\addspace}}%
-                    {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\namepartgiven\isdot\addspace}}%
+                    {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\mkbibnamegiven{\namepartgiveni}\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\mkbibnamegiven{\namepartgiven}\isdot\addspace}}%
              \fi
            }%
            \usebibmacro{bpl:name:andothers}%
@@ -1270,9 +1270,9 @@
                    }%
              \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
               \ifgiveninits
-                  {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-                  {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-              \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
+                  {\ifdefvoid{\namepartgiveni}{}{\mkbibnamegiven{\namepartgiveni}\addspace}}%
+                  {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
+              \ifdefvoid{\namepartprefix}{}{\mkbibnameprefix{\namepartprefix}\addspace}%
               \global\togglefalse{plauthorprecedes}%
               \namepartfamily%
              }%
@@ -1296,16 +1296,16 @@
 \DeclareNameFormat{bookauthor}{%
     \if@givenfirst% given name first
         \ifgiveninits
-            {\ifdefvoid{\namepartgiveni}{}{\namepartgiveni\addspace}}%
-            {\ifdefvoid{\namepartgiven}{}{\namepartgiven\addspace}}%
-         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-         \namepartfamily%
+            {\ifdefvoid{\namepartgiveni}{}{\mkbibnamegiven{\namepartgiveni}\addspace}}%
+            {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
+         \ifdefvoid{\namepartprefix}{}{\mkbibnameprefix{\namepartprefix}\addspace}%
+         \mkbibnamefamily{\namepartfamily}%
     \else% family name first
-         \ifdefvoid{\namepartprefix}{}{\namepartprefix\addspace}%
-         \namepartfamily%
+         \ifdefvoid{\namepartprefix}{}{\mkbibnameprefix{\namepartprefix}\addspace}%
+         \mkbibnamefamily{\namepartfamily}%
          \ifgiveninits
-             {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\namepartgiveni\addspace}}%
-             {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\namepartgiven\isdot\addspace}}%
+             {\ifdefvoid{\namepartgiveni}{}{\revsdnamepunct\addspace\mkbibnamegiven{\namepartgiveni}\addspace}}%
+             {\ifdefvoid{\namepartgiven}{}{\revsdnamepunct\addspace\mkbibnamegiven{\namepartgiven}\isdot\addspace}}%
     \fi
     \ifthenelse{\value{listcount}<\value{liststop}}
         {\ifnumless{\value{listcount}}{\value{liststop}-1}%

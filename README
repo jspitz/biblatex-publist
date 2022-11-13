@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.1 (forthcoming)
+	- Honor \mkbibname* (#41).
+
 * V. 2.0 (2022-10-24):
 	- Provide \ExecutePublistOptions to change (most) biblatex-publist options
 	  on the fly.
