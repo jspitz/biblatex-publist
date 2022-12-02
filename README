@@ -48,6 +48,7 @@ instructions.
 
 * V. 2.1 (forthcoming)
 	- Honor \mkbibname* (#41).
+	- Fix reverse numbering without refsections (#42).
 
 * V. 2.0 (2022-10-24):
 	- Provide \ExecutePublistOptions to change (most) biblatex-publist options
