@@ -767,7 +767,7 @@
 \defbibenvironment{bibliography}
     {%
      \addtolength{\labelnumberwidth}{\extralabelnumberwidth}%
-     \setcounter{bplsecitems}{0}%
+     \ifbool{newsection}{\setcounter{bplsecitems}{0}}{}%
      \ifcsundef{bpl@savesecitems:\theplnumgroup}{%
          \csnumgdef{bpl@savesecitems:\theplnumgroup}{0}%
      }{}%
