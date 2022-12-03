@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.1 (forthcoming)
+* V. 2.1 (2022-12-03)
 	- Honor \mkbibname* (#41).
 	- Fix reverse numbering without refsections (#42).
 
