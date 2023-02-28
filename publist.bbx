@@ -489,7 +489,7 @@
 
 \newcommand*\bpl@set@defsorting[1][\empty]{%
     \edef\bpl@scheme{#1}%
-    \ifx#1\empty
+    \ifx\bpl@scheme\empty
         % Default sorting depends on plauthorhandling
         \if@hlauthor%
             \edef\bpl@scheme{ydnt}%

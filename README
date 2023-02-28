@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.2 (Forthcoming)
+	- Fix plsorting with custom sorting schemes (#44).
+
 * V. 2.1 (2022-12-03)
 	- Honor \mkbibname* (#41).
 	- Fix reverse numbering without refsections (#42).
