@@ -499,6 +499,7 @@
     \fi
     \ifx\@onlypreamble\@notprerr
         \newrefcontext[sorting=\bpl@scheme]
+        \AtFollowingRefsections{\newrefcontext[sorting=\bpl@scheme]}
     \else
         \ExecuteBibliographyOptions{sorting=\bpl@scheme}
     \fi
@@ -535,6 +536,15 @@
   \patchcmd{\blx@refsection@i}%
      {\csuse{blx@hook@refsectioninit}}%
      {\csuse{blx@hook@refsectioninit}\csuse{blx@hook@refsection@next}}
+     {}{\PackageWarning{biblatex-publist}{Patching refsection failed!}}
+}{}
+
+% Only provided by biblatex 3.20ff., so we roll our own
+\@ifundefined{AtFollowingRefsections}{%
+  \newrobustcmd*{\AtFollowingRefsections}{\gappto\blx@hook@refsection@following}
+  \patchcmd{\blx@refsection@i}%
+     {\csuse{blx@hook@refsectioninit}}%
+     {\csuse{blx@hook@refsectioninit}\csuse{blx@hook@refsection@following}}
      {}{\PackageWarning{biblatex-publist}{Patching refsection failed!}}
 }{}
 

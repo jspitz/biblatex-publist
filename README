@@ -46,6 +46,10 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.3 (forthcoming)
+	- Change of sorting (via plsorting or plauthorhandling via \ExecutePublistOptions
+	  now works for all subsequent refsections.
+
 * V. 2.2 (2022-03-01)
 	- Fix plsorting with custom sorting schemes (#44).
 

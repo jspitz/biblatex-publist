@@ -369,20 +369,9 @@ The executed options apply as of the next bibliography (\jfcsmacro{printbibliogr
 Options that \emph{cannot} be changed within a document that way are \joption{plnumbering} and \joption{pubstateextra},
 as these options employ features that can only be set once per document.
 However, please refer to sec.~\ref{sec:numbers} on how to address some frequently requested numbering changes.
+Also note that with the \joption{plauthor*} options, as opposed to repeated \jcsmacro{plauthorname} calls,
+repeated setting of these name options respectively \emph{overwrite}, and not extend, the previous name settings.
 
-Also note that 
-\begin{itemize}
-	\setlength\itemsep{0pt}
-	\item with the \joption{plauthor*} options, as opposed to repeated \jcsmacro{plauthorname} calls,
-	      repeated setting of these name options respectively \emph{overwrite}, and not extend, the previous name
-	      settings.
-	\item With \joption{plauthorhandling}, \bpl\ uses different sorting schemes for \joption{omit} (\texttt{ydt})
-	      and \joption{highlight} (\texttt{yndt}), considering the names as sorting factor only in the latter case
-	      (cf. sec.~\ref{sec:sorting}).
-	      Changing this option within a document, however, does \emph{not} adjust the sorting scheme if you use
-	      refsections (to make it work, \jfcsmacro{newrefcontext[sorting=<sorting scheme>]} will have to be set
-	      within each refsection). This is a \bibltx\ limitation which also applies to \joption{plsorting}.
-\end{itemize}
 
 \subsection{Numbers Games}\label{sec:numbers}
 
@@ -909,6 +898,12 @@ refsection.
 \section{Revision Log}
 
 \begin{description}
+	
+	\item [{V. 2.3 (forthcoming):}]~
+	\begin{itemize}
+		\item Change of sorting (via \joption{plsorting} or \joption{plauthorhandling})
+		      via \jcsmacro{ExecutePublistOptions} now works for all subsequent refsections.
+	\end{itemize}
 	
 	\item [{V. 2.2 (2023/03/01):}]~
 	\begin{itemize}
