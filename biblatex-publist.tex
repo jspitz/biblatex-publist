@@ -267,10 +267,11 @@ To change the order to \enquote{Given Names Lastname}, pass the option \joption{
 
 \item [{\joption{fixyear{[}=true|false{]}}}] default: \emph{true}.
 
-By default, the year (or pubstate, if no year is given) is positioned in a fixed place
-(at the beginning with \joption{plauthorhandling=omit}, after the author list with
-\joption{plauthorhandling=highlight}). If you want to place the year at the position determined
-by your base style instead, use \joption{fixyear=false}.
+By default, the year (or pubstate, if no year is given) is positioned on a fixed slot
+(at the very beginning with \joption{plauthorhandling=omit}, after the author list with
+\joption{plauthorhandling=highlight}). If you want to have the year at the position determined
+by your base style instead, use \joption{fixyear=false}. Note that this removes any highlighting
+of the year, independent of \joption{hlyear}.
 
 \item [{\joption{hlyear{[}=true|false{]}}}] default: \emph{true}.\footnote{%
    Named \joption{boldyear} up to \bpl\ 1.27. The old option is still supported.}
@@ -914,7 +915,7 @@ until further change).
 	
 	\item [{V. 2.4 (forthcoming):}]~
 	\begin{itemize}
-		\item New option \joption{fixyear} do opt-out special year handling and positioning.
+		\item New option \joption{fixyear} to opt-out special year handling and positioning.
 	\end{itemize}
 	
 	\item [{V. 2.3 (2023/03/18):}]~

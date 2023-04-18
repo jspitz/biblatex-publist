@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.4 (forthcoming)
+	- New option "fixyear" to opt-out special year handling and positioning (#45)
+
 * V. 2.3 (2023-03-18)
 	- Change of sorting by means of \ExecutePublistOptions (via plsorting
 	  or plauthorhandling) now works for all subsequent refsections.
