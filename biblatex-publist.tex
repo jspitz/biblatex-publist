@@ -265,12 +265,20 @@ it is highlighted instead (set in bold face by default; see sec.~\ref{sec:auxmac
 By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order \enquote{Lastname, Given Names}.
 To change the order to \enquote{Given Names Lastname}, pass the option \joption{nameorder=given-family} to \bibltx.
 
+\item [{\joption{fixyear{[}=true|false{]}}}] default: \emph{true}.
+
+By default, the year (or pubstate, if no year is given) is positioned in a fixed place
+(at the beginning with \joption{plauthorhandling=omit}, after the author list with
+\joption{plauthorhandling=highlight}). If you want to place the year at the position determined
+by your base style instead, use \joption{fixyear=false}.
+
 \item [{\joption{hlyear{[}=true|false{]}}}] default: \emph{true}.\footnote{%
-   Named \joption{boldyear} up to \bpl\ 1.27. The old option is till supported.}
+   Named \joption{boldyear} up to \bpl\ 1.27. The old option is still supported.}
 
 By default, the year (or pubstate, if no year is given) is highlighted (printed in bold face).
 To prevent this, pass the option \joption{hlyear=false} to \bibltx. The form of highlighting
-can be customized as well (see sec.~\ref{sec:auxmacros}).
+can be customized as well (see sec.~\ref{sec:auxmacros}). Note that this has no effect if
+\joption{fixyear=false}.
 
 \item [{\joption{marginyear{[}=true|false{]}}}] default: \emph{false}.
 
@@ -647,6 +655,10 @@ Note, further, that the order of author's and editor's given and family names is
 differ from what you expect with specific base styles. To change the order,
 use the package option \joption{nameorder} (see sec.~\ref{sec:addopts}).
 
+The same applies to the position of the year, which is hardcoded to a specific position.
+This can be opted out by the package option \joption{fixyear=false}
+(see sec.~\ref{sec:addopts}). With this option, however, you lose the possibility to highlight the year.
+
 
 \subsection{Clickable Titles}\label{sec:clicktitles}
 
@@ -899,6 +911,11 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	
+	\item [{V. 2.4 (forthcoming):}]~
+	\begin{itemize}
+		\item New option \joption{fixyear} do opt-out special year handling and positioning.
+	\end{itemize}
 	
 	\item [{V. 2.3 (2023/03/18):}]~
 	\begin{itemize}
