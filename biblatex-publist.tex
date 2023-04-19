@@ -621,6 +621,18 @@ is controlled by the \jcsmacro*{plauthorhl} macro, which has the following defau
 \end{lstlisting}
 If you need another form of highlighting, redefine this macro via \jfcsmacro{renewcommand{*}}.
 
+The embracing of authors with \joption{plauthorhandlung=omit} (by default: in parentheses) is
+controlled by the two macros \jcsmacro*{bplopenoa} and \jcsmacro*{bplcloseoa} which are defined
+by default as:
+\begin{lstlisting}[moretexcs={[2]{providecommand,bplopenoa,bplcloseoa,bibopenparen,bibcloseparen}}]
+\providecommand*{\bplopenoa}{\bibopenparen}% (...
+\providecommand*{\bplcloseoa}{\bibcloseparen}% ...)
+\end{lstlisting}
+You can remove the parentheses by redefining these macros with empty arguments, respectively,
+or add other delimiters instead. Note that if you use \jfcsmacro{bibopenbracket} in \jfcsmacro{bplopenoa},
+you must also use \jfcsmacro{bibclosebracket} in \jfcsmacro{bplcloseoa}
+to balance the delimitation (as with \jfcsmacro{bibopenparen} and \jfcsmacro{bibcloseparen}).
+
 The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
 \jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is \texttt{0pt}).
 This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
@@ -647,7 +659,7 @@ In order to do so, enter the following \emph{before} loading \bibltx:
 \begin{lstlisting}[moretexcs={[2]{publistbasestyle}}]
 \newcommand*\publistbasestyle{<stylename>}
 \end{lstlisting}
-where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) you want to use, without the \emph{bbx} entension (e.\,g., \lstinline|\newcommand*\publistbasestyle{mla}|).
+where <stylename> is the name of the biblatex bibliography style (\emph{bbx}) you want to use, without the \emph{bbx} entension (e.\,g., \lstinline[moretexcs={[2]{publistbasestyle}}]|\newcommand*\publistbasestyle{mla}|).
 
 Note, though, that there is (and can be) no guarantee that \bpl\ will work with all styles, although it has been successfully tested with several. Be prepared to bump into \LaTeX\ errors and carefully check the output for correctness if you try a different base style.
 
@@ -916,6 +928,8 @@ until further change).
 	\item [{V. 2.4 (forthcoming):}]~
 	\begin{itemize}
 		\item New option \joption{fixyear} to opt-out special year handling and positioning.
+		\item Make delimiters of author list with \joption{plauthorhandling=omit} configurable
+		      (see sec.~\ref*{sec:auxmacros}).
 	\end{itemize}
 	
 	\item [{V. 2.3 (2023/03/18):}]~

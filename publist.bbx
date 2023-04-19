@@ -1190,6 +1190,9 @@
 \apptocmd{\abx@macro@endrelated}{\global\togglefalse{isinrelated}}{}%
          {\PackageWarning{biblatex-publist}{Patching endrelated failed!}}
 
+\providecommand*\bplopenoa{\bibopenparen}
+\providecommand*\bplcloseoa{\bibcloseparen}
+
 % Omission/highlighting routine
 % (common code for authors and editors)
 % \usebibmacro{bpl:handlenames}[author|editor]
@@ -1256,7 +1259,7 @@
     \else% \if@hlauthor false
         \ifthenelse{\value{listcount}=1}%
             {\ifthenelse{\value{nonpl#1s}>0\AND{\value{pl#1s}}>0}%
-                 {\iftoggle{isinrelated}{}{\bibopenparen\bibstring{with}\addspace}}%
+                 {\iftoggle{isinrelated}{}{\bplopenoa\bibstring{with}\addspace}}%
                  {}%
              \iftoggle{isplauthor}%
                  {\global\toggletrue{plauthorprecedes}}%
@@ -1296,7 +1299,7 @@
         %
         \usebibmacro{bpl:name:andothers}%
         \ifthenelse{\value{nonpl#1s}>0\AND{\value{pl#1s}}>0\AND\value{listcount}=\value{liststop}}%
-            {\unspace\iftoggle{isinrelated}{}{\bibcloseparen}}%
+            {\unspace\iftoggle{isinrelated}{}{\bplcloseoa}}%
             {}%
     \fi% end of \if@hlauthor else condition
 }
