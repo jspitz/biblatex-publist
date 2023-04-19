@@ -84,6 +84,8 @@
 \newcommand*\jfoption[1]{\texttt{#1}}
 \newcommand*\jfmacro[1]{\texttt{#1}}
 \newcommand*\jfcsmacro[1]{\jfmacro{\textbackslash{#1}}}
+\newcommand*\jmmacro[1]{\@marginmacro{#1}}
+\newcommand*\jmcsmacro[1]{\@marginmacro{\textbackslash{#1}}}
 \def\jenviron{\@ifstar\@@jenviron\@jenviron}
 \newcommand*\@jenviron[1]{\textbf{\texttt{#1}}}
 \newcommand*\@@jenviron[1]{\marginpar{\raggedleft\small\textcolor{Maroon}{\texttt{#1}}}%
@@ -625,29 +627,29 @@ The embracing of authors with \joption{plauthorhandlung=omit} (by default: in pa
 controlled by the two macros \jcsmacro*{bplopenoa} and \jcsmacro*{bplcloseoa} which are defined
 by default as:
 \begin{lstlisting}[moretexcs={[2]{providecommand,bplopenoa,bplcloseoa,bibopenparen,bibcloseparen}}]
-\providecommand*{\bplopenoa}{\bibopenparen}% (...
-\providecommand*{\bplcloseoa}{\bibcloseparen}% ...)
+\providecommand*{\bplopenoa}{\bibopenparen}
+\providecommand*{\bplcloseoa}{\bibcloseparen}
 \end{lstlisting}
 You can remove the parentheses by redefining these macros with empty arguments, respectively,
 or add other delimiters instead. Note that if you use \jfcsmacro{bibopenbracket} in \jfcsmacro{bplopenoa},
 you must also use \jfcsmacro{bibclosebracket} in \jfcsmacro{bplcloseoa}
 to balance the delimitation (as with \jfcsmacro{bibopenparen} and \jfcsmacro{bibcloseparen}).
 
-The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
-\jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is \texttt{0pt}).
-This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
-space the item number needs.
+The\jmmacro{plextrainfo} embracing of extra information (brackets by default) can be customized by changing
+\begin{lstlisting}[moretexcs={[4]{DeclareFieldFormat,mkbibbrackets}}]
+	\DeclareFieldFormat{plextrainfo}{\mkbibbrackets{#1}}
+\end{lstlisting}
 
-The separator between extra information (peer review, OpenAccess) can be redefined.
+The\jmcsmacro{plextrainfosep} separator between extra information (peer review, OpenAccess) can be redefined.
 The default definition is:
 \begin{lstlisting}[moretexcs={[4]{plextrainfosep,addsemicolon,addspace}}]
 \newcommand*\plextrainfosep{\addsemicolon\addspace}
 \end{lstlisting}
 %
-The embracing of extra information (brackets by default) can be customized by changing
-\begin{lstlisting}[moretexcs={[4]{DeclareFieldFormat,mkbibbrackets}}]
-\DeclareFieldFormat{plextrainfo}{\mkbibbrackets{#1}}
-\end{lstlisting}
+The indendation of the bibliographic entries (lines > 1) can be adjusted by setting the length
+\jmacro*{extralabel\-numberwidth} via \jfcsmacro{setlength} (default is \texttt{0pt}).
+This might be needed for long bibliographies (> 99 entries) in order to adjust to the extra
+space the item number needs.
 
 \subsection{Using a Different Base Style}\label{sec:basestyle}
 
