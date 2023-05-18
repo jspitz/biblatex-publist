@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.4 (forthcoming)
+* V. 2.4 (2023-05-18)
 	- New option "fixyear" to opt-out special year handling and positioning (#45).
 	- Make delimiters of author list with plauthorhandling=omit configurable.
 
