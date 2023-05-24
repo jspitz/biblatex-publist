@@ -467,6 +467,22 @@ repeatedly  and applies to all subsequent items as of the next section that foll
 For the numbering output by \jfcsmacro{citeitem}, analogous shifting can be done via the macro
 \jcsmacro*{shiftciteitem}.
 
+\subsection{Statistics}\label{sec:stats}
+
+The macro \jcsmacro*{GetTotalCount} outputs the total number of entries in your publication list.
+
+If you want to output the number of publications per section (when employing \jfcsmacro{refsection}),
+you can use the macro \jcsmacro*{GetSectionCount} which takes one optional argument, the section
+number. For instance,
+\begin{lstlisting}[moretexcs={[4]{GetSectionCount}}]
+\GetSectionCount[1]
+\end{lstlisting}
+outputs the number of items in the first section. If the optional argument is not given, the
+statistics for the current section is output (this requires the macro to be within a \jfcsmacro{refsection}).
+
+Note that both values might require additional \LaTeX\ runs to get properly set. You will
+get a package warning if additional runs are needed.  
+
 \subsection{Handling Multiple Authors and\slash or Name Variants}\label{sec:multiauthors}
 
 If multiple \jcsmacro{plauthorname} specifications have been entered (or a \jcsmacro{plauthorname} specification
@@ -926,6 +942,12 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	
+	\item [{V. 2.5 (forthcoming):}]~
+	\begin{itemize}
+		\item New macros \jcsmacro{GetSetionCount[<int>]} and \jcsmacro{GetTotalCount}
+		to output statistics (see sec.~\ref*{sec:stats}).
+	\end{itemize}
 	
 	\item [{V. 2.4 (2023/05/18):}]~
 	\begin{itemize}

@@ -553,6 +553,20 @@
      {}{\PackageWarning{biblatex-publist}{Patching refsection failed!}}
 }{}
 
+\newcommand*\GetSectionCount[1][\empty]{%
+  \edef\bpl@secno{#1}%
+  \ifx\bpl@secno\empty%
+    \csnumdef{bpltmprefsection}{\c@refsection}%
+    \csuse{bpl@secitems:\bpltmprefsection}%
+  \else%
+    \csuse{bpl@secitems:#1}%
+  \fi%
+}
+
+\newcommand*\GetTotalCount{%
+  \csuse{bpl@items}%
+}
+
 %
 % Removing braces from names (courtesy of egreg at
 % http://tex.stackexchange.com/a/79583/19291)
@@ -838,30 +852,33 @@
       \fi
       \csnumgdef{bpl@saverefsection}{\c@refsection}%
       \if@bpl@reversenum%
-         % Write item count to the bpx file
+         % Check if we have a changed value
          \global\boolfalse{needbpxrerun}%
+         \ifcsdef{bpl@items:\therefsection}{%
+             \ifnumequal{\value{bplitems}}{\numexpr\csuse{bpl@items:\therefsection}\relax}{}{%
+                  \global\booltrue{needbpxrerun}
+             }
+         }{\global\booltrue{needbpxrerun}}
+         % Write item count to the bpx file
          \if@filesw%
-           % Check if we have a changed value
-           \ifcsdef{bpl@items:\therefsection}{%
-              \ifnumequal{\value{bplitems}}{\numexpr\csuse{bpl@items:\therefsection}\relax}{}{%
-                   \global\booltrue{needbpxrerun}
-              }
-           }{\global\booltrue{needbpxrerun}}
            \protected@write\bpl@bpxfile{}{%
               \protect\csdef{bpl@items:\therefsection}{\thebplitems}%
-              \protect\csdef{bpl@items}{\thebplitems}%
-              \protect\csdef{bpl@secitems:\therefsection}{\thebplsecitems}%
               \protect\csdef{bpl@savesecitems:\theplnumgroup}{\thebplbgitems}%
            }%
          \fi
       \fi
+      % Write item count to the bpx file
+      \if@filesw%
+         \protected@write\bpl@bpxfile{}{%
+             \protect\csdef{bpl@items}{\thebplitems}%
+             \protect\csdef{bpl@secitems:\therefsection}{\thebplsecitems}%
+         }%
+      \fi
     }
     {%
-      \if@bpl@reversenum%
-         % We count all really output items for proper reverse numbering
-         % (global and per section)
-         \stepcounter{bplitems}%
-      \fi%
+      % We count all really output items for proper reverse numbering
+      % (global and per section) and \GetTotalCount
+      \stepcounter{bplitems}%
       \stepcounter{bplsecitems}%
       \ifbool{plnumgroup}{%
          \stepcounter{bplbgitems}%
@@ -916,30 +933,28 @@
 % Reverse numbering
 %
 \AtBeginDocument{%
-  \if@bpl@reversenum
-    \newread\bpl@read@bpxfile
-    \immediate\openin\bpl@read@bpxfile=\jobname.bpx
-    \loop\unless\ifeof\bpl@read@bpxfile
-        \read\bpl@read@bpxfile to\bpx@data
-        \ifeof\bpl@read@bpxfile%
-        \else
-            \bpx@data
-        \fi
-    \repeat
-    \immediate\closein\bpl@read@bpxfile
-    \newwrite\bpl@bpxfile
-    \immediate\openout\bpl@bpxfile=\jobname.bpx
-    \if@filesw%
-        \protected@write\bpl@bpxfile{}{\@percentchar\space biblatex-publist auxiliary file:
-                                       count of items for reverse numbering}%
-    \fi
-    \AtEndDocument{%
-       \ifbool{needbpxrerun}{%
-           \PackageWarning{biblatex-publist}{Please rerun LaTeX!\MessageBreak
-                                             Still counting items}%
-       }{}
-    }
+  \newread\bpl@read@bpxfile
+  \immediate\openin\bpl@read@bpxfile=\jobname.bpx
+  \loop\unless\ifeof\bpl@read@bpxfile
+      \read\bpl@read@bpxfile to\bpx@data
+      \ifeof\bpl@read@bpxfile%
+      \else
+          \bpx@data
+      \fi
+  \repeat
+  \immediate\closein\bpl@read@bpxfile
+  \newwrite\bpl@bpxfile
+  \immediate\openout\bpl@bpxfile=\jobname.bpx
+  \if@filesw%
+      \protected@write\bpl@bpxfile{}{\@percentchar\space biblatex-publist auxiliary file:
+                                     count of items for reverse numbering and stats}%
   \fi
+  \AtEndDocument{%
+     \ifbool{needbpxrerun}{%
+         \PackageWarning{biblatex-publist}{Please rerun LaTeX!\MessageBreak
+                                           Still counting items}%
+     }{}
+  }
 }
 
 \AtEndOfPackage{%
