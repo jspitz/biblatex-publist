@@ -47,7 +47,7 @@ instructions.
 == CHANGES ==
 
 * V. 2.5 (forthcoming):
-	- New macros \GetSetionCount[<int>] and \GetTotalCount to output statistics (#46).
+	- New macros \GetSectionCount[<int>] and \GetTotalCount to output statistics (#46).
 
 * V. 2.4 (2023-05-18)
 	- New option "fixyear" to opt-out special year handling and positioning (#45).
