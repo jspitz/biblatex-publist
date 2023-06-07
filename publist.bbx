@@ -1402,8 +1402,10 @@
                \usebibmacro{bpl:year+labelyear}%
                \addspace%
              \fi%
-             \printnames[][-\value{listtotal}]{author}%
-             \setunit{\addspace}%
+             \ifthenelse{\value{nonplauthors}>0\AND{\value{plauthors}}>0}
+                {\printnames[][-\value{listtotal}]{author}%
+                 \setunit{\addspace}}%
+                {}%
              \iffieldundef{nameaddon}
                  {}
                  {%
