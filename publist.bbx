@@ -1507,6 +1507,10 @@
              \printtext[parens]{%
              \printfield{issue}%
              \setunit*{\addspace}%
+             \if@fixyear\else%
+                % turn of mergedate, as this doesn't play well with us.
+                \renewbibmacro*{bbx:ifmergeddate}{\@secondoftwo}%
+             \fi%
              \usebibmacro{date}}%
             }%
         \newunit%
