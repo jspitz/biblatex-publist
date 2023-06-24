@@ -1566,6 +1566,7 @@
                      {}%
                      {%
                       \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
+                      \if@fixyear\else\savefield{pubstate}{\bbx@lasthash}\fi%
                      }%
                 }%
         }{%
@@ -1573,6 +1574,7 @@
                 {}%
                 {%
                  \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{year}}}}%
+                 \if@fixyear\else\savefield{year}{\bbx@lasthash}\fi%
                 }%
         }%
     \fi

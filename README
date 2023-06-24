@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.6 (forthcoming):
+	- Fix marginyear output with fixyear=false.
+
 * V. 2.5 (2023-06-08):
 	- New macros \GetSectionCount[<int>] and \GetTotalCount to output statistics (#46).
 	- Fix issues with fixyear=false (#47).
