@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.6 (forthcoming):
+* V. 2.6 (2023-07-01):
 	- Fix marginyear output with fixyear=false.
 
 * V. 2.5 (2023-06-08):
