@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.7 (2023-10-07):
+	- Fix acending numbering without refsections (#49).
+
 * V. 2.6 (2023-07-01):
 	- Fix marginyear output with fixyear=false.
 
