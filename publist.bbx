@@ -72,10 +72,7 @@
 % Valid options
 %
 
-% We use l3keys here since (1) LaTeX2e keys are rather
-% new and (2) do not provide for choice keys yet.
-\ExplSyntaxOn
-\keys_define:nn { bpl }
+\DeclareKeys[bpl]
 {
     % plauthorname=<name>
     % Store author family name
@@ -282,7 +279,7 @@
 %
 % Deprecated options
 %
-\keys_define:nn { bpl-deprecated }
+\DeclareKeys[bpl-deprecated]
 {
     % plnumbered=<true|false|reset>
     % Select numbering scheme
@@ -405,20 +402,17 @@
 % Command to set options
 \NewDocumentCommand { \ExecutePublistOptions } { m }
 {
-  \keys_set:nn { bpl } { #1 }
+  \SetKeys[bpl]{#1}
 }
 
 % Command to set deprecated options
 \NewDocumentCommand { \ExecuteDepPublistOptions } { m m }
 {
-  \keys_set:nn { bpl-deprecated } { #1 }
-  
+  \SetKeys[bpl-deprecated]{#1}
   \PackageWarning{biblatex-publist}%
              {The~ option~ `#1'~ is~ deprecated!\MessageBreak
               Please~ use~ the~ option~ `#2'~ instead.}
 }
-
-\ExplSyntaxOff
 
 % Biblatex options directly feed into the l3 options
 %
