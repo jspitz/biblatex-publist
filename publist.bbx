@@ -1153,27 +1153,34 @@
 \newbibmacro*{bpl:omissiondelim}[1][author]
 {%
     \ifthenelse{\value{listcount}=1}{\global\togglefalse{plnameafteromission}}{%
+        % listcount > 1
         \ifnumless{\value{listcount}}{\value{liststop}}%
-            {%
+            {% listcount < liststop
               \ifnumgreater{\value{listcount}}{\value{realliststop}}{%
-                \iftoggle{plnameomitted}{%
+                % listcount > realliststop
+                \iftoggle{plnameomitted}{% [...] precedes
                   \multinamedelim\iftoggle{isplauthor}{\plnameomission\global\togglefalse{plnameomitted}%
                                                        \global\toggletrue{plnameafteromission}}{}%
-                }{%
+                }{% an author name precedes
                   \ifnumless{\value{pl#1}}{\value{pl#1s}}{%
+                    % more plauthors left
                     \iftoggle{isplauthor}
                         {\multinamedelim\plnameomission\global\togglefalse{plnameomitted}}
                         {\global\toggletrue{plnameomitted}}%
-                  }{}%
+                  }{% last plauthor
+                     \iftoggle{isplauthor}
+                        {\multinamedelim}
+                        {}%
+                  }%
                 }%
-              }{%
+              }{% listcount >= realliststop
                 \multinamedelim\global\togglefalse{plnameomitted}%
               }%
-            }{%
-              \ifnumgreater{\value{listcount}}{\value{realliststop}}{%
+            }{% listcount >= liststop
+              \ifnumgreater{\value{listcount}}{\value{realliststop}}{% listcount > realliststop
                 \iftoggle{isplauthor}{\iftoggle{plnameomitted}{\multinamedelim\plnameomission}{}%
                                       \finalnamedelim\global\togglefalse{plnameomitted}}{}%
-              }{%
+              }{% listcount =< realliststop
                 \iftoggle{plnameomitted}{%
                      \ifnumequal{\value{listcount}}{\value{liststop}}%
                             {\finalnamedelim}
