@@ -1105,6 +1105,43 @@
 
 \defbibfilter{mine}{category=filtered}
 
+%
+% bibchecks
+%
+% check to exclude submitted work (which is under review)
+% from publist
+\defbibcheck{nosubmitted}{%
+  \edef\tmpps{\bibstring{submitted}}%
+  \iffieldequals{pubstate}{\tmpps}{\skipentry}{}%
+}
+
+% check to exclude work in preparation
+% from publist
+\defbibcheck{noprepared}{%
+  \edef\tmpps{\bibstring{inpreparation}}%
+  \iffieldequals{pubstate}{\tmpps}{\skipentry}{}%
+}
+
+% check to exclude all work which is not (pre-)published
+\defbibcheck{onlypublished}{%
+  \iffieldundef{pubstate}{}{%
+     \edef\tmpps{\bibstring{prepublished}}%
+     \iffieldequals{pubstate}{\tmpps}{}{\skipentry}%
+  }%
+}
+
+% check to exclude all work which is not accepted or published
+\defbibcheck{onlyaccepted}{%
+  \iffieldundef{pubstate}{}{%
+     \edef\tmpps{\bibstring{prepublished}}%
+     \edef\tmppss{\bibstring{forthcoming}}%
+     \iffieldequals{pubstate}{\tmpps}{}{%
+       \iffieldequals{pubstate}{\tmppss}{}{%
+        \skipentry}%
+      }%
+  }%
+}
+
 
 %
 % Count non-plauthors

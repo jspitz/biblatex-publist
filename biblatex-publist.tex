@@ -862,6 +862,28 @@ entries of diverse type and authors, specify:
 Note that this method sometimes requires several reruns of \texttt{latex}
 to fix the numbering.
 
+Sometimes you might also want to omit some publications from the list which are not yet
+published or not yet accepted (e.g., because they are under blind review and you do not
+want to reveal your identity yet). To this end, \bpl\ features some \joption{bibchecks}
+(for the concept, please refer to \cite[sec.~3.8.2]{bibltx}). Bibchecks can be activated
+by passing \joption{check=<bibcheck>} to the optional argument of \jfcsmacro{printbibliography}.
+
+The following bibchecks are available:
+\begin{itemize}
+	\item \joption{nosubmitted}: omits all entries with pubstate \joption{submitted}.
+	\item \joption{noprepared}: omits all entries with pubstate \joption{inpreparation}.
+	\item \joption{onlypublished}: omits all unpublished entries (i.e., entries that have
+	      a pubstate) with the exception of \joption{prepublished} entries.
+	\item \joption{onlyaccepted}: omits all unpublished entries (i.e., entries that have
+	      a pubstate) with the exception of \joption{prepublished} and \joption{forthcoming}
+	      (and thus accepted) entries.
+\end{itemize}
+%
+Several of these bibchecks might be used in a row, e.g.:
+\begin{lstlisting}[moretexcs={[1]{printbibliography}}]
+\printbibliography[heading=none,filter=mine,check=nosubmitted,check=noprepared]
+\end{lstlisting}
+
 \section{Sorting\label{sec:sorting}}
 
 
@@ -942,6 +964,11 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 2.9 (forthcoming):}]~
+	\begin{itemize}
+		\item Add bibchecks to exclude (specific kinds of) unpublished work
+		      (see sec.~\ref{sec:filtering}).
+	\end{itemize}
 
 	\item [{V. 2.8 (2024/03/08):}]~
 	\begin{itemize}

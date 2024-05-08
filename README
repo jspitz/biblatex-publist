@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.9 (forthcoming):
+	- Add bibchecks to exclude (specific kinds of) unpublished work.
+
 * V. 2.8 (2024-03-08):
 	- Fix delimiter with plauthor second in a truncated author list (#50).
 
