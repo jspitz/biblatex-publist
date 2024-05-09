@@ -1142,6 +1142,23 @@
   }%
 }
 
+% check to exclude all work which is not peer-reviewed
+\defbibcheck{onlypr}{%
+  \iffieldundef{peerreview}{\skipentry}{%
+     \edef\tmppr{\bibstring{no}}%
+     \iffieldequals{peerreview}{\tmpps}{\skipentry}{}%
+  }%
+}
+
+% check to exclude all work which *is* peer-reviewed
+\defbibcheck{nopr}{%
+  \iffieldundef{peerreview}{}{%
+     \edef\tmppr{\bibstring{no}}%
+     \iffieldequals{peerreview}{\tmpps}{}{\skipentry}%
+  }%
+}
+
+
 
 %
 % Count non-plauthors

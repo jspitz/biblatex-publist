@@ -840,6 +840,8 @@ Note that the \jfcsmacro{printbibliography} option
 
 \section{Filtering\label{sec:filtering}}
 
+\subsection{Filter out own work}
+
 If you have a bibliographic database consisting not only of your own
 publications, you can extract yours with the bibliography filter \joption{mine},
 which has to be passed to \jfcsmacro{printbibliography}, as in:
@@ -862,13 +864,16 @@ entries of diverse type and authors, specify:
 Note that this method sometimes requires several reruns of \texttt{latex}
 to fix the numbering.
 
+\subsection{Filter on publication or peer-review status}\label{sec:filterbc}
+
 Sometimes you might also want to omit some publications from the list which are not yet
 published or not yet accepted (e.g., because they are under blind review and you do not
 want to reveal your identity yet). To this end, \bpl\ features some \joption{bibchecks}
 (for the concept, please refer to \cite[sec.~3.8.2]{bibltx}). Bibchecks can be activated
-by passing \joption{check=<bibcheck>} to the optional argument of \jfcsmacro{printbibliography}.
+by passing \joption{check=<bibcheck>} to the optional argument of \jfcsmacro{printbibliography}
+(see example~\ref{bibcheckex}).
 
-The following bibchecks are available:
+The following bibchecks are available to this end:
 \begin{itemize}
 	\item \joption{nosubmitted}: omits all entries with pubstate \joption{submitted}.
 	\item \joption{noprepared}: omits all entries with pubstate \joption{inpreparation}.
@@ -879,8 +884,18 @@ The following bibchecks are available:
 	      (and thus accepted) entries.
 \end{itemize}
 %
+The bibchecks below let you filter out publications depending on their peer-review
+setting. This is helpful if you want to differentiate peer-reviewed from non-peer-reviewed
+work in your publication list:
+\begin{itemize}
+	\item \joption{onlypr}: include only peer-reviewed entries (displays only titles which have
+	      the \texttt{peerreview} field set and do not have it set to \texttt{no}).
+	\item \joption{nopr}: exclude peer-reviewed entries (omits all entries which have the
+	      \texttt{peerreview} field set, except for those which have it set to \texttt{no}).
+\end{itemize}
+%
 Several of these bibchecks might be used in a row, e.g.:
-\begin{lstlisting}[moretexcs={[1]{printbibliography}}]
+\begin{lstlisting}[moretexcs={[1]{printbibliography}},caption={Using bibchecks},label={bibcheckex}]
 \printbibliography[heading=none,filter=mine,check=nosubmitted,check=noprepared]
 \end{lstlisting}
 
@@ -964,10 +979,16 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 2.10 (forthcoming):}]~
+	\begin{itemize}
+		\item Add bibchecks to show only/no peer-reviewed items
+		(see sec.~\ref{sec:filterbc}).
+	\end{itemize}
+
 	\item [{V. 2.9 (2025/05/09):}]~
 	\begin{itemize}
 		\item Add bibchecks to exclude (specific kinds of) unpublished work
-		      (see sec.~\ref{sec:filtering}).
+		      (see sec.~\ref{sec:filterbc}).
 	\end{itemize}
 
 	\item [{V. 2.8 (2024/03/08):}]~

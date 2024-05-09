@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.10 (forthcoming):
+	- Add bibchecks to show only/no peer-reviewed items.
+
 * V. 2.9 (2025-05-09):
 	- Add bibchecks to exclude (specific kinds of) unpublished work.
 
