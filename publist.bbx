@@ -1112,21 +1112,25 @@
 % from publist
 \defbibcheck{nosubmitted}{%
   \edef\tmpps{\bibstring{submitted}}%
-  \iffieldequals{pubstate}{\tmpps}{\skipentry}{}%
+  \iffieldequals{pubstate}{\tmpps}{\skipentry}{%
+    \iffieldequalstr{pubstate}{submitted}{\skipentry}{}}%
 }
 
 % check to exclude work in preparation
 % from publist
 \defbibcheck{noprepared}{%
   \edef\tmpps{\bibstring{inpreparation}}%
-  \iffieldequals{pubstate}{\tmpps}{\skipentry}{}%
+  \iffieldequals{pubstate}{\tmpps}{\skipentry}{%
+    \iffieldequalstr{pubstate}{inpreparation}{\skipentry}{}}%
 }
 
 % check to exclude all work which is not (pre-)published
 \defbibcheck{onlypublished}{%
   \iffieldundef{pubstate}{}{%
      \edef\tmpps{\bibstring{prepublished}}%
-     \iffieldequals{pubstate}{\tmpps}{}{\skipentry}%
+     \iffieldequals{pubstate}{\tmpps}{%
+       \iffieldequalstr{pubstate}{prepublished}{}{\skipentry}%
+     }{\skipentry}%
   }%
 }
 
@@ -1137,8 +1141,12 @@
      \edef\tmppss{\bibstring{forthcoming}}%
      \iffieldequals{pubstate}{\tmpps}{}{%
        \iffieldequals{pubstate}{\tmppss}{}{%
-        \skipentry}%
-      }%
+          \iffieldequalstr{pubstate}{prepublished}{}{%
+             \iffieldequalstr{pubstate}{forthcoming}{}{%
+               \skipentry}%
+          }%
+       }%
+     }%
   }%
 }
 
@@ -1146,7 +1154,9 @@
 \defbibcheck{onlypr}{%
   \iffieldundef{peerreview}{\skipentry}{%
      \edef\tmppr{\bibstring{no}}%
-     \iffieldequals{peerreview}{\tmpps}{\skipentry}{}%
+     \iffieldequals{peerreview}{\tmpps}{\skipentry}{%
+       \iffieldequalstr{peerreview}{no}{\skipentry}{}%
+     }%
   }%
 }
 
@@ -1154,7 +1164,9 @@
 \defbibcheck{nopr}{%
   \iffieldundef{peerreview}{}{%
      \edef\tmppr{\bibstring{no}}%
-     \iffieldequals{peerreview}{\tmpps}{}{\skipentry}%
+     \iffieldequals{peerreview}{\tmpps}{}{%
+       \iffieldequalstr{peerreview}{no}{}{\skipentry}
+     }%
   }%
 }
 
