@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.10 (forthcoming):
+* V. 2.10 (2025-06-17):
 	- Add bibchecks to show only/no peer-reviewed items.
 	- Fix bibchecks to work with braced and non-braced values.
 
