@@ -213,22 +213,22 @@ it defines the name(s) of the person(s) whose publications are listed.
 
 By default, the author\slash editor name(s) will be omitted completely
 for all publications which are authored or edited only by the specified person(s), as in:
-\begin{quote}
-\textbf{2012.} Some recent trends in gardening. In: \emph{Gardening
-Practice} 56, pp.~34--86.
-\end{quote}
+\begin{itemize}
+\item[{[1]}] \textbf{2012.} Some recent trends in gardening. In: \emph{Gardening
+             Practice} 56, pp.~34--86.
+\end{itemize}
 If there are co-authors\slash co-editors, your name(s) will be filtered
 out and the collaborators added in parentheses, as in:
-\begin{quote}
-\textbf{1987} (with John Doe and Mary Hall). Are there new trends
-in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
-\end{quote}
+\begin{itemize}
+\item[{[2]}] \textbf{1987} (with John Doe and Mary Hall). Are there new trends
+             in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
+\end{itemize}
 If \joption{plauthorhandling=highlight} is used (see next section), the plauthor(s)
 will be printed in bold face instead, as in:
-\begin{quote}
-	Doe, John, \textbf{Myself, Me} and Hall, Mary, \textbf{1987}. Are there new trends
-	in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
-\end{quote}
+\begin{itemize}
+\item[{[2]}] Doe, John, \textbf{Myself, Me} and Hall, Mary, \textbf{1987}. Are there new trends
+	         in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
+\end{itemize}
 %
 Note that \jcsmacro{plauthorname} expects the name constituents as they are recorded in the
 database (special characters are handled). The option \joption{plauthorfirstinit} (see next section),
@@ -246,7 +246,7 @@ References of this kind only make sense, of course, with global numbering and if
 since otherwise they would be too ambiguous.
 
 Please note that both \jcsmacro{citeitem} and \jcsmacro{citesecitem} are only available if you use the citestyle provided
-by \bpl.
+by \bpl. And of course they presuppose that you do not disable numbering.
 
 
 \subsection{Additional Options}\label{sec:addopts}
