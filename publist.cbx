@@ -34,6 +34,13 @@
 
 \RequireCitationStyle{numeric}
 
+\newcommand\citesecitem[1]{%
+  \ifcsdef{bpl@itemnumber:#1}{\mkbibbrackets{\csuse{bpl@itemnumber:#1}}}%
+  {%
+    \textbf{\mkbibbrackets{???}}%
+  }%
+}
+
 \DeclareCiteCommand{\citeitem}
   {\defcounter{maxnames}{999}%
    \boolfalse{citetracker}%

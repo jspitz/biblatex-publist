@@ -897,7 +897,14 @@
 
 \newrobustcmd{\mkbibdesc}[1]{%
     % Print labelnumber as actual number, plus item total
-    \number\numexpr\csuse{bpl@itemtotal}+#1+\csuse{bpl@shift@itemtotal}\relax%
+    \edef\bpl@current@item@no{\number\numexpr\csuse{bpl@itemtotal}+#1+\csuse{bpl@shift@itemtotal}\relax}%
+    \bpl@current@item@no%
+    % Store number in pbx file
+    \if@filesw%
+       \protected@write\bpl@bpxfile{}{%
+          \csedef{bpl@itemnumber:\thefield{entrykey}}{\bpl@current@item@no}%
+       }%
+    \fi%
 }%
 
 % Way to manually shift the numbering
