@@ -39,12 +39,36 @@
    \boolfalse{citetracker}%
    \boolfalse{pagetracker}%
    \usebibmacro{prenote}}
-  {\ifcsdef{bpl@itemnumber:\thefield{entrykey}}
-     {\mkbibbrackets{\csuse{bpl@itemnumber:\thefield{entrykey}}}}%
-     {\textbf{\mkbibbrackets{???}}}
+  {\usebibmacro{bpl:cite:secitem}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\DeclareCiteCommand*{\citesecitem}
+  {\defcounter{maxnames}{999}%
+   \boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\usebibmacro{bpl:cite:secitem}%
+   \usebibmacro{bpl:cite:secitemsec}%
   }
   {\multicitedelim}
   {\usebibmacro{postnote}}
+
+\newbibmacro*{bpl:cite:secitem}{%
+  \ifcsdef{bpl@itemnumber:\thefield{entrykey}}%
+     {\mkbibbrackets{\csuse{bpl@itemnumber:\thefield{entrykey}}}}%
+     {\textbf{\mkbibbrackets{???}}}%
+}
+
+\newcommand*\secitemsecref[1]{%
+   \mkbibparens{\bibstring{section}\addnbspace#1}%
+}
+
+\newbibmacro*{bpl:cite:secitemsec}{%
+  \ifcsdef{bpl@itemsec:\thefield{entrykey}}%
+     {\addspace\secitemsecref{\csuse{bpl@itemsec:\thefield{entrykey}}}}%
+     {}%
+}
 
 \DeclareCiteCommand{\citeitem}
   {\defcounter{maxnames}{999}%
