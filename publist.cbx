@@ -61,7 +61,7 @@
 }
 
 \newcommand*\secitemsecref[1]{%
-   \mkbibparens{\bibstring{section}\addnbspace#1}%
+   \mkbibparens{\bibstring{section}\addnbspace\ref{refsection:#1}}%
 }
 
 \newbibmacro*{bpl:cite:secitemsec}{%
