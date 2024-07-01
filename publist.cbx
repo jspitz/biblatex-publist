@@ -34,12 +34,17 @@
 
 \RequireCitationStyle{numeric}
 
-\newcommand\citesecitem[1]{%
-  \ifcsdef{bpl@itemnumber:#1}{\mkbibbrackets{\csuse{bpl@itemnumber:#1}}}%
-  {%
-    \textbf{\mkbibbrackets{???}}%
-  }%
-}
+\DeclareCiteCommand{\citesecitem}
+  {\defcounter{maxnames}{999}%
+   \boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\ifcsdef{bpl@itemnumber:\thefield{entrykey}}
+     {\mkbibbrackets{\csuse{bpl@itemnumber:\thefield{entrykey}}}}%
+     {\textbf{\mkbibbrackets{???}}}
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
 
 \DeclareCiteCommand{\citeitem}
   {\defcounter{maxnames}{999}%
