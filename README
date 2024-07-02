@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.11 (forthcoming):
+* V. 2.11 (2024-07-02):
 	- Add \citesecitem and \citesecitem* commands.
 	- Support multiple sections in \GetSectionCount.
 
