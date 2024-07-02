@@ -552,15 +552,28 @@
      {}{\PackageWarning{biblatex-publist}{Patching refsection failed!}}
 }{}
 
-\newcommand*\GetSectionCount[1][\empty]{%
-  \edef\bpl@secno{#1}%
-  \ifx\bpl@secno\empty%
-    \csnumdef{bpltmprefsection}{\c@refsection}%
+\ExplSyntaxOn
+
+\int_new:N \l_bpl_sec_cnt_int
+
+\NewDocumentCommand \GetSectionCount { >{\SplitList{,}} o }
+{
+  \IfNoValueTF{#1}{%
+    \csnumdef{bpltmprefsection}{\c@refsection}
     \csuse{bpl@secitems:\bpltmprefsection}%
-  \else%
-    \csuse{bpl@secitems:#1}%
-  \fi%
+  }{
+    \int_zero:N \l_bpl_sec_cnt_int
+    \ProcessList{#1}{\__bpl_add_section_count}
+    \int_use:N \l_bpl_sec_cnt_int
+  }
 }
+
+\cs_new:Npn \__bpl_add_section_count #1
+{
+   \int_add:Nn \l_bpl_sec_cnt_int { \use:c{bpl@secitems:#1} }
+}
+
+\ExplSyntaxOff
 
 \newcommand*\GetTotalCount{%
   \csuse{bpl@items}%

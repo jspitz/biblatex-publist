@@ -48,6 +48,7 @@ instructions.
 
 * V. 2.11 (forthcoming):
 	- Add \citesecitem and \citesecitem* commands.
+	- Support multiple sections in \GetSectionCount.
 
 * V. 2.10 (2024-06-17):
 	- Add bibchecks to show only/no peer-reviewed items.

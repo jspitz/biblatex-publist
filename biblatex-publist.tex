@@ -512,12 +512,14 @@ The macro \jcsmacro*{GetTotalCount} outputs the total number of entries in your 
 
 If you want to output the number of publications per section (when employing \jfcsmacro{refsection}),
 you can use the macro \jcsmacro*{GetSectionCount} which takes one optional argument, the section
-number. For instance,
+number or a comma-separated list of section numbers. For instance,
 \begin{lstlisting}[moretexcs={[4]{GetSectionCount}}]
 \GetSectionCount[1]
 \end{lstlisting}
-outputs the number of items in the first section. If the optional argument is not given, the
-statistics for the current section is output (this requires the macro to be within a \jfcsmacro{refsection}).
+outputs the number of items in the first section, whereas \lstinline!\GetSectionCount[1,2]! outputs
+the sum of the numbers of items in the first and second section.
+If the optional argument is not given, the statistic for the current section is output
+(this requires the macro to be within a \jfcsmacro{refsection}).
 
 Note that both values might require additional \LaTeX\ runs to get properly set. You will
 get a package warning if additional runs are needed.  
@@ -1020,6 +1022,7 @@ until further change).
 	\item [{V. 2.11 (forthcoming):}]~
 	\begin{itemize}
 		\item Add \jcsmacro{citesecitem} and \jcsmacro{citesecitem*} commands (see sec.~\ref{sec:citeitems}).
+		\item Support multiple sections in \jcsmacro{GetSectionCount}.
 	\end{itemize}
 	
 	\item [{V. 2.10 (2024/06/17):}]~
