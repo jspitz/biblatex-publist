@@ -552,6 +552,7 @@
      {}{\PackageWarning{biblatex-publist}{Patching refsection failed!}}
 }{}
 
+% Section count. We use l3 here to split the argument and do calculations
 \ExplSyntaxOn
 
 \int_new:N \l_bpl_sec_cnt_int
@@ -1789,68 +1790,8 @@
 %
 % l7n
 %
-\NewBibliographyString{with}
-\NewBibliographyString{parttranslationof}
-\NewBibliographyString{impactfactor}
-\NewBibliographyString{openaccess:true}
-\NewBibliographyString{openaccess:gold}
-\NewBibliographyString{openaccess:green}
-\NewBibliographyString{peerreview:sb}
-\NewBibliographyString{peerreview:db}
-\NewBibliographyString{peerreview:op}
-\NewBibliographyString{peerreview:co}
-\NewBibliographyString{peerreview:cc}
-\NewBibliographyString{peerreview:tp}
-\NewBibliographyString{peerreview:pp}
-\NewBibliographyString{peerreview:no}
-\DefineBibliographyStrings{english}{%
-    parttranslationof   = {partial translation of},
-    with                = {with},
-    impactfactor        = {impact factor},
-    openaccess:true     = {OpenAccess},
-    openaccess:gold     = {OpenAccess (gold)},
-    openaccess:green    = {OpenAccess (green)},
-    peerreview:sb       = {single blind peer review},
-    peerreview:db       = {double blind peer review},
-    peerreview:op       = {open peer review},
-    peerreview:co       = {collaborative peer review},
-    peerreview:cc       = {cascading peer review},
-    peerreview:tp       = {third-party peer review},
-    peerreview:pp       = {post-publication peer review},
-    peerreview:no       = {no peer review}
-}
-\DefineBibliographyStrings{french}{%
-    parttranslationof   = {traduction partielle de},
-    with                = {avec},
-    impactfactor        = {facteur d'impact},
-    openaccess:true     = {libre acc\`es},
-    openaccess:gold     = {libre acc\`es (dorée)},
-    openaccess:green    = {libre acc\`es (verte)},
-    peerreview:sb       = {\'{e}valuation par des pairs anonymis\'{e}s},
-    peerreview:db       = {\'{e}valuation par les pairs en double aveugle},
-    peerreview:op       = {\'{e}valuation par les pairs ouverte},
-    peerreview:co       = {\'{e}valuation par les pairs collaborative},
-    peerreview:cc       = {\'{e}valuation par les pairs en cascade},
-    peerreview:tp       = {\'{e}valuation par des pairs ext\'{e}rieurs},
-    peerreview:pp       = {\'{e}valuation par les pairs apr\`{e}s publication},
-    peerreview:no       = {pas d'\'{e}valuation par les pairs}
-}
-\DefineBibliographyStrings{german}{%
-    parttranslationof   = {Teil\"ubersetzung von},
-    with                = {mit},
-    impactfactor        = {Impactfaktor},
-    openaccess:true     = {OpenAccess},
-    openaccess:gold     = {OpenAccess (gold)},
-    openaccess:green    = {OpenAccess (gr\"un)},
-    peerreview:sb       = {Blindbegutachtung},
-    peerreview:db       = {Doppelblindbegutachtung},
-    peerreview:op       = {Offene Begutachtung},
-    peerreview:co       = {Kollaborative Begutachtung},
-    peerreview:cc       = {Cascading-Begutachtung},
-    peerreview:tp       = {Begutachtung durch Dritte},
-    peerreview:pp       = {Post-Publication-Begutachtung},
-    peerreview:no       = {keine Begutachtung}
-}
+
+\DeclareLanguageMappingSuffix{-publist}
 
 
 %

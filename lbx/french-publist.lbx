@@ -1,0 +1,70 @@
+% french-publist.lbx, extra localizations for biblatex-publist
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+% 
+% This Current Maintainer of this work is Jürgen Spitzmüller.
+%
+% This work consists of the file publist.bbx
+%
+%
+% This file adds some additional localizations that are used by
+% the biblatex-publist bibliography style
+%
+% Please send suggestions and bug reports to 
+% https://github.com/jspitz/biblatex-publist
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\bpl@version{2.11}
+\def\bpl@rdate{2024/07/02}
+
+\ProvidesFile{french-publist.lbx}[\bpl@rdate\space v.\bpl@version\space
+                                  biblatex-publist French localisation (JSP)]
+
+% Inherit general localization
+\InheritBibliographyExtras{french}
+
+% publist-specific additions
+\NewBibliographyString{with}
+\NewBibliographyString{parttranslationof}
+\NewBibliographyString{impactfactor}
+\NewBibliographyString{openaccess:true}
+\NewBibliographyString{openaccess:gold}
+\NewBibliographyString{openaccess:green}
+\NewBibliographyString{peerreview:sb}
+\NewBibliographyString{peerreview:db}
+\NewBibliographyString{peerreview:op}
+\NewBibliographyString{peerreview:co}
+\NewBibliographyString{peerreview:cc}
+\NewBibliographyString{peerreview:tp}
+\NewBibliographyString{peerreview:pp}
+\NewBibliographyString{peerreview:no}
+
+\DeclareBibliographyStrings{%
+    inherit             = {french},
+    parttranslationof   = {{traduction partielle de}{trad\adddotspace part\adddotspace de}},
+    with                = {{avec}{avec}},
+    impactfactor        = {{facteur d'impact}{FI}},
+    openaccess:true     = {{libre acc\`es}{libre acc\`es}},
+    openaccess:gold     = {{libre acc\`es (dorée)}{libre acc\`es (dorée)}},
+    openaccess:green    = {{libre acc\`es (verte)}{libre acc\`es (verte)}},
+    peerreview:sb       = {{\'{e}valuation par des pairs anonymis\'{e}s}{\'{e}val\adddotspace par des pairs anon\adddot}},
+    peerreview:db       = {{\'{e}valuation par les pairs en double aveugle}{\'{e}val\adddotspace par les pairs en double aveugle}},
+    peerreview:op       = {{\'{e}valuation par les pairs ouverte}{\'{e}val\adddotspace par les pairs ouverte}},
+    peerreview:co       = {{\'{e}valuation par les pairs collaborative}{\'{e}val\adddotspace par les pairs collab\adddot}},
+    peerreview:cc       = {{\'{e}valuation par les pairs en cascade}{\'{e}val\adddotspace par les pairs en cascade}},
+    peerreview:tp       = {{\'{e}valuation par des pairs ext\'{e}rieurs}{\'{e}val\adddotspace par des pairs ext\adddot}},
+    peerreview:pp       = {{\'{e}valuation par les pairs apr\`{e}s publication}{\'{e}val\adddotspace par les pairs apr\`{e}s pub\adddot}},
+    peerreview:no       = {{pas d'\'{e}valuation par les pairs}{pas d'\'{e}val\adddotspace par les pairs}}
+}
+
+\endinput
+

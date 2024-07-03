@@ -1,0 +1,70 @@
+% swissgerman-publist.lbx, extra localizations for biblatex-publist
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+% 
+% This Current Maintainer of this work is Jürgen Spitzmüller.
+%
+% This work consists of the file publist.bbx
+%
+%
+% This file adds some additional localizations that are used by
+% the biblatex-publist bibliography style
+%
+% Please send suggestions and bug reports to 
+% https://github.com/jspitz/biblatex-publist
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\bpl@version{2.11}
+\def\bpl@rdate{2024/07/02}
+
+\ProvidesFile{swissgerman-publist.lbx}[\bpl@rdate\space v.\bpl@version\space
+                                       biblatex-publist Swiss German localisation (JSP)]
+
+% Inherit general localization
+\InheritBibliographyExtras{swissgerman}
+
+% publist-specific additions
+\NewBibliographyString{with}
+\NewBibliographyString{parttranslationof}
+\NewBibliographyString{impactfactor}
+\NewBibliographyString{openaccess:true}
+\NewBibliographyString{openaccess:gold}
+\NewBibliographyString{openaccess:green}
+\NewBibliographyString{peerreview:sb}
+\NewBibliographyString{peerreview:db}
+\NewBibliographyString{peerreview:op}
+\NewBibliographyString{peerreview:co}
+\NewBibliographyString{peerreview:cc}
+\NewBibliographyString{peerreview:tp}
+\NewBibliographyString{peerreview:pp}
+\NewBibliographyString{peerreview:no}
+
+\DeclareBibliographyStrings{%
+    inherit             = {swissgerman},
+    parttranslationof   = {{Teil\"ubersetzung von}{Teil\"ubers\adddotspace von}},
+    with                = {{mit}{mit}},
+    impactfactor        = {{Impactfaktor}{JIF}},
+    openaccess:true     = {{OpenAccess}{OA}},
+    openaccess:gold     = {{OpenAccess (gold)}{OA (gold)}},
+    openaccess:green    = {{OpenAccess (gr\"un)}{OA (gr\"un)}},
+    peerreview:sb       = {{Blindbegutachtung}{Blindbeg\adddot}},
+    peerreview:db       = {{Doppelblindbegutachtung}{Doppelblindbeg\adddot}},
+    peerreview:op       = {{Offene Begutachtung}{Offene Beg\adddot}},
+    peerreview:co       = {{Kollaborative Begutachtung}{Kollab\adddotespace Beg\adddot}},
+    peerreview:cc       = {{Cascading-Begutachtung}{Cascading-Beg\adddot}},
+    peerreview:tp       = {{Begutachtung durch Dritte}{Beg\adddotspace durch Dritte}},
+    peerreview:pp       = {{Post-Publication-Begutachtung}{Post-Pub\adddot-Beg\adddot}},
+    peerreview:no       = {{keine Begutachtung}{keine Beg\adddot}}
+}
+
+\endinput
+

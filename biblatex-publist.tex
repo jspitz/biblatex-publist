@@ -763,31 +763,49 @@ are printed, so you might get redundant output. To control (e.\,g., omit) them, 
 \section{Localization}\label{sec:localization}
 
 Since the package draws on \bibltx, it supports localization. 
-The following additional localization keys (\jfcsmacro{bibstrings})
-are added by the package:
+The following additional localization keys (\texttt{bibstrings})
+are added by the package, in verbose and abbreviated form (depending
+on your setting of the \bibltx\ option \joption{abbreviate}):
+
 \begin{description}
 \setlength{\itemsep}{0pt}
-\item[impactfactor] the expression \enquote{impact factor}.
-\item[openaccess:true] the expression \enquote{OpenAccess}.
-\item[openaccess:gold] the phrase \enquote{OpenAccess (gold)}.
-\item[{openaccess:green}] the phrase \enquote{OpenAccess (green)}.
-\item[{parttranslationof}] the phrase \enquote{partial translation of}
+\item[impactfactor] the expression \enquote{impact factor} (short form: \enquote{JIF}).
+\item[openaccess:true] the expression \enquote{OpenAccess} (short form: \enquote{OA}).
+\item[openaccess:gold] the phrase \enquote{OpenAccess (gold)} (short form: \enquote{OA (gold)}).
+\item[{openaccess:green}] the phrase \enquote{OpenAccess (green)} (short form: \enquote{OA (green)}).
+\item[{parttranslationof}] the phrase \enquote{partial translation of} (short form: \enquote{part.\ trans.\ of})
        for entries referring to partially translated work via \bibltx's
       \enquote*{related entries} feature (see sec.~\ref{sec:partial-translations}).
-\item[{peerreview:sb}] the phrase \enquote{single blind peer review}.
-\item[{peerreview:db}] the phrase \enquote{double blind peer review}.
-\item[{peerreview:op}] the phrase \enquote{open peer review}.
-\item[{peerreview:co}] the phrase \enquote{collaborative peer review}.
-\item[{peerreview:cc}] the phrase \enquote{cascading peer review}.
-\item[{peerreview:tp}] the phrase \enquote{third-party peer review}.
-\item[{peerreview:pp}] the phrase \enquote{post-publication peer review}.
-\item[{peerreview:no}] the phrase \enquote{no peer review}.
+\item[{peerreview:sb}] the phrase \enquote{single blind peer review} (short form non-abbreviated).
+\item[{peerreview:db}] the phrase \enquote{double blind peer review} (short form non-abbreviated).
+\item[{peerreview:op}] the phrase \enquote{open peer review} (short form non-abbreviated).
+\item[{peerreview:co}] the phrase \enquote{collaborative peer review} (short form: \enquote{collab.\ peer review}).
+\item[{peerreview:cc}] the phrase \enquote{cascading peer review} (short form: \enquote{casc.\ peer review}).
+\item[{peerreview:tp}] the phrase \enquote{third-party peer review} (short form non-abbreviated).
+\item[{peerreview:pp}] the phrase \enquote{post-publication peer review} (short form: \enquote{post-pub.\ peer review}).
+\item[{peerreview:no}] the phrase \enquote{no peer review} (short form non-abbreviated).
 \item[{with}] the preposition \enquote{with} that precedes the list of
-       co-authors by default (i.\,e., with \joption{plauthorhandling=omit}).
+       co-authors by default (i.\,e., with \joption{plauthorhandling=omit}) (short form non-abbreviated).
 \end{description}
-Currently, these additional localization keys are available in the following
-languages: English, French and German.%
-\footnote{Please send suggestions for other languages to the package author.}
+%
+Localization is provided in dedicated language definition files which follow
+the naming scheme, \texttt{<language>-publist.lbx}.
+The package currently ships such files for the following languages and their varieties:
+
+\begin{itemize}
+	\item English (\texttt{american}, \texttt{australian}, \texttt{british},
+	      \texttt{canadian}, \texttt{english}, \texttt{newzealand},
+	      \texttt{UKenglish}, \texttt{USenglish})
+	\item French (\texttt{french})
+	\item German (\texttt{austrian}, \texttt{german}, \texttt{naustrian}, \texttt{ngerman},
+	      \texttt{nswissgerman}, \texttt{swissgerman})
+\end{itemize}
+%
+If you want to add support for other languages, you can simply copy one of the existing
+lbx files, name it \texttt{<yourlanguage>-publist.lbx} and adapt the localization keys.
+
+If you are confident enough, please send me your file so I can consider adding it to
+the package.
 
 
 \section{Further Extensions}
@@ -1027,6 +1045,11 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 2.12 (forthcoming):}]~
+	\begin{itemize}
+	   \item Externalize localization to \texttt{*.lbx} files.
+	\end{itemize}
+
 	\item [{V. 2.11 (2024/07/02):}]~
 	\begin{itemize}
 		\item Add \jcsmacro{citesecitem} and \jcsmacro{citesecitem*} commands (see sec.~\ref{sec:citeitems}).

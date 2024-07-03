@@ -1,0 +1,70 @@
+% english-publist.lbx, extra localizations for biblatex-publist
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3 or later is part of all distributions of LaTeX
+% version 2003/12/01 or later.
+%
+% This work has the LPPL maintenance status "maintained".
+% 
+% This Current Maintainer of this work is Jürgen Spitzmüller.
+%
+% This work consists of the file publist.bbx
+%
+%
+% This file adds some additional localizations that are used by
+% the biblatex-publist bibliography style
+%
+% Please send suggestions and bug reports to 
+% https://github.com/jspitz/biblatex-publist
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\bpl@version{2.11}
+\def\bpl@rdate{2024/07/02}
+
+\ProvidesFile{english-publist.lbx}[\bpl@rdate\space v.\bpl@version\space
+                                  biblatex-publist English localisation (JSP)]
+
+% Inherit general localization
+\InheritBibliographyExtras{english}
+
+% publist-specific additions
+\NewBibliographyString{with}
+\NewBibliographyString{parttranslationof}
+\NewBibliographyString{impactfactor}
+\NewBibliographyString{openaccess:true}
+\NewBibliographyString{openaccess:gold}
+\NewBibliographyString{openaccess:green}
+\NewBibliographyString{peerreview:sb}
+\NewBibliographyString{peerreview:db}
+\NewBibliographyString{peerreview:op}
+\NewBibliographyString{peerreview:co}
+\NewBibliographyString{peerreview:cc}
+\NewBibliographyString{peerreview:tp}
+\NewBibliographyString{peerreview:pp}
+\NewBibliographyString{peerreview:no}
+
+\DeclareBibliographyStrings{%
+    inherit             = {english},
+    parttranslationof   = {{partial translation of}{part\adddot trans\adddotspace of}},
+    with                = {{with}{with}},
+    impactfactor        = {{impact factor}{JIF}},
+    openaccess:true     = {{OpenAccess}{OA}},
+    openaccess:gold     = {{OpenAccess (gold)}{OA (gold)}},
+    openaccess:green    = {{OpenAccess (green)}{OA (green)}},
+    peerreview:sb       = {{single blind peer review}{single blind peer review}},
+    peerreview:db       = {{double blind peer review}{double blind peer review}},
+    peerreview:op       = {{open peer review}{open peer review}},
+    peerreview:co       = {{collaborative peer review}{collab\adddotspace peer review}},
+    peerreview:cc       = {{cascading peer review}{casc\adddotspace peer review}},
+    peerreview:tp       = {{third-party peer review}{third-party peer review}},
+    peerreview:pp       = {{post-publication peer review}{post-pub\adddotspace peer review}},
+    peerreview:no       = {{no peer review}{no peer review}}
+}
+
+\endinput
+
