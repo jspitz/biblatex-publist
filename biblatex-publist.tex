@@ -411,9 +411,20 @@ since otherwise they would be too ambiguous. However, for locally numbered lists
 By default, the form of this addition is ``(sec.~<no.>)'', with ``sec.'' being localized (see sec.~\ref{sec:auxmacros}
 on how to customize this).
 
+All these commands have counterparts which can be used to refer to a range of entries:
+\begin{itemize}
+	\setlength\itemsep{0pt}
+	\item \jcsmacro*{citeitemrange}\jmacro{\{<first key>\}}\jmacro{\{<last key>\}}
+	\item \jcsmacro*{citesecitemrange}\jmacro{\{<first key>\}}\jmacro{\{<last key>\}}
+	\item \jcsmacro*{citesecitemrange*}\jmacro{\{<first key>\}}\jmacro{\{<last key>\}}
+\end{itemize}
+%
+The range will by default be indicated by an en-dash ([12]--[17]), you can change this by redefining the
+macro \jcsmacro*{itemrangesep}.
+
 Note that due to the design of refsections, no hyperlinks can be generated for the item number with \jcsmacro{citesecitem}
-and the \textsf{hyperref} package being loaded (the section reference of the starred command, however, is hyperlinked in
-this case).
+(or its starred and range counterparts) and the \textsf{hyperref} package being loaded; the section reference of the starred
+commands, however, is hyperlinked in this case.
 If you need hyperlinked item references, consider refsegments rather than refsections and the \jcsmacro{citeitem} command
 (although this will have other drawbacks).
 
@@ -1051,11 +1062,14 @@ until further change).
 	\item [{V. 2.12 (forthcoming):}]~
 	\begin{itemize}
 	   \item Externalize localization to \texttt{*.lbx} files.
+	   \item Add \jcsmacro{citeitemrange} and \jcsmacro{citesecitemrange} commands
+	         (see sec.~\ref{sec:citeitems}).
 	\end{itemize}
 
 	\item [{V. 2.11 (2024/07/02):}]~
 	\begin{itemize}
-		\item Add \jcsmacro{citesecitem} and \jcsmacro{citesecitem*} commands (see sec.~\ref{sec:citeitems}).
+		\item Add \jcsmacro{citesecitem} and \jcsmacro{citesecitem*} commands
+		     (see sec.~\ref{sec:citeitems}).
 		\item Support multiple sections in \jcsmacro{GetSectionCount}.
 	\end{itemize}
 	

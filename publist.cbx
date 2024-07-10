@@ -91,6 +91,28 @@
     \printtext[labelnumberwidth]{\mkrefdesc{\thefield{labelnumber}}}%
 }
 
+\newcommand*\itemrangesep{\bibrangedash}
+
+\newcommand*\citeitemrange[2]{%
+    \citeitem{#1}\itemrangesep\citeitem{#2}%
+}
+
+\NewDocumentCommand\citesecitemrange{s m m}
+{%
+   \IfBooleanTF{#1}%
+      {\ifcsdef{bpl@itemsec:#2}%
+          {\ifcsdef{bpl@itemsec:#3}%
+            {\ifcsequal{bpl@itemsec:#2}{bpl@itemsec:#3}%
+                {\citesecitem{#2}\itemrangesep}%
+                {\citesecitem*{#2}\,\itemrangesep\,}%
+             \citesecitem*{#3}}%
+             {\citesecitem*{#2}\itemrangesep\citesecitem*{#3}}%
+          }%
+          {\citesecitem{#2}\itemrangesep\citesecitem*{#3}}%
+      }%
+      {\citesecitem{#2}\itemrangesep\citesecitem{#3}}%
+}
+
 % Manual way to adjust numbering
 \csdef{bpl@secstartshift}{0}
 \newcommand*\shiftciteitem[1]{\csdef{bpl@secstartshift}{#1}}
