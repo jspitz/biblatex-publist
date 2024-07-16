@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.12 (forthcoming):
+* V. 2.12 (2024-07-16):
 	- Externalize localization to *.lbx files.
 	- Add \citeitemrange and \citesecitemrange commands.
 	- Fix error with section count on first run.
