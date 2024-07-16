@@ -49,6 +49,7 @@ instructions.
 * V. 2.12 (forthcoming):
 	- Externalize localization to *.lbx files.
 	- Add \citeitemrange and \citesecitemrange commands.
+	- Fix error with section count on first run.
 
 * V. 2.11 (2024-07-02):
 	- Add \citesecitem and \citesecitem* commands.

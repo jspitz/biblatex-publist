@@ -561,7 +561,7 @@
 {
   \IfNoValueTF{#1}{%
     \csnumdef{bpltmprefsection}{\c@refsection}
-    \csuse{bpl@secitems:\bpltmprefsection}%
+    \ifcsdef{bpl@secitems:\bpltmprefsection}{\csuse{bpl@secitems:\bpltmprefsection}}{}%
   }{
     \int_zero:N \l_bpl_sec_cnt_int
     \ProcessList{#1}{\__bpl_add_section_count}
@@ -571,7 +571,8 @@
 
 \cs_new:Npn \__bpl_add_section_count #1
 {
-   \int_add:Nn \l_bpl_sec_cnt_int { \use:c{bpl@secitems:#1} }
+   \cs_if_exist:cT {bpl@secitems:#1}
+        { \int_add:Nn \l_bpl_sec_cnt_int { \use:c{bpl@secitems:#1} } }
 }
 
 \ExplSyntaxOff
