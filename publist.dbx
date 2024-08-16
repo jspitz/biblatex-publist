@@ -22,11 +22,13 @@
 
 % Add peerreview and openaccess (literal) field
 \DeclareDatamodelFields[type=field, datatype=literal]{
+  citations,
   impactfactor,
   openaccess,
   peerreview}
 
 \DeclareDatamodelEntryfields{
+  citations,
   impactfactor,
   openaccess,
   peerreview}

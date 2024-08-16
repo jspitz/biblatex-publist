@@ -329,6 +329,11 @@ with abbreviated and full first name (\textsc{J. Doe} and well as \textsc{John D
 works of colleagues with the same surname (maybe your family members), which you will not want to mark as your own's.
 Of course, the solution does not help if there is an entry with same surname and same first name initial (such as \textsc{Jane Doe}).
 
+\item [{\joption{citinfo{[}=true|false{]}}}] default: \emph{false}.
+
+If this option is \joption{true}, the number of citations, as specified via the \texttt{citations} field
+(see section~\ref{sec:citinfo}), will be appended to the entries.
+
 \item [{\joption{jifinfo{[}=true|false{]}}}] default: \emph{false}.
 
 If this option is \joption{true}, the journal impact factor, as specified via the \texttt{impactfactor} field
@@ -612,6 +617,16 @@ in a specific \texttt{@xdata} subset (please refer to the \bibltx\ documentation
 If the option \joption{jifinfo} is true, then \bpl\ will append the respective information to the entries.
 A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}).
 
+
+\subsubsection{Number of citations}\label{sec:citinfo}
+
+Another common quantification of \enquote*{impact} is the number of citations of a publication.
+To track this, \bpl\ provides a specific database field, \texttt{citations}.
+
+If the option \joption{citinfo} is true, then \bpl\ will append the respective information to the entries.
+A specific localizable bibkey is used for this purpose (see section~\ref{sec:localization}).
+
+
 \subsubsection{Peer Review}\label{sec:peerreview}
 
 It is common, and sometimes mandatory, to add information to publication list entries indicating if
@@ -780,6 +795,7 @@ on your setting of the \bibltx\ option \joption{abbreviate}):
 
 \begin{description}
 \setlength{\itemsep}{0pt}
+\item[citations] the expression \enquote{citations} (short form: \enquote{cit.}).
 \item[impactfactor] the expression \enquote{impact factor} (short form: \enquote{JIF}).
 \item[openaccess:true] the expression \enquote{OpenAccess} (short form: \enquote{OA}).
 \item[openaccess:gold] the phrase \enquote{OpenAccess (gold)} (short form: \enquote{OA (gold)}).
@@ -1059,6 +1075,11 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 2.13 (forthcoming):}]~
+	\begin{itemize}
+		\item Add support for information about number of citations (see sec.~\ref{sec:citinfo}).
+	\end{itemize} 
+	
 	\item [{V. 2.12 (2024/07/16):}]~
 	\begin{itemize}
 	   \item Externalize localization to \texttt{*.lbx} files.

@@ -46,6 +46,9 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.13 (forthcoming):
+	- Add support for information about number of citations.
+
 * V. 2.12 (2024-07-16):
 	- Externalize localization to *.lbx files.
 	- Add \citeitemrange and \citesecitemrange commands.
