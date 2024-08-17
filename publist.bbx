@@ -1800,8 +1800,9 @@
                    \ifboolexpr{ not test {\iffieldundef{citations}}
                       and test {\iftoggle{bpl@citinfo}}
                    }{%
-                      \toggletrue{bpl@have@extrainfo}%
+                      \iftoggle{bpl@have@extrainfo}{\plextrainfosep}{}%
                       \printfield{citations}%
+                      \toggletrue{bpl@have@extrainfo}%
                    }{}%
                    \ifboolexpr{ not test {\iffieldundef{openaccess}}
                       and test {\iftoggle{bpl@oainfo}}
