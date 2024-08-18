@@ -1028,6 +1028,7 @@
           \protected@write\bpl@bpxfile{}{%
              \csedef{bpl@itemnumber:\thefield{entrykey}}{\bpl@current@item@no}%
              \csedef{bpl@itemsec:\thefield{entrykey}}{\therefsection}%
+             \csedef{bpl@itemtotal}{\csuse{bpl@itemtotal}}%
           }%
        \fi%
     }%

@@ -50,6 +50,7 @@ instructions.
 	- Add support for information about number of citations.
 	- Add support for \citesecitem and \citesecitem* in
 	  descending order.
+	- Fix \citeitem in first refsection.
 
 * V. 2.12 (2024-07-16):
 	- Externalize localization to *.lbx files.
