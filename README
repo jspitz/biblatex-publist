@@ -48,6 +48,8 @@ instructions.
 
 * V. 2.13 (forthcoming):
 	- Add support for information about number of citations.
+	- Add support for \citesecitem and \citesecitem* in
+	  descending order.
 
 * V. 2.12 (2024-07-16):
 	- Externalize localization to *.lbx files.

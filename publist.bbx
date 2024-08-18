@@ -1000,23 +1000,36 @@
           % Print the labelnumber as the total number of entries in the
           % current refsection, minus the actual labelnumber, plus one
           \ifbool{plnumgroup}{%
-             \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+             \xdef\bpl@current@item@no{\number\numexpr\csuse{bpl@itemtotal}-#1+1\relax}%
+             \bpl@current@item@no%
           }{%
              \ifcsdef{bpl@secitems:\therefsection}{%
-                \number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1%
-                         +\csuse{bpl@shift@itemtotal}\relax%
+                \xdef\bpl@current@item@no{\number\numexpr\csuse{bpl@secitems:\therefsection}-#1+1%
+                         +\csuse{bpl@shift@itemtotal}\relax}%
+             \bpl@current@item@no%
              }{%
-                \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+                \xdef\bpl@current@item@no{\number\numexpr\csuse{bpl@itemtotal}-#1+1\relax}%
+                \bpl@current@item@no%
              }%
           }%
        }{%
           % Use decreasing counter
           \ifcsdef{bpl@items:\theprevrefsection}{%
-             \number\numexpr\csuse{bpl@itemtotal}-#1+1-\csuse{bpl@items:\theprevrefsection}\relax%
+             \xdef\bpl@current@item@no{\number\numexpr\csuse{bpl@itemtotal}-#1+1%
+                       -\csuse{bpl@items:\theprevrefsection}\relax}%
+             \bpl@current@item@no%
           }{%
-             \number\numexpr\csuse{bpl@itemtotal}-#1+1\relax%
+             \xdef\bpl@current@item@no{\number\numexpr\csuse{bpl@itemtotal}-#1+1\relax}%
+             \bpl@current@item@no%
           }%
        }%
+       % Store number in pbx file
+       \if@filesw%
+          \protected@write\bpl@bpxfile{}{%
+             \csedef{bpl@itemnumber:\thefield{entrykey}}{\bpl@current@item@no}%
+             \csedef{bpl@itemsec:\thefield{entrykey}}{\therefsection}%
+          }%
+       \fi%
     }%
     \renewrobustcmd{\mkbibsecstart}[1]{%
        \setcounter{prevrefsection}{\therefsection}%
