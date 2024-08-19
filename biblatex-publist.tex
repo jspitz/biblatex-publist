@@ -226,7 +226,7 @@ out and the collaborators added in parentheses, as in:
 If \joption{plauthorhandling=highlight} is used (see next section), the plauthor(s)
 will be printed in bold face instead, as in:
 \begin{itemize}
-\item[{[2]}] Doe, John, \textbf{Myself, Me} and Hall, Mary, \textbf{1987}. Are there new trends
+\item[{[2]}] Doe, John, \textbf{Myself, Me}, and Hall, Mary. \textbf{1987}. Are there new trends
 	         in gardening? In: \emph{Gardening Practice} 24, pp.~10--15.
 \end{itemize}
 %
@@ -604,10 +604,10 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 \subsection{Annotating Author Roles}\label{sec:annotations}
 
 If you want to mark author roles (e.\,g., signify who is corresponding or main author),
-this is of course an entry-specific setting.
-With \bibltx, you can add mark to names by using the data annotation feature, as in:
-\begin{lstlisting}[morekeywords={[2]{author,{author+an}}}]
-author = {John Doe and Mary Hall and Me Myself},
+you need to do this per entry, as such roles differ between publications.
+With \bibltx, you can mark up individual names by using the data annotation feature, as in:
+\begin{lstlisting}[morekeywords={[1]{author}}, otherkeywords={author+an}]
+author    = {John Doe and Mary Hall and Me Myself},
 author+an = {1=corresponding; 3:main},
 \end{lstlisting}
 %
@@ -626,7 +626,7 @@ in order of the passed category). Nine different annotations are supported this 
 
 With the example above and \joption{annotations=\{main,correponding\}}, for instance, you would get
 \begin{itemize}
-	\item[{[4]}] \textsuperscript{\textdaggerdbl}Doe, John, Hall, Mary and
+	\item[{[4]}] \textsuperscript{\textdaggerdbl}Doe, John, Hall, Mary, and
 	             \textbf{\textsuperscript{\textasteriskcentered}Myself, Me} \ldots
 \end{itemize}
 %
