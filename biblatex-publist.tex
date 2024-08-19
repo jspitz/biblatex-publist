@@ -258,6 +258,10 @@ By default, the publist author (as defined with \jcsmacro{plauthorname}) is omit
 the author or editor list. If you use the option \joption{plauthorhandling=highlight},
 it is highlighted instead (set in bold face by default; see sec.~\ref{sec:auxmacros} how to change that).
 
+\item [{\joption{annotations=\{comma-separated list\}}}]
+
+A list of data annotations that should be handled in output. See sec.~\ref{sec:annotations} for details.
+
 \item [{\joption{nameorder{[}=family-given|given-family{]}}}] default: \emph{family-given}.
 
 By default, the author and editor names with \joption{plauthorhandling=highlight} are output in the order \enquote{Lastname, Given Names}.
@@ -595,6 +599,37 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 \begin{lstlisting}[moretexcs={[4]{plnameomission,bibellipsis,addcomma,addspace}}]
 \newcommand*\plnameomission{\bibellipsis\addcomma\addspace}
 \end{lstlisting}
+
+
+\subsection{Annotating Author Roles}\label{sec:annotations}
+
+If you want to mark author roles (such as corresponding or main author), this is of course an entry-specific
+setting. With \bibltx, you can mark names by using the data annotation feature, as in:
+\begin{lstlisting}[morekeywords={[2]{author,{author+an}}}]
+author = {John Doe and Mary Hall and Me Myself},
+author+an = {1=corresponding; 3:main},
+\end{lstlisting}
+%
+Multiple annotations to a single person are possible, as in \texttt{1=corresponding,main} (please refer to
+the \bibltx\ manual \cite{bibltx} for details).
+
+To handle such annotations, however, the style file needs to know what to do with what kind of
+annotations.
+
+For basic usage, \bpl\ provides some support. If you pass the annotation categories as a comma-separated
+list to the \joption{annotations} option, \bpl\ will go through these annotations and for each, it
+will prepend the author family name by a superscripted symbol (the symbols sequence is similar than the
+one you now from symbolic footnotes).
+
+With the example above and \joption{annotations=\{main,correponding\}}, for instance, you would get
+\begin{itemize}
+	\item[{[4]}] \textsuperscript{\textdaggerdbl}Doe, John, Hall, Mary and
+	             \textbf{\textsuperscript{\textasteriskcentered}Myself, Me} \ldots
+\end{itemize}
+%
+Of course, each category always gets the same symbol within a publication list, so you can add a caption to explain those.
+
+This feature only works (and makes sense) with \joption{plauthorhandling=highlight}.
 
 \subsection{Adding Specific Entry-Related Information}
 
@@ -1078,6 +1113,7 @@ until further change).
 \begin{description}
 	\item [{V. 2.13 (forthcoming):}]~
 	\begin{itemize}
+		\item Add basic support for author annotations (see sec.~\ref{sec:annotations}).
 		\item Add support for information about number of citations (see sec.~\ref{sec:citinfo}).
 		\item Add support for \jcsmacro{citesecitem} and \jcsmacro{citesecitem*} in descending
 		      order.

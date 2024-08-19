@@ -68,7 +68,7 @@
 \newtoggle{bpl@oainfo}
 \newtoggle{bpl@oainfosimple}
 \newif\if@bpl@reversenum\@bpl@reversenumfalse
-
+\def\bpl@annots{}
 
 % Valid options
 %
@@ -189,6 +189,9 @@
      },
     plnumbering.default:n = { global },
     plnumbering.usage:n = preamble,
+    % annotations=<csv>
+    % Store author name prefix
+    annotations.tl_set:N = \bpl@annots,
     % linktitles=<all|url|doi|isbn|issn|none>
     linktitles .multichoice:,
     % Link all titles
@@ -441,6 +444,7 @@
 \DeclareBibliographyOption{plauthorhandling}[omit]{\ExecutePublistOptions{plauthorhandling=#1}}
 \DeclareBibliographyOption{nameorder}[family-given]{\ExecutePublistOptions{nameorder=#1}}
 \DeclareBibliographyOption{plsorting}[ydt]{\ExecutePublistOptions{plsorting=#1}}
+\DeclareBibliographyOption{annotations}{\ExecutePublistOptions{annotations={#1}}}
 
 \DeclareBibliographyOption{plnumbering}[global]{\ExecutePublistOptions{plnumbering=#1}}
 \DeclareBibliographyOption{marginyear}[true]{\ExecutePublistOptions{marginyear=#1}}
@@ -1065,6 +1069,44 @@
   \fi
 }%
 
+%
+% Data annotation
+%
+
+\def\bpl@annot@symbol#1{%
+   \ifcase#1\or
+   \textasteriskcentered\or
+   \textdaggerdbl\or
+   \textsection\or
+   \textparagraph\or
+   \textbardbl\or
+   \textdagger\or
+   {\textasteriskcentered\textasteriskcentered}\or
+   {\textdaggerdbl\textdaggerdbl}
+   {\textdagger\textdagger}\or
+   \else\@ctrerr\fi
+}%
+
+% handle the annotations as passed by annotations option
+\AtEndPreamble{%
+\ifx\bpl@annots\empty\else
+  \if@hlauthor\else
+     \PackageWarning{biblatex-publist}{Annotations require plauthorhandling=highlight!}
+  \fi
+  \newcounter{annotsymb}
+  \renewcommand*{\mkbibnamefamily}[1]{%
+    \setcounter{annotsymb}{1}%
+    \renewcommand*{\do}[1]{%
+      \ifitemannotation{##1}
+         {\textsuperscript{\bpl@annot@symbol{\theannotsymb}}}%
+         {}%
+         \stepcounter{annotsymb}%
+      }%
+      \expandafter\docsvlist\expandafter{\bpl@annots}%
+      #1%
+  }
+\fi
+}
 
 %
 % New environment for (foreign) reviews

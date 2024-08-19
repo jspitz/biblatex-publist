@@ -47,6 +47,7 @@ instructions.
 == CHANGES ==
 
 * V. 2.13 (forthcoming):
+	- Add basic support for author annotations.
 	- Add support for information about number of citations.
 	- Add support for \citesecitem and \citesecitem* in
 	  descending order.
