@@ -603,8 +603,9 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 
 \subsection{Annotating Author Roles}\label{sec:annotations}
 
-If you want to mark author roles (such as corresponding or main author), this is of course an entry-specific
-setting. With \bibltx, you can mark names by using the data annotation feature, as in:
+If you want to mark author roles (e.\,g., signify who is corresponding or main author),
+this is of course an entry-specific setting.
+With \bibltx, you can add mark to names by using the data annotation feature, as in:
 \begin{lstlisting}[morekeywords={[2]{author,{author+an}}}]
 author = {John Doe and Mary Hall and Me Myself},
 author+an = {1=corresponding; 3:main},
@@ -618,8 +619,10 @@ annotations.
 
 For basic usage, \bpl\ provides some support. If you pass the annotation categories as a comma-separated
 list to the \joption{annotations} option, \bpl\ will go through these annotations and for each, it
-will prepend the author family name by a superscripted symbol (the symbols sequence is similar than the
-one you now from symbolic footnotes).
+will print a superscripted symbol in front of the author family name (one of \textasteriskcentered,
+\textdaggerdbl, \textsection, \textparagraph, \textbardbl, \textdagger,
+{\textasteriskcentered\textasteriskcentered}, {\textdaggerdbl\textdaggerdbl}, or {\textdagger\textdagger},
+in order of the passed category). Nine different annotations are supported this way.
 
 With the example above and \joption{annotations=\{main,correponding\}}, for instance, you would get
 \begin{itemize}
