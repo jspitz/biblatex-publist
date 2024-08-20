@@ -1073,38 +1073,62 @@
 % Data annotation
 %
 
-\def\bpl@annot@symbol#1{%
-   \ifcase#1\or
-   \textasteriskcentered\or
-   \textdaggerdbl\or
-   \textsection\or
-   \textparagraph\or
-   \textbardbl\or
-   \textdagger\or
-   {\textasteriskcentered\textasteriskcentered}\or
-   {\textdaggerdbl\textdaggerdbl}
-   {\textdagger\textdagger}\or
-   \else\@ctrerr\fi
-}%
+\newcommand*\mkbplannot[1]{\textsuperscript{#1}}
+
+% Symbol helpers
+\ExplSyntaxOn
+  \clist_new:N \l_bpl_annot_symbols
+  \cs_new_nopar:Npn \SetAnnotSymbols #1
+    {
+      \clist_gset:Nn \l_bpl_annot_symbols { #1 }
+    }
+  \SetAnnotSymbols
+     { \textasteriskcentered, \textdaggerdbl, \textsection, \textparagraph,
+       \textbardbl, \textdagger, {\textasteriskcentered\textasteriskcentered},
+       {\textdaggerdbl\textdaggerdbl}, {\textdagger\textdagger}
+     }
+  % get symbol by position (int)
+  \cs_new_nopar:Npn \bpl@get@annot@symbol #1
+    {
+      \clist_item:Nn \l_bpl_annot_symbols { #1 }
+    }
+\ExplSyntaxOff
+
+% get symbol by category name
+\NewDocumentCommand\GetAnnotSymbol { s m }{
+  \edef\tmpa{}%
+  \setcounter{annotsymb}{1}%
+  \renewcommand*{\do}[1]{%
+    \ifstrequal{#2}{##1}
+       {\edef\tmpa{\bpl@get@annot@symbol{\theannotsymb}}}%
+       {}%
+       \stepcounter{annotsymb}%
+    }%
+    \expandafter\docsvlist\expandafter{\bpl@annots}%
+    \IfBooleanTF{#1}{\tmpa}{\mkbplannot{\tmpa}}%
+}
 
 % handle the annotations as passed by annotations option
-\AtEndPreamble{%
+\AtEndOfPackage{%
 \ifx\bpl@annots\empty\else
+  % warn if we are in omit mode
   \if@hlauthor\else
      \PackageWarning{biblatex-publist}{Annotations require plauthorhandling=highlight!}
   \fi
+  % helper function for annotations
   \newcounter{annotsymb}
-  \renewcommand*{\mkbibnamefamily}[1]{%
+  \newcommand*\bplannot{%
     \setcounter{annotsymb}{1}%
     \renewcommand*{\do}[1]{%
       \ifitemannotation{##1}
-         {\textsuperscript{\bpl@annot@symbol{\theannotsymb}}}%
+         {\mkbplannot{\bpl@get@annot@symbol{\theannotsymb}}}%
          {}%
          \stepcounter{annotsymb}%
       }%
       \expandafter\docsvlist\expandafter{\bpl@annots}%
-      #1%
   }
+  % do annotation in family names
+  \renewcommand*{\mkbibnamefamily}[1]{\bplannot #1}
 \fi
 }
 

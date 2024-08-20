@@ -601,38 +601,72 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 \end{lstlisting}
 
 
-\subsection{Annotating Author Roles}\label{sec:annotations}
+\subsection{Indicating Author Roles}\label{sec:annotations}
 
-If you want to mark author roles (e.\,g., signify who is corresponding or main author),
-you need to do this per entry, as such roles differ between publications.
-With \bibltx, you can mark up individual names by using the data annotation feature, as in:
+If you want to indicate author roles (e.\,g., signify who is corresponding or main author
+of a paper), you need to add this information to the respective entries,
+but you do not want to clutter the author data themselves.
+With \bibltx, separating such extra information from the actual data is well supported
+via the data annotation feature, as in:
 \begin{lstlisting}[morekeywords={[1]{author}}, otherkeywords={author+an}]
 author    = {John Doe and Mary Hall and Me Myself},
 author+an = {1=corresponding; 3=main},
 \end{lstlisting}
 %
-Multiple annotations to a single person are possible, as in \texttt{1=corresponding,main} (please refer to
-the \bibltx\ manual \cite{bibltx} for details).
+where the number (key) refers to the respective name in the list, and the value to the annotation category
+which you can name as you wish.
+Multiple annotations to a single person are possible if you pass multiple comma-separated categories to
+one key, as in \texttt{1=corresponding,main} (please refer to the \bibltx\ manual \cite{bibltx} for details).
 
 To handle such annotations, however, the style file needs to know what to do with what kind of
-annotations.
+annotations. Otherwise they are just ignored.
 
-For basic usage, \bpl\ provides some support. If you pass the annotation categories as a comma-separated
-list to the \joption{annotations} option, \bpl\ will go through these annotations and for each, it
-will print a superscripted symbol in front of the author family name (one of \textasteriskcentered,
-\textdaggerdbl, \textsection, \textparagraph, \textbardbl, \textdagger,
-{\textasteriskcentered\textasteriskcentered}, {\textdaggerdbl\textdaggerdbl}, or {\textdagger\textdagger},
-in order of the passed category). Nine different annotations are supported this way.
+For basic usage, \bpl\ provides some support for such annotations.
+If you pass the annotation categories you have used in the \texttt{*.bib} file as a comma-separated list
+to the \joption{annotations} option,
+\bpl\ will go through these annotations and for each, it
+will print a superscripted symbol in front of the author family name.
+By default this uses a list similar\footnote{If have moved the single dagger (\textdagger) to a later place,
+	since some people associate this with the \enquote*{deceased} indicator.}
+to the one you know from symbolic (\jfcsmacro{thanks}) footnotes
+(in order of the passed category: \textasteriskcentered, \textdaggerdbl, \textsection, \textparagraph,
+\textbardbl, \textdagger, {\textasteriskcentered\textasteriskcentered}, {\textdaggerdbl\textdaggerdbl},
+or {\textdagger\textdagger}). Nine different annotations are supported this way.
 
-With the example above and \joption{annotations=\{main,correponding\}}, for instance, you would get
+With the example given above and \joption{annotations=\{main,correponding\}}, for instance,
+you would get
 \begin{itemize}
 	\item[{[4]}] \textsuperscript{\textdaggerdbl}Doe, John, Hall, Mary, and
 	             \textbf{\textsuperscript{\textasteriskcentered}Myself, Me} \ldots
 \end{itemize}
 %
-Of course, each category always gets the same symbol within a publication list, so you can add a caption to explain those.
+Of course, each category always gets the same symbol within a publication list, so you can add a caption
+to explain those. For easy access to the symbols, you can use \jcsmacro*{GetAnnotSymbol}\jmacro{\{category\}}.
+This prints the respective symbol in formatted way (superscripted with default settings).
+A starred version of the command prints it without such formatting.
 
-This feature only works (and makes sense) with \joption{plauthorhandling=highlight}.
+If you want a different list of symbols, or need more, you can change it by means of the macro
+\jcsmacro*{SetAnnotSymbols}\jmacro{\{comma-separated list of symbols/macros\}}.
+This will overwrite the default list.
+
+You can also change the position of the symbol. The default definition is
+\begin{lstlisting}[morekeywords={[1]{mkbibnamefamily,bplannot}}]
+\renewcommand*{\mkbibnamefamily}[1]{\bplannot #1}
+\end{lstlisting}
+%
+with \jcsmacro{bplannot} being the annotation. You can move it after the name, or to another name
+part (e.g., \jfcsmacro{mkbibnamegiven}).
+
+To change the formatting, you can redefine
+\begin{lstlisting}[morekeywords={[1]{mkbplannot,textsuperscript}}]
+\newcommand*\mkbplannot[1]{\textsuperscript{#1}}
+\end{lstlisting}
+%
+If you need a different markup (such as coloring or underlining) you need to set up
+your own annotation handling as documented in the \bibltx\ manual.
+
+Note that the annotation feature only works, since it also only makes sense, with
+\joption{plauthorhandling=highlight}.
 
 \subsection{Adding Specific Entry-Related Information}
 
