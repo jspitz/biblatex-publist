@@ -1111,24 +1111,20 @@
 % handle the annotations as passed by annotations option
 \AtEndOfPackage{%
 \ifx\bpl@annots\empty\else
-  % warn if we are in omit mode
-  \if@hlauthor\else
-     \PackageWarning{biblatex-publist}{Annotations require plauthorhandling=highlight!}
-  \fi
-  % helper function for annotations
-  \newcounter{annotsymb}
-  \newcommand*\bplannot{%
-    \setcounter{annotsymb}{1}%
-    \renewcommand*{\do}[1]{%
-      \ifitemannotation{##1}
-         {\mkbplannot{\bpl@get@annot@symbol{\theannotsymb}}}%
-         {}%
-         \stepcounter{annotsymb}%
-      }%
-      \expandafter\docsvlist\expandafter{\bpl@annots}%
-  }
-  % do annotation in family names
-  \renewcommand*{\mkbibnamefamily}[1]{\bplannot #1}
+     % helper function for annotations
+     \newcounter{annotsymb}
+     \newcommand*\bplannot{%
+       \setcounter{annotsymb}{1}%
+       \renewcommand*{\do}[1]{%
+         \ifitemannotation{##1}
+            {\mkbplannot{\bpl@get@annot@symbol{\theannotsymb}}}%
+            {}%
+            \stepcounter{annotsymb}%
+         }%
+         \expandafter\docsvlist\expandafter{\bpl@annots}%
+     }
+     % do annotation in family names
+     \renewcommand*{\mkbibnamefamily}[1]{\bplannot #1}
 \fi
 }
 
@@ -1480,6 +1476,26 @@
         \iftoggle{isplauthor}%
             {% <- TRUE condition
               \global\toggletrue{hadplauthor}%
+              \ifx\bpl@annots\empty\else
+                \gdef\bpl@extra@annots{}%
+                \renewcommand*{\do}[1]{%
+                   \ifitemannotation{##1}
+                     {%
+                       \iftoggle{bpl@have@extrainfo}%
+                            {\gappto\bpl@extra@annots{\plextrainfosep\ifbibstring{annot:##1}%
+                                                                       {\bibstring{annot:##1}}%
+                                                                       {##1}}%
+                            }%
+                            {\gappto\bpl@extra@annots{\ifbibstring{annot:##1}%
+                                                             {\bibstring{annot:##1}}%
+                                                             {##1}}%
+                            }%
+                        \toggletrue{bpl@have@extrainfo}%
+                     }%
+                     {}%
+                }%
+                \expandafter\docsvlist\expandafter{\bpl@annots}%
+              \fi%
             }% <- end TRUE condition
             {% <- FALSE condition
               \stepcounter{nonpl#1}%
@@ -1503,7 +1519,7 @@
                   {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
               \ifdefvoid{\namepartprefix}{}{\mkbibnameprefix{\namepartprefix}\addspace}%
               \global\togglefalse{plauthorprecedes}%
-              \namepartfamily%
+              \mkbibnamefamily{\namepartfamily}%
              }%
             }% <- end FALSE condition
         %
@@ -1842,6 +1858,12 @@
         }%
 }
 
+%
+% Extra information
+%
+
+\def\bpl@extra@annots{}
+
 \newtoggle{bpl@have@extrainfo}
 
 \renewbibmacro*{addendum+pubstate}{%
@@ -1868,14 +1890,23 @@
                  not test {\iffieldundef{citations}}
                  and test {\iftoggle{bpl@citinfo}}          
                )
+               or
+               (
+                 not test {\ifcsvoid{bpl@extra@annots}}
+               )
             }{%
                 \newunit\newblock%
                 \printtext[plextrainfo]{%
+                   \ifx\bpl@extra@annots\empty\else
+                      \bpl@extra@annots%
+                      \toggletrue{bpl@have@extrainfo}%
+                   \fi
                    \ifboolexpr{ not test {\iffieldundef{peerreview}}
                       and test {\iftoggle{bpl@prinfo}}
                    }{%
-                      \toggletrue{bpl@have@extrainfo}%
+                      \iftoggle{bpl@have@extrainfo}{\plextrainfosep}{}%
                       \printfield{peerreview}%
+                      \toggletrue{bpl@have@extrainfo}%
                    }{}%
                    \ifboolexpr{ not test {\iffieldundef{citations}}
                       and test {\iftoggle{bpl@citinfo}}
@@ -1923,6 +1954,8 @@
 \NewBibliographyString{peerreview:tp}
 \NewBibliographyString{peerreview:pp}
 \NewBibliographyString{peerreview:no}
+\NewBibliographyString{annot:main}
+\NewBibliographyString{annot:corresponding}
 
 
 %

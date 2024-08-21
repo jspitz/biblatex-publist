@@ -162,6 +162,7 @@ The list of features includes:
 \begin{itemize}
 	\setlength\itemsep{0pt}
 	\item Omit or hide selected author names, with a specific indication of co-authors in the former case
+	\item Indicate author roles
 	\item Filter publications of specific authors from heterogeneous bibliography databases
 	\item Date-centric sorting (as typical for publication lists)
 	\item Number items in ascending or descending order, globally or sectional
@@ -605,7 +606,7 @@ The omission indicator, \jcsmacro*{plnameomission}, can be redefined. The defaul
 
 If you want to indicate author roles (e.\,g., signify who is corresponding or main author
 of a paper), you need to add this information to the respective entries,
-but you do not want to clutter the author data themselves.
+but you do not want to clutter the author data.
 With \bibltx, separating such extra information from the actual data is well supported
 via the data annotation feature, as in:
 \begin{lstlisting}[morekeywords={[1]{author}}, otherkeywords={author+an}]
@@ -619,7 +620,7 @@ Multiple annotations to a single person are possible if you pass multiple comma-
 one key, as in \texttt{1=corresponding,main} (please refer to the \bibltx\ manual \cite{bibltx} for details).
 
 To handle such annotations, however, the style file needs to know what to do with what kind of
-annotations. Otherwise they are just ignored.
+annotation. Otherwise annotations are just ignored.
 
 For basic usage, \bpl\ provides some support for such annotations.
 If you pass the annotation categories you have used in the \texttt{*.bib} file as a comma-separated list
@@ -665,8 +666,19 @@ To change the formatting, you can redefine
 If you need a different markup (such as coloring or underlining) you need to set up
 your own annotation handling as documented in the \bibltx\ manual.
 
-Note that the annotation feature only works, since it also only makes sense, with
-\joption{plauthorhandling=highlight}.
+With \joption{plauthorhandling=omit}, the annotations of the omitted publist author(s)
+are appended to the entry (as an annotation and with the specific entry-related information
+discussed in the next section). If a \jfcsmacro{bibstring}
+\texttt{annot:<category>} exists (predefined keys are \texttt{annot:main} and
+\texttt{annot:corresponding}), the respective localized string is output, otherwise
+the verbatim category.
+
+So, again with the example given above, you would get:
+\begin{itemize}
+	\item[{[4]}] \ldots\ (with John \textsuperscript{\textdaggerdbl}Doe and Mary Hall)
+	             \ldots\ [Main auth.].
+\end{itemize}
+
 
 \subsection{Adding Specific Entry-Related Information}
 
@@ -868,6 +880,8 @@ on your setting of the \bibltx\ option \joption{abbreviate}):
 
 \begin{description}
 \setlength{\itemsep}{0pt}
+\item[annot:corresponding] the expression \enquote{corresponding author} (short form: \enquote{corr. auth.}).
+\item[annot:main] the expression \enquote{main author} (short form: \enquote{main auth.}).
 \item[citations] the expression \enquote{citations} (short form: \enquote{cit.}).
 \item[impactfactor] the expression \enquote{impact factor} (short form: \enquote{JIF}).
 \item[openaccess:true] the expression \enquote{OpenAccess} (short form: \enquote{OA}).
