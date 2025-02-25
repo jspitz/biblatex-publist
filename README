@@ -46,6 +46,10 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.14 (forthcoming):
+	- Fix alignment of year in margin if the biblatex-ext-oa package
+	  is used to print open-access symbols in the right margin.
+
 * V. 2.13 (2024-08-21):
 	- Add basic support for author annotations.
 	- Add support for information about number of citations.

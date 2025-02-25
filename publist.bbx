@@ -1768,6 +1768,21 @@
    \fi%
 }
 
+% The biblatex-ext-oa package writes a symbol in the margin
+% which shifts the marginyear. Adjust this if needed.
+\def\fix@extblx@oa{}
+\AddToHook{package/biblatex-ext-oa/after}{%
+  \renewbibmacro*{oamark}{%
+     \iffieldundef{bestoaurl}
+       {\def\fix@extblx@oa{}}
+       {\extblx@oa@marginmark%
+        \def\fix@extblx@oa{%
+           \kern-\dimexpr\dp\strutbox+\ht%
+           \strutbox\relax\strut}%
+       }%
+  }%
+}
+
 \newbibmacro*{bpl:marginyear}{%
     \if@marginyear%
         \iffieldundef{year}{%
@@ -1776,7 +1791,12 @@
                 {\iffieldequals{pubstate}{\bbx@lasthash}%
                      {}%
                      {%
-                      \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{pubstate}}}}%
+                      \printtext{%
+                          \marginpar{%
+                              \fix@extblx@oa%
+                              \plmarginyear{\bibsentence\printfield{pubstate}}%
+                           }%
+                      }%
                       \if@fixyear\else\savefield{pubstate}{\bbx@lasthash}\fi%
                      }%
                 }%
@@ -1784,7 +1804,12 @@
             \iffieldequals{year}{\bbx@lasthash}%
                 {}%
                 {%
-                 \printtext{\marginpar{\small\plmarginyear{\bibsentence\printfield{year}}}}%
+                 \printtext{%
+                     \marginpar{%
+                         \fix@extblx@oa%
+                         \plmarginyear{\bibsentence\printfield{year}}%
+                      }%
+                 }%
                  \if@fixyear\else\savefield{year}{\bbx@lasthash}\fi%
                 }%
         }%
