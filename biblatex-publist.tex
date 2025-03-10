@@ -362,9 +362,11 @@ The following option is available if \textsf{hyperref} is loaded:
 
 \begin{description}
 
-\item [{\joption{linktitles={[}all|doi|url|isbn|issn|none{]}}}] default: \emph{none}.
+\item [{\joption{linktitles={[}all|eprint|doi|url|isbn|issn|none{]}}}] default: \emph{none}.
 
-Turns the title (and subtitle, if available) into a clickable hyperlink to either the DOI, the URL, the ISBN,
+Turns the title (and subtitle, if available) into a clickable hyperlink to either the DOI, the URL, an eprint location%
+\footnote{Note that \bpl\ is able to generate URLs for the standard eprint types supported by \bibltx\ (arxiv, hdl, jstor, and pubmed).
+	See sec.~\ref{sec:clicktitles} for how to add support for more types or customize an eprint location.}, the ISBN,
 or the ISSN (the latter two via customizable search provider), if any of these is available.\footnote{%
 Up to v.\,1.27, \bpl\ provided a range of boolean options for this task. These are still supported, but considered deprecated.
 } The option \joption{all} activates all these targets, \joption{none} deactivates them.
@@ -867,6 +869,15 @@ With URL and DOI, direct links are created. With ISBN or ISSN, a link to a searc
 %
 where \verb|#1| is a placeholder for the ISBN or ISSN, respectively.
 
+With eprint, \bpl\ is able to generate an URL for the standard eprint types supported by \bibltx\
+(viz. \texttt{arxiv}, \texttt{hdl}, \texttt{jstor}, and \texttt{pubmed}). If you want to use a different eprint type,
+or overwrite the URL of an existing one, you can do so by using
+\begin{lstlisting}[moretexcs={[1]{DefineEPrintURL}}]
+\DefineEPrintURL{<eprinttype>}{<URL>}
+\end{lstlisting}
+%
+with \texttt{<URL>} being the base URL up to the ID (including all possible separators such as slashes).
+
 Note that the \joption{linktitles} option does not have any affect on whether URLs, DOIs, ISBNs and ISSNs
 are printed, so you might get redundant output. To control (e.\,g., omit) them, use the \joption{url},
 \joption{doi} and \joption{isbn} biblatex options. 
@@ -1164,6 +1175,7 @@ until further change).
 \begin{description}
 	\item [{V. 2.14 (forthcoming):}]~
 	\begin{itemize}
+		\item Add support for \joption{linktitles=eprint}.
 		\item Fix alignment of year in margin if the \textsf{biblatex-ext-oa package} is used
 		      to print open-access symbols in the right margin.
 	\end{itemize} 

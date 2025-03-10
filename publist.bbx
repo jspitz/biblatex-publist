@@ -61,6 +61,7 @@
 \newtoggle{bpl@linktitleissn}
 \newtoggle{bpl@linktitleurl}
 \newtoggle{bpl@linktitledoi}
+\newtoggle{bpl@linktitleeprint}
 \newtoggle{bpl@citinfo}
 \newtoggle{bpl@jifinfo}
 \newtoggle{bpl@prinfo}
@@ -201,6 +202,7 @@
              \toggletrue{bpl@linktitleissn}
              \toggletrue{bpl@linktitleurl}
              \toggletrue{bpl@linktitledoi}
+             \toggletrue{bpl@linktitleeprint}
              \toggletrue{bpl@linktitle}
         },
     % Link no titles
@@ -210,6 +212,7 @@
              \togglefalse{bpl@linktitleissn}
              \togglefalse{bpl@linktitleurl}
              \togglefalse{bpl@linktitledoi}
+             \togglefalse{bpl@linktitleeprint}
              \togglefalse{bpl@linktitle}
         },
     % Link titles with URL
@@ -223,6 +226,12 @@
         {
              \toggletrue{bpl@linktitledoi}
              \toggletrue{bpl@linktitle}
+        },
+    % Link titles with eprint
+    linktitles / eprint.code:n =
+        {
+         \toggletrue{bpl@linktitleeprint}
+         \toggletrue{bpl@linktitle}
         },
     % Link titles with ISBN
     linktitles / isbn.code:n =
@@ -353,12 +362,14 @@
              \toggletrue{bpl@linktitleissn}
              \toggletrue{bpl@linktitleurl}
              \toggletrue{bpl@linktitledoi}
+             \toggletrue{bpl@linktitleeprint}
              \toggletrue{bpl@linktitle}
          }{
              \togglefalse{bpl@linktitleisbn}
              \togglefalse{bpl@linktitleissn}
              \togglefalse{bpl@linktitleurl}
              \togglefalse{bpl@linktitledoi}
+             \togglefalse{bpl@linktitleeprint}
              \togglefalse{bpl@linktitle}
          }
        },
@@ -2233,11 +2244,13 @@
   \ifboolexpr{ test {\ifhyperref} and not test {\ifentrytype{online}} }
     {\iffieldundef{doi}
        {\iffieldundef{url}
-          {\iffieldundef{isbn}
+         {\iffieldundef{eprint}
+           {\iffieldundef{isbn}
              {\iffieldundef{issn}
                 {#1}
                 {\iftoggle{bpl@linktitleissn}{\href{\plissnlink{\thefield{issn}}}{#1}}{#1}}}
              {\iftoggle{bpl@linktitleisbn}{\href{\plisbnlink{\thefield{isbn}}}{#1}}{#1}}}
+            {\iftoggle{bpl@linktitleeprint}{\usebibmacro{bpl:eprint:url}{\href}{#1}}{#1}}}
           {\iftoggle{bpl@linktitleurl}{\href{\thefield{url}}{#1}}{#1}}}
        {\iftoggle{bpl@linktitledoi}{\href{https://doi.org/\thefield{doi}}{#1}}{#1}}}
     {#1}%
@@ -2246,6 +2259,39 @@
 % URL for ISBN/ISSN queries
 \newcommand*\plisbnlink[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
 \newcommand*\plissnlink[1]{https://www.worldcat.org/search?qt=worldcat_org_all&q=#1}
+
+% Link titles if so requested
+\AtEndOfPackage{%
+  \iftoggle{bpl@linktitle}{%
+    \DeclareFieldInputHandler{title}{\def\NewValue{\usebibmacro{bpl:linked}{#1}}}
+    \DeclareFieldInputHandler{subtitle}{\def\NewValue{\usebibmacro{bpl:linked}{#1}}}
+  }{}
+}
+
+% Determine eprint URL
+\newbibmacro{bpl:eprint:url}[2]{%
+   \iffieldundef{eprinttype}%
+      {#1{\thefield{eprint}}{#2}}
+      {\ifcsdef{bpl@eprint@url@\thefield{eprinttype}}
+         {#1{\csuse{bpl@eprint@url@\thefield{eprinttype}}\thefield{eprint}}{#2}}
+         {\iffieldequalstr{eprinttype}{jstor}%
+           {#1{http://www.jstor.org/stable/\thefield{eprint}}{#2}}
+           {\iffieldequalstr{eprinttype}{hdl}%
+              {#1{http://hdl.handle.net/\thefield{eprint}}{#2}}
+              {\iffieldequalstr{eprinttype}{pubmed}%
+                 {#1{http://www.ncbi.nlm.nih.gov/pubmed/\thefield{eprint}}{#2}}
+                 {\iffieldequalstr{eprinttype}{arxiv}
+                    {#1{https://arxiv.org/\abx@arxivpath/\thefield{eprint}}{#2}}
+                    {#1{\thefield{eprint}}{#2}}%
+                 }%
+              }%
+           }%
+        }%
+      }%
+}
+
+% Define URL for unknown eprinttype
+\newcommand*\DefineEPrintURL[2]{\csdef{bpl@eprint@url@#1}{#2}}
 
 
 %
@@ -2317,15 +2363,6 @@
         }
     }
 }
-
-% Link titles if so requested
-\AtBeginDocument{%
-  \iftoggle{bpl@linktitle}{%
-    \DeclareFieldInputHandler{title}{\def\NewValue{\usebibmacro{bpl:linked}{#1}}}
-    \DeclareFieldInputHandler{subtitle}{\def\NewValue{\usebibmacro{bpl:linked}{#1}}}
-  }{}
-}
-
 
 %
 % Deprecated stuff
