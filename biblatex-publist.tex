@@ -350,6 +350,10 @@ If \joption{simple} or \joption{verbose} is selected, open-access information, a
 (see section~\ref{sec:openaccess}), will be appended to the entries. With \joption{verbose}, different OpenAccess strategies
 (\enquote*{gold}, \enquote*{green}) will be differentiated in the output.
 
+\item [{\joption{oasymbol{[}=true|false{]}}}] default: \emph{false}.
+
+If this option is \joption{true}, a (possibly linked) open-access symbol is printed in the right margin for entries which
+have a non-empty \texttt{openaccess} field (see section~\ref{sec:openaccess}).
 
 \item [{\joption{prinfo{[}=true|false{]}}}] default: \emph{true}.
 
@@ -738,7 +742,7 @@ the shorthands, you can also enter arbitrary text to the \texttt{peerreview} fie
 as is (and not localized).
 
 
-\subsubsection{OpenAccess Strategies}\label{sec:openaccess}
+\subsubsection{OpenAccess Strategies and Marks}\label{sec:openaccess}
 
 Some people also want, or need, to indicate whether and which (some of) their publications have
 been published \enquote*{OpenAccess}, that is, free of charges and other access barriers.
@@ -758,6 +762,17 @@ not done.
 Specific localizable bibkeys are used for this purpose (see section~\ref{sec:localization}). Instead of
 the shorthands, you can also enter arbitrary text to the \texttt{openaccess} field, which is then output
 as is (and not localized).
+
+Independent of the aforementioned options, you can also print an open-access symbol in the right margin by setting the option
+\joption{oasymbol=true}. All entries with a non-empty \texttt{openaccess} field will get the symbol.
+If \textsf{hyperref} is loaded, this symbol is linked with the \texttt{doi}, \texttt{url}, or \texttt{eprint} entry%
+\footnote{Note that \bpl\ is able to generate URLs for the standard eprint types supported by \bibltx\ (arxiv, hdl, jstor, and pubmed).
+   See sec.~\ref{sec:clicktitles} for how to add support for more types or customize an eprint location.}
+if given.
+This is inspired by the \textsf{biblatex-ext-oa} package, but currently, only one symbol (the PloS open-access symbol drawn
+by pict2e) is provided. You can employ the \textsf{biblatex-ext-oa} package for more
+advanced usages.
+
 
 \section{Customization}
 
@@ -1176,6 +1191,8 @@ until further change).
 	\item [{V. 2.14 (forthcoming):}]~
 	\begin{itemize}
 		\item Add support for \joption{linktitles=eprint}.
+		\item Add option to print (potentially linked) open-access symbol in the right margin
+		     (see sec.~\ref{sec:openaccess}).
 		\item Fix alignment of year in margin if the \textsf{biblatex-ext-oa package} is used
 		      to print open-access symbols in the right margin.
 	\end{itemize} 

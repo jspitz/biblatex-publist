@@ -48,6 +48,8 @@ instructions.
 
 * V. 2.14 (forthcoming):
 	- Add support for linktitles=eprint.
+	- Add option to print (potentially linked) open-access symbol in
+	  the right margin.
 	- Fix alignment of year in margin if the biblatex-ext-oa package
 	  is used to print open-access symbols in the right margin.
 

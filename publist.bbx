@@ -68,6 +68,7 @@
 \toggletrue{bpl@prinfo}
 \newtoggle{bpl@oainfo}
 \newtoggle{bpl@oainfosimple}
+\newtoggle{bpl@oasymbol}
 \newif\if@bpl@reversenum\@bpl@reversenumfalse
 \def\bpl@annots{}
 
@@ -289,6 +290,18 @@
          \togglefalse{bpl@oainfosimple}
        },
     oainfo.default:n = { simple },
+    % oasymbol=<true|false>
+    % Output OpenAccess symbol
+    oasymbol.code:n =
+        {
+         \str_if_eq:nnTF { #1 } { true }
+         {
+            \toggletrue{bpl@oasymbol}
+         }{
+            \togglefalse{bpl@oasymbol}
+         }
+       },
+    oasymbol.default:n = { true },
     % prinfo=<true|false>
     % Output peer-review information
     prinfo.code:n =
@@ -464,6 +477,7 @@
 \DeclareBibliographyOption{pubstateextra}[true]{\ExecutePublistOptions{pubstateextra=#1}}
 \DeclareBibliographyOption{jifinfo}[true]{\ExecutePublistOptions{jifinfo=#1}}
 \DeclareBibliographyOption{oainfo}[simple]{\ExecutePublistOptions{oainfo=#1}}
+\DeclareBibliographyOption{oasymbol}[true]{\ExecutePublistOptions{oasymbol=#1}}
 \DeclareBibliographyOption{prinfo}[true]{\ExecutePublistOptions{prinfo=#1}}
 \DeclareBibliographyOption{citinfo}[true]{\ExecutePublistOptions{citinfo=#1}}
 
@@ -1795,6 +1809,7 @@
 }
 
 \newbibmacro*{bpl:marginyear}{%
+    \usebibmacro{bpl:oamark}%
     \if@marginyear%
         \iffieldundef{year}{%
             \iffieldundef{pubstate}%
@@ -2292,6 +2307,70 @@
 
 % Define URL for unknown eprinttype
 \newcommand*\DefineEPrintURL[2]{\csdef{bpl@eprint@url@#1}{#2}}
+
+
+% Generate open-access symbols in the right margin
+% Adapted from biblatex-ext-oa
+
+\newcommand*\mk@oamark[2]{#2}
+\AddToHook{package/hyperref/after}%
+    {\renewcommand*\mk@oamark[2]{\ifhyperref{\href{#1}{#2}}{#2}}}
+
+\newbibmacro*{bpl:oamark}{%
+   \iffieldundef{openaccess}%
+     {\def\fix@extblx@oa{}}
+     {\strut\vadjust{%
+       \vbox to 0pt{%
+	 \kern-\dimexpr\dp\strutbox+\ht\strutbox\relax
+	 \strut
+	 \hfill
+	 \rlap{\kern1em
+	   \iffieldundef{url}%
+	   {\iffieldundef{doi}%
+	       {\iffieldundef{eprint}%
+	          {\bpl@oa@symbol}%
+	          {\usebibmacro{bpl:eprint:url}{\mk@oamark}{\bpl@oa@symbol}}%
+	       }%
+	       {\mk@oamark{https://doi.org/\thefield{doi}}{\bpl@oa@symbol}}%
+	   }
+	   {\mk@oamark{\thefield{url}}{\bpl@oa@symbol}}%
+	  }
+	  \vss
+       }%
+      }%
+      \def\fix@extblx@oa{%
+	 \kern-\dimexpr\dp\strutbox+\ht%
+	 \strutbox\relax\strut}%
+     }%
+}%
+
+\AtEndOfPackage{%
+    \iftoggle{bpl@oasymbol}{
+	% Symbol definizion taken from biblatex-ext-oa
+	% The symbol itself is the PLoS Open Access symbol based on
+	% https://commons.wikimedia.org/wiki/File:Open_Access_logo_PLoS_white.svg
+	% public domain/CC0 by PLoS & Wikipedia users Nina, Beao and JakobVoss
+	\RequirePackage{pict2e,xcolor}
+	\definecolor{bpl@oasymb@orange}{HTML}{f68212}
+	\newcommand*{\bpl@oa@symbol}{%
+	  \begingroup
+	  \setlength{\unitlength}{.1pt}%
+	  \begin{picture}(64,99)
+	    \color{bpl@oasymb@orange}%
+	    \moveto(47,73)\circlearc{32}{73}{15}{000}{180}%
+	    \lineto(6,73)\circlearc{32}{73}{26}{180}{0}%
+	    \moveto(47,47)\lineto(58,47)\lineto(58,73)\lineto(47,73)\closepath
+	    \moveto(64,32)
+	    \circlearc{32}{32}{32}{000}{360}%
+	    \circlearc{32}{32}{21}{360}{000}%
+	    \moveto(41,32)
+	    \circlearc{32}{32}{09}{000}{360}%
+	    \fillpath
+	  \end{picture}%
+	  \endgroup
+	}
+    }{\newcommand*{\bpl@oa@symbol}{}}
+}
 
 
 %
