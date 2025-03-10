@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.14 (forthcoming):
+* V. 2.14 (2025-03-10):
 	- Add support for linktitles=eprint.
 	- Add option to print (potentially linked) open-access symbol in
 	  the right margin.
