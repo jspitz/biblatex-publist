@@ -770,7 +770,7 @@ If \textsf{hyperref} is loaded, this symbol is linked with the \texttt{doi}, \te
    See sec.~\ref{sec:clicktitles} for how to add support for more types or customize an eprint location.}
 if given.
 This is inspired by the \textsf{biblatex-ext-oa} package, but currently, only one symbol (the PloS open-access symbol drawn
-by pict2e) is provided. You can employ the \textsf{biblatex-ext-oa} package for more
+by \textsf{pict2e}) is provided. You can employ the \textsf{biblatex-ext-oa} package for more
 advanced usages.
 
 
@@ -1077,7 +1077,8 @@ to fix the numbering.
 
 Sometimes you might also want to omit some publications from the list which are not yet
 published or not yet accepted (e.g., because they are under blind review and you do not
-want to reveal your identity yet). To this end, \bpl\ features some \joption{bibchecks}
+want to reveal your identity yet), or you want to separately list exactly these publications.
+To support this, \bpl\ features some \joption{bibchecks}
 (for the concept, please refer to \cite[sec.~3.8.2]{bibltx}). Bibchecks can be activated
 by passing \joption{check=<bibcheck>} to the optional argument of \jfcsmacro{printbibliography}
 (see example~\ref{bibcheckex}).
@@ -1085,11 +1086,18 @@ by passing \joption{check=<bibcheck>} to the optional argument of \jfcsmacro{pri
 The following bibchecks are available to this end:
 \begin{itemize}
 	\item \joption{nosubmitted}: omits all entries with pubstate \joption{submitted}.
+	\item \joption{onlysubmitted}: reversely shows only entries with pubstate \joption{submitted}.
 	\item \joption{noprepared}: omits all entries with pubstate \joption{inpreparation}.
+	\item \joption{onlyprepared}: reversely shows only entries with pubstate \joption{inpreparation}.
 	\item \joption{onlypublished}: omits all unpublished entries (i.e., entries that have
 	      a pubstate) with the exception of \joption{prepublished} entries.
+	\item \joption{nopublished}: reversely omits all published entries (i.e., entries that do not have
+	      a pubstate) as well as \joption{prepublished} entries.
 	\item \joption{onlyaccepted}: omits all unpublished entries (i.e., entries that have
 	      a pubstate) with the exception of \joption{prepublished} and \joption{forthcoming}
+	      (and thus accepted) entries.
+    \item \joption{noaccepted}: reversely omits all published entries (i.e., entries that do not have
+	      a pubstate) as well as \joption{prepublished} and \joption{forthcoming}
 	      (and thus accepted) entries.
 \end{itemize}
 %
@@ -1107,6 +1115,8 @@ Several of these bibchecks might be used in a row, e.g.:
 \begin{lstlisting}[moretexcs={[1]{printbibliography}},caption={Using bibchecks},label={bibcheckex}]
 \printbibliography[heading=none,filter=mine,check=nosubmitted,check=noprepared]
 \end{lstlisting}
+%
+but of course, some are also mutually exclusive (logically).
 
 \section{Sorting\label{sec:sorting}}
 
@@ -1188,6 +1198,11 @@ until further change).
 \section{Revision Log}
 
 \begin{description}
+	\item [{V. 2.15 (Forthcoming):}]~
+	\begin{itemize}
+		\item Add bibchecks \texttt{onlysubmitted}, \texttt{onlyprepared}, \texttt{nopublished}
+		      and \texttt{noaccepted} (see sec.~\ref{sec:filterbc})..
+	\end{itemize} 
 	\item [{V. 2.14 (2025/03/10):}]~
 	\begin{itemize}
 		\item Add support for \joption{linktitles=eprint}.

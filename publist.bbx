@@ -1260,6 +1260,15 @@
   \iffieldequals{pubstate}{\tmpps}{\skipentry}{%
     \iffieldequalstr{pubstate}{submitted}{\skipentry}{}}%
 }
+% reversely: onlysubmitted
+\defbibcheck{onlysubmitted}{%
+  \iffieldundef{pubstate}{}{%
+     \edef\tmpps{\bibstring{submitted}}%
+     \iffieldequals{pubstate}{\tmpps}{%
+       \iffieldequalstr{pubstate}{submitted}{}{\skipentry}%
+     }{\skipentry}%
+  }%
+}
 
 % check to exclude work in preparation
 % from publist
@@ -1267,6 +1276,15 @@
   \edef\tmpps{\bibstring{inpreparation}}%
   \iffieldequals{pubstate}{\tmpps}{\skipentry}{%
     \iffieldequalstr{pubstate}{inpreparation}{\skipentry}{}}%
+}
+% reversely: onlyprepared
+\defbibcheck{onlyprepared}{%
+  \iffieldundef{pubstate}{}{%
+     \edef\tmpps{\bibstring{inpreparation}}%
+     \iffieldequals{pubstate}{\tmpps}{%
+       \iffieldequalstr{pubstate}{inpreparation}{}{\skipentry}%
+     }{\skipentry}%
+  }%
 }
 
 % check to exclude all work which is not (pre-)published
@@ -1277,6 +1295,12 @@
        \iffieldequalstr{pubstate}{prepublished}{}{\skipentry}%
      }{\skipentry}%
   }%
+}
+% reversely: nopublished
+\defbibcheck{nopublished}{%
+  \edef\tmpps{\bibstring{prepublished}}%
+  \iffieldequals{pubstate}{\tmpps}{\skipentry}{%
+    \iffieldequalstr{pubstate}{prepublished}{\skipentry}{}}%
 }
 
 % check to exclude all work which is not accepted or published
@@ -1289,6 +1313,20 @@
           \iffieldequalstr{pubstate}{prepublished}{}{%
              \iffieldequalstr{pubstate}{forthcoming}{}{%
                \skipentry}%
+          }%
+       }%
+     }%
+  }%
+}
+% revesely: noaccepted
+\defbibcheck{noaccepted}{%
+  \iffieldundef{pubstate}{\skipentry}{%
+     \edef\tmpps{\bibstring{prepublished}}%
+     \edef\tmppss{\bibstring{forthcoming}}%
+     \iffieldequals{pubstate}{\tmpps}{\skipentry}{%
+       \iffieldequals{pubstate}{\tmppss}{\skipentry}{%
+          \iffieldequalstr{pubstate}{prepublished}{\skipentry}{%
+             \iffieldequalstr{pubstate}{forthcoming}{\skipentry}{}%
           }%
        }%
      }%
