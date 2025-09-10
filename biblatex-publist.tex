@@ -1150,19 +1150,12 @@ If you use \joption{plauthorhandling=highlight}, however, the default changes to
 (a template provided by \bibltx\ itself) which sub-sorts by author names (alphabetically ascending)
 before sub-sorting by title.
 
-In addition to this default template, \bpl\ provides some sorting templates that account
-for the full date (rather than just the year).
-This is especially useful for sorting talks, since those usually do not only have a year, but a full
-date (day, month and year).
-The following templates, with and without author sorting, are provided:
+In addition to the default \joption{ydt} template, \bpl\ provides the following sorting templates
+that also do not account for author names in sorting:
 \begin{itemize}
  \item \jmacro{ddt}: Sort by full \textbf{d}ate (\textbf{d}escending)
         and \textbf{t}itle (ascending).
- \item \jmacro{ddnt}: Sort by full \textbf{d}ate (\textbf{d}escending),
-        author \textbf{n}ame and \textbf{t}itle (both ascending).
  \item \jmacro{dt}: Sort by full \textbf{d}ate and \textbf{t}itle (all ascending).
- \item \jmacro{dnt}: Sort by full \textbf{d}ate, author \textbf{n}ame and \textbf{t}itle
-        (all ascending).
  \item \jmacro{ydmdt}: Sort by \textbf{y}ear (\textbf{d}escending),
 	    \textbf{m}onth, \textbf{d}ay and \textbf{t}itle	(all ascending).
 \item \jmacro{ydmdnt}: Sort by \textbf{y}ear (\textbf{d}escending),
@@ -1202,6 +1195,8 @@ until further change).
 	\begin{itemize}
 		\item Add bibchecks \texttt{onlysubmitted}, \texttt{onlyprepared}, \texttt{nopublished}
 		      and \texttt{noaccepted} (see sec.~\ref{sec:filterbc}).
+		\item Remove sorting templates \joption{dnt} and \joption{ddnt} as these are provided
+		      by \bibltx\ itself.
 	\end{itemize} 
 	\item [{V. 2.14 (2025/03/10):}]~
 	\begin{itemize}

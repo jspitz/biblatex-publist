@@ -2082,42 +2082,6 @@
 % Sorting schemes
 %
 
-% Consider the whole date (year-month-day)
-% Sorting date (descending), name, title
-\DeclareSortingTemplate{ddnt}{
-    \sort{
-        \field{presort}
-    }
-    \sort[final]{
-        \field{sortkey}
-    }
-    \sort[direction=descending]{
-        \field[strside=left,strwidth=4]{sortyear}
-        \field[strside=left,strwidth=4]{year}
-        \literal{9999}
-    }
-    \sort[direction=descending]{
-        \field[padside=left,padwidth=2,padchar=0]{month}
-        \literal{00}
-    }
-    \sort[direction=descending]{
-        \field[padside=left,padwidth=2,padchar=0]{day}
-        \literal{00}
-    }
-    \sort{
-        \field{sortname}
-        \field{author}
-        \field{editor}
-        \field{translator}
-        \field{sorttitle}
-        \field{title}
-    }
-    \sort{
-        \field{sorttitle}
-        \field{title}
-    }
-}
-
 % Sorting year (descending), month, day, name, title
 \DeclareSortingTemplate{ydmdnt}{
     \sort{
@@ -2127,41 +2091,6 @@
         \field{sortkey}
     }
     \sort[direction=descending]{
-        \field[strside=left,strwidth=4]{sortyear}
-        \field[strside=left,strwidth=4]{year}
-        \literal{9999}
-    }
-    \sort{
-        \field[padside=left,padwidth=2,padchar=0]{month}
-        \literal{00}
-    }
-    \sort{
-        \field[padside=left,padwidth=2,padchar=0]{day}
-        \literal{00}
-    }
-    \sort{
-        \field{sortname}
-        \field{author}
-        \field{editor}
-        \field{translator}
-        \field{sorttitle}
-        \field{title}
-    }
-    \sort{
-        \field{sorttitle}
-        \field{title}
-    }
-}
-
-% Sorting date (ascending), name, title
-\DeclareSortingTemplate{dnt}{
-    \sort{
-        \field{presort}
-    }
-    \sort[final]{
-        \field{sortkey}
-    }
-    \sort{
         \field[strside=left,strwidth=4]{sortyear}
         \field[strside=left,strwidth=4]{year}
         \literal{9999}
