@@ -46,6 +46,11 @@ instructions.
 
 == CHANGES ==
 
+* V. 2.15 (2025-09-10):
+	- Add bibchecks onlysubmitted, onlyprepared, nopublished and noaccepted.
+	- Remove sorting templates dnt and ddnt as these are provided by
+	  biblatex itself.
+
 * V. 2.14 (2025-03-10):
 	- Add support for linktitles=eprint.
 	- Add option to print (potentially linked) open-access symbol in
