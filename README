@@ -47,6 +47,7 @@ instructions.
 == CHANGES ==
 
 * V. 2.16 (forthcoming):
+	- Fix bug with et al. after publist author.
 	- Add Greek localization (provided by Nikos Platis).
 
 * V. 2.15 (2025-09-10):

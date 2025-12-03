@@ -1401,6 +1401,7 @@
 %
 \newtoggle{plauthorprecedes}
 \newtoggle{hadplauthor}
+\newtoggle{hadnonplauthor}
 \newtoggle{isplauthor}
 \newtoggle{plnameomitted}
 \newtoggle{plnameafteromission}
@@ -1564,7 +1565,8 @@
             {% <- FALSE condition
               \stepcounter{nonpl#1}%
               \ifthenelse{\value{listcount}=1}%
-                   {\global\togglefalse{hadplauthor}}%
+                   {\global\togglefalse{hadplauthor}%
+                    \global\togglefalse{hadnonplauthor}}%
                    {%
                      \iftoggle{plauthorprecedes}%
                          {}%
@@ -1577,7 +1579,19 @@
                             }%
                          }%
                    }%
-             \ifnumgreater{\value{listcount}}{\value{realliststop}}{}{%
+             \ifnumgreater{\value{listcount}}{\value{realliststop}}{%
+               \ifboolexpr{
+                 test {\iftoggle{plauthorprecedes}}
+                 and not test {\iftoggle{hadnonplauthor}}
+               }{%
+                 \ifgiveninits
+                    {\ifdefvoid{\namepartgiveni}{}{\mkbibnamegiven{\namepartgiveni}\addspace}}%
+                    {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
+                 \ifdefvoid{\namepartprefix}{}{\mkbibnameprefix{\namepartprefix}\addspace}%
+                 \global\togglefalse{plauthorprecedes}%
+                 \mkbibnamefamily{\namepartfamily}%
+               }{}%
+             }{%
               \ifgiveninits
                   {\ifdefvoid{\namepartgiveni}{}{\mkbibnamegiven{\namepartgiveni}\addspace}}%
                   {\ifdefvoid{\namepartgiven}{}{\mkbibnamegiven{\namepartgiven}\addspace}}%
@@ -1585,6 +1599,7 @@
               \global\togglefalse{plauthorprecedes}%
               \mkbibnamefamily{\namepartfamily}%
              }%
+              \global\toggletrue{hadnonplauthor}%
             }% <- end FALSE condition
         %
         \usebibmacro{bpl:name:andothers}%
