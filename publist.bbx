@@ -1463,6 +1463,7 @@
 
 \providecommand*\bplopenoa{\bibopenparen}
 \providecommand*\bplcloseoa{\bibcloseparen}
+\newcounter{realmaxnames}
 
 % Omission/highlighting routine
 % (common code for authors and editors)
@@ -1474,9 +1475,11 @@
        {\global\togglefalse{isplauthor}}%
     %
     % Calculate real list stop
-    \ifnumless{\value{liststop}}{\value{maxnames}}
-         {\setcounter{realliststop}{\theliststop}}
-         {\setcounter{realliststop}{\value{minnames}}}%
+    \ifnumgreater{\value{liststop}}{\value{maxnames}}
+         {\setcounter{realliststop}{\value{minnames}}}
+         {\setcounter{realliststop}{\theliststop}}%
+    \ifthenelse{\value{listcount}=1}%
+        {\setcounter{realmaxnames}{\value{maxnames}}}{}%
     %
     % First case: plauthorhandling=highlight
     \if@hlauthor%
@@ -1537,12 +1540,15 @@
                  {\global\togglefalse{plauthorprecedes}}%
             }%
             {}%
+       \iftoggle{isplauthor}{%
+           \ifnumless{\value{listcount}}{\value{realmaxnames}}%
+                {\stepcounter{realmaxnames}}
+                {}%
+       }{}%
        % Adjust real list stop
-       \ifnumless{\value{liststop}}{\value{maxnames}}
-           {}
-           {\setcounter{realliststop}{\value{maxnames}}%
-            \addtocounter{realliststop}{\value{pl#1}}%
-           }%
+       \ifnumgreater{\value{liststop}}{\value{realmaxnames}}
+           {\setcounter{realliststop}{\value{minnames}}}
+           {\setcounter{realliststop}{\theliststop}}%
         % Exclude omitted author
         \iftoggle{isplauthor}%
             {% <- TRUE condition
