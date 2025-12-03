@@ -1537,6 +1537,12 @@
                  {\global\togglefalse{plauthorprecedes}}%
             }%
             {}%
+       % Adjust real list stop
+       \ifnumless{\value{liststop}}{\value{maxnames}}
+           {}
+           {\setcounter{realliststop}{\value{maxnames}}%
+            \addtocounter{realliststop}{\value{pl#1}}%
+           }%
         % Exclude omitted author
         \iftoggle{isplauthor}%
             {% <- TRUE condition
