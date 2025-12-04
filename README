@@ -46,7 +46,7 @@ instructions.
 
 == CHANGES ==
 
-* V. 2.16 (forthcoming):
+* V. 2.16 (2025-12-04):
 	- Fix bug with et al. after publist author.
 	- Fix maxnames with plauthor=omit.
 	- Add Greek localization (provided by Nikos Platis).
